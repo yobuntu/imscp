@@ -45,30 +45,30 @@ abstract class iMSCP_WebService
 	 */
 	final static public function authenticate($request)
 	{
-		if(!isset($_REQUEST['hash'])) {
-			$auth = iMSCP_Authentication::getInstance();
+		$auth = iMSCP_Authentication::getInstance();
 
-			if (!$auth->hasIdentity()) {
-				if (isset($_SERVER['PHP_AUTH_USER'])) {
-					$result = $auth
-						->setUsername(clean_input($_SERVER['PHP_AUTH_USER']))
-						->setPassword(clean_input($_SERVER['PHP_AUTH_PW']))
-						->authenticate();
+		if (!$auth->hasIdentity()) {
 
-					if ($result->isValid()) {
-						return;
-					}
-				}
+			// Enable bruteforce if needed
+			if (iMSCP_Registry::get('config')->BRUTEFORCE) {
+				$bruteforce = new iMSCP_Authentication_Bruteforce();
+				$bruteforce->register($auth->events());
 			}
 
-			throw new iMSCP_WebService_Exception('Authentication required', 401);
+			if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+				$result = $auth
+					->setUsername(clean_input($_SERVER['PHP_AUTH_USER']))
+					->setPassword(clean_input($_SERVER['PHP_AUTH_PW']))
+					->authenticate();
+
+				// TODO better is to allow per user access to this service  (ACL)
+				if ($result->isValid() && in_array($result->getIdentity()->admin_type, array('admin', 'reseller'))) {
+					return;
+				}
+			}
 		}
 
-
-		// Enable bruteforce if needed
-		//if(iMSCP_Registry::get('config')->BRUTEFORCE) {
-		//	$bruteforce = new iMSCP_Authentication_Bruteforce();
-		//	$bruteforce->register($auth->events());
-		//}
+		$auth->unsetIdentity();
+		throw new iMSCP_WebService_Exception('Authentication required', 401);
 	}
 }
