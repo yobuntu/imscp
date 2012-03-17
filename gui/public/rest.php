@@ -76,14 +76,13 @@ function rest_exceptionHandler($exception)
 	header('Content-Type: text/xml');
 	header($header);
 	echo $dom->saveXML();
+	session_destroy();
 	exit;
 }
 
 /***********************************************************************************************************************
  * Main script
  */
-
-//die('Development in progress...');
 
 // Set exception handler to handle uncaught exceptions (override the default one used by i-MSCP UI)
 set_exception_handler('rest_exceptionHandler');
@@ -130,6 +129,8 @@ if (!empty($_REQUEST['wsid'])) { // Any Web service must have an unique identifi
 
 				$restServer = new iMSCP_Rest_Server($controller, $constructorArgs);
 				$restServer->handle(); // Handle the REST request and sent output to the client
+
+				session_destroy();
 				exit;
 			} else { // Controller not found or bad implementation
 				write_log(sprintf(
