@@ -52,7 +52,7 @@ class iMSCP_Events
 	 *
 	 * The listener receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - request: The request data (for now, it's a copy of $_REQUEST)
+	 * - webServiceId: The Web service unique identifier
 	 *
 	 * @var string
 	 */
