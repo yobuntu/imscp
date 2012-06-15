@@ -6,15 +6,15 @@
 ; config.ini.php; that file will contain the superuser and database access info
 
 [superuser]
-login			= yourSuperUserLogin
+login			= admin
 password		= yourSuperUserPasswordHash
-email			= hello@example.org
+email			= {DEFAULT_ADMIN_ADDRESS}
 
 [database]
-host			= localhost
-username		= databaseLogin
-password		= datatabasePassword
-dbname			= databaseName
-adapter			= PDO_MYSQL ; PDO_MYSQL, MYSQLI, or PDO_PGSQL
+host			= {DB_HOST}
+username		= {DB_USER}
+password		= {DB_PASS}
+dbname			= {DB_NAME}
+adapter			= MYSQLI
 tables_prefix	= piwik_
-;charset		= utf8
+charset		= utf8
