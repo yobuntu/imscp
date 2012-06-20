@@ -43,7 +43,11 @@
 	<stats>
 		<alternative>
 			<awstats>awstats</awstats>
+<<<<<<< HEAD
 			<piwik></piwik>
+=======
+			<piwik>piwik</piwik>
+>>>>>>> piwik integration part 4
 		</alternative>
 	</stats>
 	<sql>
@@ -102,6 +106,11 @@
 	</perl>
 	<other>bash</other>
 	<other>bzip2</other>
+<<<<<<< HEAD
+=======
+	<other>lsb-base</other>
+	<other>lsb-release</other>
+>>>>>>> piwik integration part 4
 	<other>chkrootkit</other>
 	<other>dialog</other>
 	<other>diff</other>

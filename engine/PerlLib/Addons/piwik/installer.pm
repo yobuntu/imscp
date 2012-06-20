@@ -29,9 +29,13 @@ package Addons::piwik::installer;
 use strict;
 use warnings;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Digest::MD5 qw(md5_hex);
 =======
 >>>>>>> piwik integration part 3
+=======
+use Digest::MD5 qw(md5_hex);
+>>>>>>> piwik integration part 4
 use iMSCP::Debug;
 
 use vars qw/@ISA/;
@@ -66,10 +70,14 @@ sub install{
 
 	for ((
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php",
 =======
 		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/main.ini.php",
 >>>>>>> piwik integration part 3
+=======
+		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php",
+>>>>>>> piwik integration part 4
 	)) {
 		$rs |= $self->bkpConfFile($_);
 	}
@@ -80,8 +88,12 @@ sub install{
 	$rs |= $self->superuserpw();
 =======
 	$rs |= $self->setupDB();
+<<<<<<< HEAD
 	$rs |= $self->SALT();
 >>>>>>> piwik integration part 3
+=======
+	$rs |= $self->superuserpw();
+>>>>>>> piwik integration part 4
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
 
@@ -230,15 +242,20 @@ sub setupDB{
 			return 1;
 		}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> piwik integration part 3
+=======
+error("Debug1");
+>>>>>>> piwik integration part 4
 		# Flushing privileges
 		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 		if (ref $err ne 'HASH'){
 			error("$err");
 			return 1;
 		}
+<<<<<<< HEAD
 <<<<<<< HEAD
 		## Inserting new data into the database
 		$err = $database->doQuery(
@@ -247,43 +264,19 @@ sub setupDB{
 				GRANT ALL PRIVILEGES ON `".$main::imscpConfig{DATABASE_NAME}.'_piwik'."`.*
 =======
 
+=======
+error("Debug2");
+>>>>>>> piwik integration part 4
 		## Inserting new data into the database
-		for ((
-				'mail_users',
-				'piwik_cache',
-				'piwik_cache_index',
-				'piwik_cache_messages',
-				'piwik_cache_thread',
-				'piwik_contactgroupmembers',
-				'piwik_contactgroups',
-				'piwik_contacts',
-				'piwik_dictionary',
-				'piwik_identities',
-				'piwik_searches',
-				'piwik_session',
-				'piwik_users'
-		)) {
-			$err = $database->doQuery(
-				'dummy',
-				"
-					GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_`
-					TO ?@?
-					IDENTIFIED BY ?;
-				",
-				$self::piwikConfig{'DATABASE_USER'},
-				$main::imscpConfig{'DATABASE_HOST'},
-				$self::piwikConfig{'DATABASE_PASSWORD'}
-			);
-			if (ref $err ne 'HASH'){
-				error("$err");
-				return 1;
-			}
-		}
 		$err = $database->doQuery(
 			'dummy',
 			"
+<<<<<<< HEAD
 				GRANT SELECT,UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users`
 >>>>>>> piwik integration part 3
+=======
+				GRANT ALL PRIVILEGES ON `".$main::imscpConfig{DATABASE_NAME}.'_piwik'."`.*
+>>>>>>> piwik integration part 4
 				TO ?@?
 				IDENTIFIED BY ?;
 			",
@@ -297,9 +290,13 @@ sub setupDB{
 		}
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> piwik integration part 3
+=======
+error("Debug3");
+>>>>>>> piwik integration part 4
 	0;
 }
 
@@ -316,6 +313,7 @@ sub check_sql_connection{
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 sub superuserpw{
 
 	my $self = shift;
@@ -330,18 +328,26 @@ sub superuserpw{
 		$self::piwikConfig{'SUPERUSERPW'} = $superuserpw;
 =======
 sub SALT{
+=======
+sub superuserpw{
+>>>>>>> piwik integration part 4
 
 	my $self = shift;
 
-	$self::piwikConfig{'SALT'} = $self::piwikOldConfig{'SALT'}
-		if(!$self::piwikConfig{'SALT'} && $self::piwikOldConfig{'SALT'});
+	$self::piwikConfig{'SUPERUSERPW'} = $self::piwikOldConfig{'SUPERUSERPW'}
+		if(!$self::piwikConfig{'SUPERUSERPW'} && $self::piwikOldConfig{'SUPERUSERPW'});
 
-	unless($self::piwikConfig{'SALT'}){
-		my $SALT = '';
+	unless($self::piwikConfig{'SUPERUSERPW'}){
+		my $superuserpw = '';
 		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+<<<<<<< HEAD
 		$SALT .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
 		$self::piwikConfig{'SALT'} = $SALT;
 >>>>>>> piwik integration part 3
+=======
+		$superuserpw .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
+		$self::piwikConfig{'SUPERUSERPW'} = $superuserpw;
+>>>>>>> piwik integration part 4
 	}
 
 	0;
@@ -363,6 +369,7 @@ sub buildConf{
 		DB_USER				=> $self::piwikConfig{DATABASE_USER},
 		DB_PASS				=> $self::piwikConfig{DATABASE_PASSWORD},
 <<<<<<< HEAD
+<<<<<<< HEAD
 		DB_NAME				=> $main::imscpConfig{DATABASE_NAME}.'_piwik',
 		DEFAULT_ADMIN_ADDRESS		=> $main::imscpConfig{DEFAULT_ADMIN_ADDRESS},
 		SUPERUSERMD5			=> md5_hex($self::piwikConfig{SUPERUSERPW}),
@@ -378,6 +385,15 @@ sub buildConf{
 	my $cfgFiles = {
 		'main.ini.php'		=> "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/main.ini.php",
 >>>>>>> piwik integration part 3
+=======
+		DB_NAME				=> $main::imscpConfig{DATABASE_NAME}.'_piwik',
+		DEFAULT_ADMIN_ADDRESS		=> $main::imscpConfig{DEFAULT_ADMIN_ADDRESS},
+		SUPERUSERMD5			=> md5_hex($self::piwikConfig{SUPERUSERPW}),
+	};
+
+	my $cfgFiles = {
+		'config.ini.php'		=> "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php",
+>>>>>>> piwik integration part 4
 	};
 
 	for (keys %{$cfgFiles}) {
