@@ -40,6 +40,12 @@
 			<bind>bind9</bind>
 		</alternative>
 	</named>
+	<stats>
+		<alternative>
+			<awstats>awstats</awstats>
+			<piwik>piwik</piwik>
+		</alternative>
+	</stats>
 	<sql>
 		<mysql>mysql-server</mysql>
 		<mysql>mysql-client</mysql>
@@ -96,7 +102,6 @@
 	</perl>
 	<other>bash</other>
 	<other>bzip2</other>
-	<other>awstats</other>
 	<other>chkrootkit</other>
 	<other>dialog</other>
 	<other>diff</other>
