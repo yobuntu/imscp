@@ -7,7 +7,7 @@
 
 [superuser]
 login			= admin
-password		= yourSuperUserPasswordHash
+password		= {SUPERUSERMD5}
 email			= {DEFAULT_ADMIN_ADDRESS}
 
 [database]
