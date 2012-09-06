@@ -16,5 +16,5 @@ username		= {DB_USER}
 password		= {DB_PASS}
 dbname			= {DB_NAME}
 adapter			= MYSQLI
-tables_prefix	= piwik_
+tables_prefix	= ""
 charset		= utf8
