@@ -44,10 +44,14 @@
 		<alternative>
 			<awstats>awstats</awstats>
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<piwik></piwik>
 =======
 			<piwik>piwik</piwik>
 >>>>>>> piwik integration part 4
+=======
+			<piwik></piwik>
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 		</alternative>
 	</stats>
 	<sql>

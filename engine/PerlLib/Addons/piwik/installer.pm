@@ -83,10 +83,14 @@ sub install{
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	$rs |= $self->chmodDirs($_);
 	$rs |= $self->setupDB();
 	$rs |= $self->superuserpw();
 =======
+=======
+	$rs |= $self->chmodDirs($_);
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 	$rs |= $self->setupDB();
 <<<<<<< HEAD
 	$rs |= $self->SALT();
@@ -243,18 +247,22 @@ sub setupDB{
 		}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> piwik integration part 3
 =======
 error("Debug1");
 >>>>>>> piwik integration part 4
+=======
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 		# Flushing privileges
 		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 		if (ref $err ne 'HASH'){
 			error("$err");
 			return 1;
 		}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		## Inserting new data into the database
@@ -267,6 +275,8 @@ error("Debug1");
 =======
 error("Debug2");
 >>>>>>> piwik integration part 4
+=======
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 		## Inserting new data into the database
 		$err = $database->doQuery(
 			'dummy',
@@ -291,12 +301,15 @@ error("Debug2");
 	}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> piwik integration part 3
 =======
 error("Debug3");
 >>>>>>> piwik integration part 4
+=======
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 	0;
 }
 
@@ -422,6 +435,9 @@ sub buildConf{
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 sub chmodDirs{
 
 	use iMSCP::Dir;
@@ -437,7 +453,10 @@ sub chmodDirs{
 	0;
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> piwik integration part 3
+=======
+>>>>>>> piwik integration part 5, fixed tmp permissions and database use
 
 1;
