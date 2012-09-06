@@ -67,6 +67,7 @@ sub install{
 		$rs |= $self->bkpConfFile($_);
 	}
 
+	$rs |= $self->chmodDirs($_);
 	$rs |= $self->setupDB();
 	$rs |= $self->superuserpw();
 	$rs |= $self->buildConf();
@@ -216,14 +217,12 @@ sub setupDB{
 			error("$err");
 			return 1;
 		}
-error("Debug1");
 		# Flushing privileges
 		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
 		if (ref $err ne 'HASH'){
 			error("$err");
 			return 1;
 		}
-error("Debug2");
 		## Inserting new data into the database
 		$err = $database->doQuery(
 			'dummy',
@@ -241,7 +240,6 @@ error("Debug2");
 			return 1;
 		}
 	}
-error("Debug3");
 	0;
 }
 
@@ -319,6 +317,21 @@ sub buildConf{
 		$rs |= $file->owner($panelUName, $panelGName);
 		$rs |= $file->copyFile($cfgFiles->{$_});
 	}
+
+	0;
+}
+
+sub chmodDirs{
+
+	use iMSCP::Dir;
+
+	my $self		= shift;
+
+	iMSCP::Dir->new(
+		dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/stats/tmp/"
+	)->make({
+		mode => 0755
+	}) and return 1;
 
 	0;
 }

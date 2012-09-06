@@ -43,7 +43,7 @@
 	<stats>
 		<alternative>
 			<awstats>awstats</awstats>
-			<piwik>piwik</piwik>
+			<piwik></piwik>
 		</alternative>
 	</stats>
 	<sql>
