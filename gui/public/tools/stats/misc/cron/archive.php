@@ -76,6 +76,7 @@ class Archiving
 	protected $processPeriodsMaximumEverySeconds = 3600;
 	
 	protected $websiteDayHasFinishedSinceLastRun = array();
+	protected $idSitesInvalidatedOldReports = array();
 	protected $piwikUrl = false;
 	protected $token_auth = false;
 	protected $visits = 0;
@@ -547,10 +548,10 @@ class Archiving
 	
 	public function logFatalError($m, $backtrace = true)
 	{
-		$this->log("ERROR: $m");
+		$this->logError($m);
 		$fe = fopen('php://stderr', 'w');
 	    fwrite($fe, "Error in the last Piwik archive.php run: \n" . $m 
-	            . ($backtrace ? "\n\n Here is the full output of the script:\n\n" . $this->output : '') 
+	            . ($backtrace ? "\n\n Here is the full errors output:\n\n" . $this->output : '') 
 	    );
 		trigger_error($m, E_USER_ERROR);
 		exit;
@@ -558,7 +559,16 @@ class Archiving
 	
 	private function logNetworkError($url, $response)
 	{
-		$this->logError("Got invalid response from API request: $url. Response was '$response'");
+		$message = "Got invalid response from API request: $url. ";
+		if(empty($response))
+		{
+			$message .= "The response was empty. This usually means a server error. This solution to this error is generally to increase the value of 'memory_limit' in your php.ini file. Please check your Web server Error Log file for more details.";
+		}
+		else
+		{
+			$message .= "Response was '$response'";
+		}
+		$this->logError($message);
 		return false;
 	}
 	

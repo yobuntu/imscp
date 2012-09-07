@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Archive.php 6300 2012-05-23 21:19:25Z SteveG $
+ * @version $Id: Archive.php 6605 2012-07-31 06:48:37Z matt $
  * 
  * @category Piwik
  * @package Piwik
@@ -133,8 +133,9 @@ abstract class Piwik_Archive
 				Piwik_Archive::INDEX_GOAL_ECOMMERCE_ITEMS  => 'items',
 	);
 
-	/*
-	 * string indexed column name => Integer indexed column name 
+	/**
+	 * string indexed column name => Integer indexed column name
+     * @var array
 	 */
 	public static $mappingFromNameToId = array(
 				'nb_uniq_visitors'			=> Piwik_Archive::INDEX_NB_UNIQ_VISITORS,
@@ -169,11 +170,11 @@ abstract class Piwik_Archive
 	/**
 	 * Builds an Archive object or returns the same archive if previously built.
 	 *
-	 * @param int|string $idSite integer, or comma separated list of integer
-	 * @param string $period 'week' 'day' etc.
-	 * @param Piwik_Date|string $strDate 'YYYY-MM-DD' or magic keywords 'today' @see Piwik_Date::factory()
-	 * @param bool|string $segment Segment definition - defaults to false for Backward Compatibility
-	 * @param bool|string $_restrictSitesToLogin Used only when running as a scheduled task
+	 * @param int|string         $idSite                 integer, or comma separated list of integer
+	 * @param string             $period                 'week' 'day' etc.
+	 * @param Piwik_Date|string  $strDate                'YYYY-MM-DD' or magic keywords 'today' @see Piwik_Date::factory()
+	 * @param bool|string        $segment                Segment definition - defaults to false for Backward Compatibility
+	 * @param bool|string        $_restrictSitesToLogin  Used only when running as a scheduled task
 	 * @return Piwik_Archive
 	 */
 	static public function build($idSite, $period, $strDate, $segment = false, $_restrictSitesToLogin = false )
@@ -208,32 +209,8 @@ abstract class Piwik_Archive
 		else
 		{
 			$oSite = new Piwik_Site($idSite);
+			$oPeriod = Piwik_Archive::makePeriodFromQueryParams($oSite, $period, $strDate);
 
-			if($period == 'range')
-			{
-				$oPeriod = new Piwik_Period_Range('range', $strDate, $oSite->getTimezone(), Piwik_Date::factory('today', $oSite->getTimezone()));
-			}
-			else
-			{
-				if(is_string($strDate))
-				{
-					if($strDate == 'now' || $strDate == 'today')
-					{
-						$strDate = date('Y-m-d', Piwik_Date::factory('now', $oSite->getTimezone())->getTimestamp());
-					}
-					elseif($strDate == 'yesterday' || $strDate == 'yesterdaySameTime')
-					{
-						$strDate = date('Y-m-d', Piwik_Date::factory('now', $oSite->getTimezone())->subDay(1)->getTimestamp());
-					}
-					$oDate = Piwik_Date::factory($strDate);
-				}
-				else
-				{
-					$oDate = $strDate;
-				}
-				$date = $oDate->toString();
-				$oPeriod = Piwik_Period::factory($period, $oDate);
-			}
 			$archive = new Piwik_Archive_Single();
 			$archive->setPeriod($oPeriod);
 			$archive->setSite($oSite);
@@ -242,14 +219,56 @@ abstract class Piwik_Archive
 		return $archive;
 	}
 	
+	/**
+	 * Creates a period instance using a Piwik_Site instance and two strings describing
+	 * the period & date.
+	 * 
+	 * @param Piwik_Site $site
+	 * @param string $strPeriod The period string: day, week, month, year, range
+	 * @param string $strDate The date or date range string.
+	 * @return Piwik_Period
+	 */
+	static public function makePeriodFromQueryParams( $site, $strPeriod, $strDate )
+	{
+		$tz = $site->getTimezone();
+		
+		if($strPeriod == 'range')
+		{
+			$oPeriod = new Piwik_Period_Range('range', $strDate, $tz, Piwik_Date::factory('today', $tz));
+		}
+		else
+		{
+			if(is_string($strDate))
+			{
+				if($strDate == 'now' || $strDate == 'today')
+				{
+					$strDate = date('Y-m-d', Piwik_Date::factory('now', $tz)->getTimestamp());
+				}
+				elseif($strDate == 'yesterday' || $strDate == 'yesterdaySameTime')
+				{
+					$strDate = date('Y-m-d', Piwik_Date::factory('now', $tz)->subDay(1)->getTimestamp());
+				}
+				$oDate = Piwik_Date::factory($strDate);
+			}
+			else
+			{
+				$oDate = $strDate;
+			}
+			$date = $oDate->toString();
+			$oPeriod = Piwik_Period::factory($strPeriod, $oDate);
+		}
+		
+		return $oPeriod;
+	}
+	
 	abstract public function prepareArchive();
 	
 	/**
 	 * Returns the value of the element $name from the current archive 
 	 * The value to be returned is a numeric value and is stored in the archive_numeric_* tables
 	 *
-	 * @param string $name For example Referers_distinctKeywords 
-	 * @return float|int|false False if no value with the given name
+	 * @param string  $name  For example Referers_distinctKeywords
+	 * @return float|int|false  False if no value with the given name
 	 */
 	abstract public function getNumeric( $name );
 	
@@ -260,8 +279,8 @@ abstract class Piwik_Archive
 	 * 
 	 * It can return anything from strings, to serialized PHP arrays or PHP objects, etc.
 	 *
-	 * @param string $name For example Referers_distinctKeywords 
-	 * @return mixed False if no value with the given name
+	 * @param string  $name  For example Referers_distinctKeywords
+	 * @return mixed  False if no value with the given name
 	 */
 	abstract public function getBlob( $name );
 
@@ -290,8 +309,8 @@ abstract class Piwik_Archive
 	 * all the subtables for the DataTable $name. 
 	 * You can then access the subtables by using the Piwik_DataTable_Manager getTable() 
 	 *
-	 * @param string $name
-	 * @param int $idSubTable or null if requesting the parent table
+	 * @param string    $name
+	 * @param int|null  $idSubTable  null if requesting the parent table
 	 * @return Piwik_DataTable
 	 */
 	abstract public function getDataTableExpanded($name, $idSubTable = null);
@@ -301,13 +320,14 @@ abstract class Piwik_Archive
 	 * Helper - Loads a DataTable from the Archive.
 	 * Optionally loads the table recursively,
 	 * or optionally fetches a given subtable with $idSubtable
-	 * @param $name
-	 * @param $idSite
-	 * @param $period
-	 * @param $date
-	 * @param $segment
-	 * @param $expanded
-	 * @param null $idSubtable
+	 *
+	 * @param string      $name
+	 * @param int         $idSite
+	 * @param string      $period
+	 * @param Piwik_Date  $date
+	 * @param string      $segment
+	 * @param bool        $expanded
+	 * @param null        $idSubtable
 	 * @return Piwik_DataTable
 	 */
 	static public function getDataTableFromArchive($name, $idSite, $period, $date, $segment, $expanded, $idSubtable = null )
@@ -343,7 +363,7 @@ abstract class Piwik_Archive
 			{
 				return 0;
 			}
-			return $value;
+			return (float)$value;
 		}
 
 		// Round up the value with 2 decimals
@@ -417,5 +437,16 @@ abstract class Piwik_Archive
 		return 	(preg_match('/^(last|previous){1}([0-9]*)$/D', $dateString, $regs)
 				|| Piwik_Period_Range::parseDateRange($dateString))
 				&& $period != 'range';
+	}
+	
+	/**
+	 * Indicate if $idSiteString corresponds to multiple sites.
+	 * 
+	 * @param string $idSiteString
+	 * @return bool
+	 */
+	static public function isMultipleSites( $idSiteString )
+	{
+		return $idSiteString == 'all' || strpos($idSiteString, ',') !== false;
 	}
 }

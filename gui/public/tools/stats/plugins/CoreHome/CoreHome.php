@@ -4,7 +4,7 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: CoreHome.php 6243 2012-05-02 22:08:23Z SteveG $
+ * @version $Id: CoreHome.php 6570 2012-07-26 18:04:28Z capedfuzz $
  *
  * @category Piwik_Plugins
  * @package Piwik_CoreHome

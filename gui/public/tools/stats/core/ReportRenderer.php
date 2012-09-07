@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: ReportRenderer.php 5792 2012-02-09 17:23:39Z JulienM $
+ * @version $Id: ReportRenderer.php 6727 2012-08-13 20:26:46Z JulienM $
  * 
  * @category Piwik
  * @package Piwik
@@ -27,9 +27,12 @@ abstract class Piwik_ReportRenderer
 	const TABLE_CELL_BORDER_COLOR =  "231,231,231";
 	const TABLE_BG_COLOR = "249,250,250";
 
-	static public $availableReportRenderers = array(
-		'pdf' => 'plugins/UserSettings/images/plugins/pdf.gif',
-		'html' => 'themes/default/images/html_icon.png',
+	const HTML_FORMAT = 'html';
+	const PDF_FORMAT = 'pdf';
+
+	static private $availableReportRenderers = array(
+		self::PDF_FORMAT,
+		self::HTML_FORMAT,
 	);
 
 	protected $renderImageInline = false;
@@ -56,7 +59,7 @@ abstract class Piwik_ReportRenderer
 			throw new Exception(
 				Piwik_TranslateException(
 					'General_ExceptionInvalidReportRendererFormat',
-					array($name, implode(', ', array_keys(self::$availableReportRenderers)))
+					array($name, implode(', ', self::$availableReportRenderers))
 				)
 			);
 		}
@@ -96,6 +99,13 @@ abstract class Piwik_ReportRenderer
 	 * @param string $filename without path & without format extension
 	 */
 	abstract public function sendToBrowserDownload($filename);
+
+	/**
+	 * Output rendering to browser
+	 *
+	 * @param string $filename without path & without format extension
+	 */
+	abstract public function sendToBrowserInline($filename);
 
 	/**
 	 * Generate the first page.
@@ -141,6 +151,42 @@ abstract class Piwik_ReportRenderer
 		@chmod($outputFilename, 0600);
 		@unlink($outputFilename);
 		return $outputFilename;
+	}
+
+	protected static function writeFile($filename, $extension, $content)
+	{
+		$filename = self::appendExtension($filename, $extension);
+		$outputFilename = self::getOutputPath($filename);
+
+		$emailReport = @fopen($outputFilename, "w");
+
+		if (!$emailReport) {
+			throw new Exception ("The file : " . $outputFilename . " can not be opened in write mode.");
+		}
+
+		fwrite($emailReport, $content);
+		fclose($emailReport);
+
+		return $outputFilename;
+	}
+
+	protected static function sendToBrowser($filename, $extension, $contentType, $content)
+	{
+		$filename = Piwik_ReportRenderer::appendExtension($filename, $extension);
+
+		Piwik::overrideCacheControlHeaders();
+		header('Content-Description: File Transfer');
+		header('Content-Type: ' . $contentType);
+		header('Content-Disposition: attachment; filename="'.str_replace('"', '\'', basename($filename)).'";');
+		header('Content-Length: '.strlen($content));
+
+		echo $content;
+	}
+
+	protected static function inlineToBrowser($contentType, $content)
+	{
+		header('Content-Type: ' . $contentType);
+		echo $content;
 	}
 
 	/**

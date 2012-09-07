@@ -4,7 +4,7 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Visit.php 6403 2012-05-30 10:49:44Z matt $
+ * @version $Id: Visit.php 6743 2012-08-14 03:30:08Z matt $
  *
  * @category Piwik
  * @package Piwik
@@ -91,7 +91,7 @@ class Piwik_Tracker_Visit implements Piwik_Tracker_Visit_Interface
 		Piwik_PostEvent('Tracker.setRequest.idSite', $idsite, $requestArray);
 		if($idsite <= 0)
 		{
-			Piwik_Tracker_ExitWithException(new Exception('Invalid idSite'));
+			throw new Exception('Invalid idSite');
 		}
 		$this->idsite = $idsite;
 
@@ -280,7 +280,8 @@ class Piwik_Tracker_Visit implements Piwik_Tracker_Visit_Interface
 										$refererTimestamp,
 										$refererUrl,
 										$refererCampaignName,
-										$refererCampaignKeyword
+										$refererCampaignKeyword,
+										$this->getBrowserLanguage()
 			);
 		}
 		unset($this->goalManager);
@@ -653,7 +654,17 @@ class Piwik_Tracker_Visit implements Piwik_Tracker_Visit_Interface
 	 */
 	protected function getUserAgent()
 	{
-		return @$_SERVER['HTTP_USER_AGENT'];
+	    return Piwik_Common::getRequestVar('ua', @$_SERVER['HTTP_USER_AGENT'], 'string', $this->request);
+	}
+	
+	/**
+	 * Returns the language the visitor is viewing.
+	 * 
+	 * @return string browser language code, eg. "en-gb,en;q=0.5"
+	 */
+	protected function getBrowserLanguage()
+	{
+	    return Piwik_Common::getRequestVar('lang', Piwik_Common::getBrowserLanguage(), 'string', $this->request);
 	}
 
 	/**
@@ -766,6 +777,18 @@ class Piwik_Tracker_Visit implements Piwik_Tracker_Visit_Interface
 			{
 				printDebug("IP excluded.");
 			}
+		}
+		
+		if(!$excluded)
+		{
+			if( (isset($_SERVER["HTTP_X_PURPOSE"]) 
+					&& in_array($_SERVER["HTTP_X_PURPOSE"], array("preview", "instant")))
+			 || (isset($_SERVER['HTTP_X_MOZ'])
+			 		&& $_SERVER['HTTP_X_MOZ'] == "prefetch"))
+	 		{
+	 			$excluded = true;
+	 			printDebug("Prefetch request detected, not a real visit so we Ignore this visit/pageview");
+	 		}
 		}
 
 		if($excluded)
@@ -1190,7 +1213,7 @@ class Piwik_Tracker_Visit implements Piwik_Tracker_Visit_Interface
 		$plugin_Silverlight		= Piwik_Common::getRequestVar( 'ag', 0, 'int', $this->request);
 		$plugin_Cookie 			= Piwik_Common::getRequestVar( 'cookie', 0, 'int', $this->request);
 
-		$userAgent		= Piwik_Common::sanitizeInputValues($this->getUserAgent());
+		$userAgent		= $this->getUserAgent();
 		$aBrowserInfo	= UserAgentParser::getBrowser($userAgent);
 
 		$browserName	= ($aBrowserInfo !== false && $aBrowserInfo['id'] !== false) ? $aBrowserInfo['id'] : 'UNK';
@@ -1201,7 +1224,7 @@ class Piwik_Tracker_Visit implements Piwik_Tracker_Visit_Interface
 
 		$resolution		= Piwik_Common::getRequestVar('res', 'unknown', 'string', $this->request);
 
-		$browserLang	= Piwik_Common::getBrowserLanguage();
+		$browserLang	= $this->getBrowserLanguage();
 
 		$configurationHash = $this->getConfigHash(
 												$os,
@@ -1446,9 +1469,11 @@ class Piwik_Tracker_Visit_Referer
 			$refererUrl = '';
 		}
 		
+		$currentUrl = Piwik_Tracker_Action::normalizeUrl($currentUrl);
+		
 		$this->refererUrl = $refererUrl;
 		$this->refererUrlParse = @parse_url($this->refererUrl);
-		$this->currentUrlParse = @parse_url(Piwik_Common::unsanitizeInputValue($currentUrl));
+		$this->currentUrlParse = @parse_url($currentUrl);
 		$this->typeRefererAnalyzed = Piwik_Common::REFERER_TYPE_DIRECT_ENTRY;
 		$this->nameRefererAnalyzed = '';
 		$this->keywordRefererAnalyzed = '';
@@ -1493,8 +1518,9 @@ class Piwik_Tracker_Visit_Referer
 		return $refererInformation;
 	}
 
-	/*
+	/**
 	 * Search engine detection
+     * @return bool
 	 */
 	protected function detectRefererSearchEngine()
 	{
@@ -1510,7 +1536,11 @@ class Piwik_Tracker_Visit_Referer
 		return true;
 	}
 
-	protected function detectCampaignFromString($string)
+    /**
+     * @param string $string
+     * @return bool
+     */
+    protected function detectCampaignFromString($string)
 	{
 		foreach($this->campaignNames as $campaignNameParameter)
 		{
@@ -1540,8 +1570,9 @@ class Piwik_Tracker_Visit_Referer
 		return false;
 	}
 	
-	/*
+	/**
 	 * Campaign analysis
+     * @return bool
 	 */
 	protected function detectRefererCampaign()
 	{
@@ -1571,11 +1602,12 @@ class Piwik_Tracker_Visit_Referer
 		return $found;
 	}
 
-	/*
+	/**
 	 * We have previously tried to detect the campaign variables in the URL
 	 * so at this stage, if the referer host is the current host,
 	 * or if the referer host is any of the registered URL for this website,
 	 * it is considered a direct entry
+     * @return bool
 	 */
 	protected function detectRefererDirectEntry()
 	{

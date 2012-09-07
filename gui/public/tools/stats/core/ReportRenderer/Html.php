@@ -4,7 +4,7 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Html.php 5909 2012-02-25 06:45:24Z matt $
+ * @version $Id: Html.php 6727 2012-08-13 20:26:46Z JulienM $
  *
  * @category Piwik
  * @package Piwik_ReportRenderer
@@ -25,6 +25,9 @@ class Piwik_ReportRenderer_Html extends Piwik_ReportRenderer
 	const REPORT_TABLE_ROW_TEXT_SIZE = 11;
 	const REPORT_BACK_TO_TOP_TEXT_SIZE = 9;
 
+	const HTML_CONTENT_TYPE = 'text/html';
+	const HTML_FILE_EXTENSION = 'html';
+
 	private $rendering = "";
 
 	public function setLocale($locale)
@@ -36,33 +39,21 @@ class Piwik_ReportRenderer_Html extends Piwik_ReportRenderer
 	{
 		$this->epilogue();
 
-		$filename = Piwik_ReportRenderer::appendExtension($filename, "html");
-		$outputFilename = Piwik_ReportRenderer::getOutputPath($filename);
-
-		$emailReport = @fopen($outputFilename, "w");
-
-		if (!$emailReport) {
-			throw new Exception ("The file : " . $outputFilename . " can not be opened in write mode.");
-		}
-
-		fwrite($emailReport, $this->rendering);
-		fclose($emailReport);
-
-		return $outputFilename;
+		return Piwik_ReportRenderer::writeFile($filename, self::HTML_FILE_EXTENSION, $this->rendering);
 	}
 
 	public function sendToBrowserDownload($filename)
 	{
 		$this->epilogue();
 
-		$filename = Piwik_ReportRenderer::appendExtension($filename, "html");
+		Piwik_ReportRenderer::sendToBrowser($filename, self::HTML_FILE_EXTENSION, self::HTML_CONTENT_TYPE, $this->rendering);
+	}
 
-		Piwik::overrideCacheControlHeaders();
-		header('Content-Description: File Transfer');
-		header('Content-Type: text/html');
-		header('Content-Disposition: attachment; filename="'.str_replace('"', '\'', basename($filename)).'";');
-		header('Content-Length: '.strlen($this->rendering));
-		echo $this->rendering;
+	public function sendToBrowserInline($filename)
+	{
+		$this->epilogue();
+
+		Piwik_ReportRenderer::inlineToBrowser(self::HTML_CONTENT_TYPE, $this->rendering);
 	}
 
 	private function epilogue()

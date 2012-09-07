@@ -4,7 +4,7 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Pdf.php 5793 2012-02-09 22:45:26Z matt $
+ * @version $Id: Pdf.php 6727 2012-08-13 20:26:46Z JulienM $
  *
  * @category Piwik
  * @package Piwik_ReportRenderer
@@ -36,6 +36,8 @@ class Piwik_ReportRenderer_Pdf extends Piwik_ReportRenderer
 	const NO_DATA_ROW_COUNT = 6;
 	const MAX_GRAPH_REPORTS = 3;
 	const MAX_2COL_TABLE_REPORTS = 2;
+
+	const PDF_CONTENT_TYPE = 'pdf';
 
 	private $reportFontStyle = '';
 	private $reportSimpleFontSize = 9;
@@ -88,8 +90,11 @@ class Piwik_ReportRenderer_Pdf extends Piwik_ReportRenderer
 		switch ($locale)
 		{
 			case 'zh-tw':
-			case 'ja':
 				$reportFont = 'msungstdlight';
+				break;
+				
+			case 'ja':
+				$reportFont = 'kozgopromedium';
 				break;
 
 			case 'zh-cn':
@@ -114,7 +119,7 @@ class Piwik_ReportRenderer_Pdf extends Piwik_ReportRenderer
 
 	public function sendToDisk($filename)
 	{
-		$filename = Piwik_ReportRenderer::appendExtension($filename, "pdf");
+		$filename = Piwik_ReportRenderer::appendExtension($filename, self::PDF_CONTENT_TYPE);
 		$outputFilename = Piwik_ReportRenderer::getOutputPath($filename);
 
 		$this->TCPDF->Output($outputFilename, 'F');
@@ -124,8 +129,14 @@ class Piwik_ReportRenderer_Pdf extends Piwik_ReportRenderer
 
 	public function sendToBrowserDownload($filename)
 	{
-		$filename = Piwik_ReportRenderer::appendExtension($filename, "pdf");
+		$filename = Piwik_ReportRenderer::appendExtension($filename, self::PDF_CONTENT_TYPE);
 		$this->TCPDF->Output($filename, 'D');
+	}
+
+	public function sendToBrowserInline($filename)
+	{
+		$filename = Piwik_ReportRenderer::appendExtension($filename, self::PDF_CONTENT_TYPE);
+		$this->TCPDF->Output($filename, 'I');
 	}
 
 	public function renderFrontPage($websiteName, $prettyDate, $description, $reportMetadata)

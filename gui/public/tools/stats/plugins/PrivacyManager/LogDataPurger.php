@@ -18,6 +18,11 @@ class Piwik_PrivacyManager_LogDataPurger
 	const TEMP_TABLE_NAME = 'tmp_log_actions_to_keep';
 	
 	/**
+	 * The max set of rows each table scan select should query at one time.
+	 */
+	public static $selectSegmentSize = 100000;
+	
+	/**
 	 * The number of days after which log entries are considered old.
 	 */
 	private $deleteLogsOlderThan;
@@ -73,8 +78,16 @@ class Piwik_PrivacyManager_LogDataPurger
 			}
 		}
 		
-		// delete unused actions from the log_action table
-		$this->purgeUnusedLogActions();
+		// delete unused actions from the log_action table (but only if we can lock tables)
+		if (Piwik::isLockPrivilegeGranted())
+		{
+			$this->purgeUnusedLogActions();
+		}
+		else
+		{
+			$logMessage = get_class($this).": LOCK TABLES privilege not granted; skipping unused actions purge";
+			Piwik::log($logMessage);
+		}
 		
 		// optimize table overhead after deletion
 		Piwik_OptimizeTables($logTables);
@@ -120,8 +133,8 @@ class Piwik_PrivacyManager_LogDataPurger
 	{
 		$this->createTempTable();
 		
-		// get current max visit ID in log tables w/ idaction references.
-		$maxIds = $this->getMaxVisitIdsInLogTables();
+		// get current max ID in log tables w/ idaction references.
+		$maxIds = $this->getMaxIdsInLogTables();
 		
 		// do large insert (inserting everything before maxIds) w/o locking tables...
 		$this->insertActionsToKeep($maxIds, $deleteOlderThanMax = true);
@@ -142,14 +155,26 @@ class Piwik_PrivacyManager_LogDataPurger
 	 */
 	private function getDeleteIdVisitOffset()
 	{
+		$logVisit = Piwik_Common::prefixTable("log_visit");
+		
+		// get max idvisit
+		$maxIdVisit = Piwik_FetchOne("SELECT MAX(idvisit) FROM $logVisit");
+		if (empty($maxIdVisit))
+		{
+			return false;
+		}
+		
+		// select highest idvisit to delete from
 		$dateStart = Piwik_Date::factory("today")->subDay($this->deleteLogsOlderThan);
 		$sql = "SELECT idvisit
-		          FROM ".Piwik_Common::prefixTable("log_visit")."
-		         WHERE '".$dateStart->toString('Y-m-d H:i:s')."' > visit_last_action_time AND idvisit > 0
+		          FROM $logVisit
+		         WHERE '".$dateStart->toString('Y-m-d H:i:s')."' > visit_last_action_time
+		           AND idvisit <= ?
+		           AND idvisit > ?
 		      ORDER BY idvisit DESC
 		         LIMIT 1";
-
-		return Piwik_FetchOne($sql);
+		
+		return Piwik_SegmentedFetchFirst($sql, $maxIdVisit, 0, -self::$selectSegmentSize);
 	}
 
 	private function getLogTableDeleteCount( $table, $maxIdVisit )
@@ -167,14 +192,16 @@ class Piwik_PrivacyManager_LogDataPurger
 		Piwik_Query($sql);
 	}
 	
-	private function getMaxVisitIdsInLogTables()
+	private function getMaxIdsInLogTables()
 	{
 		$tables = array('log_conversion', 'log_link_visit_action', 'log_visit', 'log_conversion_item');
+		$idColumns = $this->getTableIdColumns();
 		
 		$result = array();
 		foreach ($tables as $table)
 		{
-			$result[$table] = Piwik_FetchOne("SELECT MAX(idvisit) FROM ".Piwik_Common::prefixTable($table));
+			$idCol = $idColumns[$table];
+			$result[$table] = Piwik_FetchOne("SELECT MAX($idCol) FROM ".Piwik_Common::prefixTable($table));
 		}
 		
 		return $result;
@@ -183,16 +210,29 @@ class Piwik_PrivacyManager_LogDataPurger
 	private function insertActionsToKeep( $maxIds, $olderThan = true )
 	{
 		$tempTableName = Piwik_Common::prefixTable(self::TEMP_TABLE_NAME);
-		$idvisitCondition = $olderThan ? "idvisit <= ?" : "idvisit > ?";
 		
+		$idColumns = $this->getTableIdColumns();
 		foreach ($this->getIdActionColumns() as $table => $columns)
 		{
+			$idCol = $idColumns[$table];
+			
 			foreach ($columns as $col)
 			{
-				$select = "SELECT $col FROM ".Piwik_Common::prefixTable($table)." WHERE $idvisitCondition";
+				$select = "SELECT $col FROM ".Piwik_Common::prefixTable($table)." WHERE $idCol >= ? AND $idCol < ?";
 				$sql = "INSERT IGNORE INTO $tempTableName $select";
 				
-				Piwik_Query($sql, array($maxIds[$table]));
+				if ($olderThan)
+				{
+					$start = 0;
+					$finish = $maxIds[$table];
+				}
+				else
+				{
+					$start = $maxIds[$table];
+					$finish = Piwik_FetchOne("SELECT MAX($idCol) FROM ".Piwik_Common::prefixTable($table));
+				}
+				
+				Piwik_SegmentedQuery($sql, $start, $finish, self::$selectSegmentSize);
 			}
 		}
 		
@@ -260,15 +300,28 @@ class Piwik_PrivacyManager_LogDataPurger
 		);
 	}
 	
+	private function getTableIdColumns()
+	{
+		return array(
+			'log_link_visit_action' => 'idlink_va',
+			'log_conversion' => 'idvisit',
+			'log_visit' => 'idvisit',
+			'log_conversion_item' => 'idvisit'
+		);
+	}
+	
 	// let's hardcode, since these are not dynamically created tables
-	// exclude piwik_log_action since it is a lookup table
 	public static function getDeleteTableLogTables()
 	{
-		return Piwik_Common::prefixTables('log_conversion',
-										  'log_link_visit_action',
-										  'log_visit',
-										  'log_conversion_item',
-										  'log_action');
+		$result = Piwik_Common::prefixTables('log_conversion',
+											 'log_link_visit_action',
+											 'log_visit',
+											 'log_conversion_item');
+		if (Piwik::isLockPrivilegeGranted())
+		{
+			$result[] = Piwik_Common::prefixTable('log_action');
+		}
+		return $result;
 	}
 
 	/**

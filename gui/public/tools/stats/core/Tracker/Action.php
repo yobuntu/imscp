@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Action.php 6300 2012-05-23 21:19:25Z SteveG $
+ * @version $Id: Action.php 6659 2012-08-02 23:29:13Z matt $
  * 
  * @category Piwik
  * @package Piwik
@@ -59,12 +59,22 @@ class Piwik_Tracker_Action implements Piwik_Tracker_Action_Interface
 	private $actionUrl;
 	
 	static private $queryParametersToExclude = array('phpsessid', 'jsessionid', 'sessionid', 'aspsessionid', 'fb_xd_fragment', 'fb_comment_id');
-	
+
+	/**
+	 * Set request parameters
+	 *
+	 * @param array  $requestArray
+	 */
 	public function setRequest($requestArray)
 	{
 		$this->request = $requestArray;
 	}
 
+	/**
+	 * Returns the current set request parameters
+	 *
+	 * @return array
+	 */
 	public function getRequest()
 	{
 	    return $this->request;
@@ -72,6 +82,7 @@ class Piwik_Tracker_Action implements Piwik_Tracker_Action_Interface
 	
 	/**
 	 * Returns URL of the page currently being tracked, or the file being downloaded, or the outlink being clicked
+	 *
 	 * @return string
 	 */
 	public function getActionUrl()
@@ -127,11 +138,47 @@ class Piwik_Tracker_Action implements Piwik_Tracker_Action_Interface
 		$this->actionUrl = $url;
 	}
 	
+	/**
+	 * Converts Matrix URL format 
+	 * from http://example.org/thing;paramA=1;paramB=6542
+	 * to   http://example.org/thing?paramA=1&paramB=6542
+	 * 
+	 * @param string $url
+	 */
+	static public function convertMatrixUrl($originalUrl)
+	{
+		$posFirstSemiColon = strpos($originalUrl,";");
+		if($posFirstSemiColon === false)
+		{
+			return $originalUrl;
+		}
+		$posQuestionMark = strpos($originalUrl,"?");
+	    $replace = ($posQuestionMark === false);
+	    if ($posQuestionMark > $posFirstSemiColon) 
+	    {
+	    	$originalUrl = substr_replace($originalUrl,";",$posQuestionMark,1);
+	    	$replace = true;
+	    }
+	    if($replace) 
+	    { 
+	    	$originalUrl = substr_replace($originalUrl,"?",strpos($originalUrl,";"),1);
+	    	$originalUrl = str_replace(";","&",$originalUrl);
+	    }
+	    return $originalUrl;
+	}
+	
+	static public function normalizeUrl($url)
+	{
+		$url = Piwik_Common::unsanitizeInputValue($url);
+		$url = self::cleanupString($url);
+		$url = self::convertMatrixUrl($url);
+		return $url;
+	}
+
 	static public function excludeQueryParametersFromUrl($originalUrl, $idSite)
 	{
 		$website = Piwik_Common::getCacheWebsiteAttributes( $idSite );
-		$originalUrl = Piwik_Common::unsanitizeInputValue($originalUrl);
-		$originalUrl = self::cleanupString($originalUrl);
+		$originalUrl = self::normalizeUrl($originalUrl);
 		$parsedUrl = @parse_url($originalUrl);
 		if(empty($parsedUrl['query']))
 		{
@@ -159,6 +206,9 @@ class Piwik_Tracker_Action implements Piwik_Tracker_Action_Interface
 		$separator = '&';
 		foreach($queryParameters as $name => $value)
 		{
+			// decode encoded square brackets
+            $name = str_replace(array('%5B','%5D'),array('[',']'),$name);
+
 			if(!in_array(strtolower($name), $parametersToExclude))
 			{
 				if (is_array($value))

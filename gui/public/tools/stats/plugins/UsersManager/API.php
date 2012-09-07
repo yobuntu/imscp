@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: API.php 6243 2012-05-02 22:08:23Z SteveG $
+ * @version $Id: API.php 6755 2012-08-14 10:56:53Z matt $
  * 
  * @category Piwik_Plugins
  * @package Piwik_UsersManager

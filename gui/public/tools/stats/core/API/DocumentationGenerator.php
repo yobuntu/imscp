@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: DocumentationGenerator.php 6412 2012-05-31 03:24:39Z matt $
+ * @version $Id: DocumentationGenerator.php 6524 2012-07-20 04:50:33Z capedfuzz $
  * 
  * @category Piwik
  * @package Piwik
@@ -192,15 +192,15 @@ class Piwik_API_DocumentationGenerator
 		$aParameters['flat'] = false;
 		$aParameters['include_aggregate_rows'] = false;
         $aParameters['filter_truncate'] = false;
-		
+        
 		$moduleName = Piwik_API_Proxy::getInstance()->getModuleNameFromClassName($class);
-		$urlExample = '?module=API&method='.$moduleName.'.'.$methodName.'&';
-		foreach($aParameters as $nameVariable=> $defaultValue)
+		$aParameters = array_merge(array('module' => 'API', 'method' => $moduleName.'.'.$methodName), $aParameters);
+		
+		foreach($aParameters as $nameVariable => &$defaultValue)
 		{
 			if(isset($knowExampleDefaultParametersValues[$nameVariable]))
 			{
-				$exampleValue = $knowExampleDefaultParametersValues[$nameVariable];
-				$urlExample .= $nameVariable . '=' . $exampleValue . '&';
+				$defaultValue = $knowExampleDefaultParametersValues[$nameVariable];
 			}
 			// if there isn't a default value for a given parameter, 
 			// we need a 'know default value' or we can't generate the link
@@ -209,7 +209,7 @@ class Piwik_API_DocumentationGenerator
 				return false;
 			}
 		}
-		return substr($urlExample,0,-1);
+		return '?'.Piwik_Url::getQueryStringFromParameters($aParameters);
 	}
 	
 	
