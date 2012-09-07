@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: FrontController.php 6417 2012-05-31 05:34:08Z matt $
+ * @version $Id: FrontController.php 6745 2012-08-14 04:20:51Z matt $
  * 
  * @category Piwik
  * @package Piwik
@@ -193,6 +193,27 @@ class Piwik_FrontController
 	}
 
 	/**
+	 * Loads the config file and assign to the global registry
+	 * This is overriden in tests to ensure test config file is used
+	 */
+	protected function createConfigObject()
+	{
+		$exceptionToThrow = false;
+		try {
+			Piwik::createConfigObject();
+		} catch(Exception $e) {
+			Piwik_PostEvent('FrontController.NoConfigurationFile', $e, $info = array(), $pending = true);
+			$exceptionToThrow = $e;
+		}
+		return $exceptionToThrow;
+	}
+	
+	protected function createAccessObject()
+	{
+		Piwik::createAccessObject();
+	}
+	
+	/**
 	 * Must be called before dispatch()
 	 * - checks that directories are writable,
 	 * - loads the configuration file,
@@ -230,14 +251,7 @@ class Piwik_FrontController
 
 			Piwik_Translate::getInstance()->loadEnglishTranslation();
 
-			$exceptionToThrow = false;
-
-			try {
-				Piwik::createConfigObject();
-			} catch(Exception $e) {
-				Piwik_PostEvent('FrontController.NoConfigurationFile', $e, $info = array(), $pending = true);
-				$exceptionToThrow = $e;
-			}
+			$exceptionToThrow = $this->createConfigObject();
 
 			if(Piwik_Session::isFileBasedSessions())
 			{
@@ -271,8 +285,7 @@ class Piwik_FrontController
 				$url = str_replace("http://", "https://", $url);
 				Piwik_Url::redirectToUrl($url);
 			}
-				
-				
+
 			$pluginsManager = Piwik_PluginsManager::getInstance();
 			$pluginsToLoad = Piwik_Config::getInstance()->Plugins['Plugins'];
 			$pluginsManager->loadPlugins( $pluginsToLoad );
@@ -296,7 +309,7 @@ class Piwik_FrontController
 			Piwik::createLogObject();
 			
 			// creating the access object, so that core/Updates/* can enforce Super User and use some APIs
-			Piwik::createAccessObject();
+			$this->createAccessObject();
 			Piwik_PostEvent('FrontController.dispatchCoreAndPluginUpdatesScreen');
 
 			Piwik_PluginsManager::getInstance()->installLoadedPlugins();
@@ -355,7 +368,7 @@ class Piwik_FrontController_PluginDeactivatedException extends Exception
 {
 	function __construct($module)
 	{
-		parent::__construct("The plugin '$module' is not activated. You can activate the plugin on the 'Plugins admin' page.");
+		parent::__construct("The plugin $module is not enabled. You can activate the plugin on Settings > Plugins page in Piwik.");
 	}
 }
 

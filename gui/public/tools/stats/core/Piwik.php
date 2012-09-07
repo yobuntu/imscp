@@ -3,7 +3,7 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Piwik.php 6443 2012-06-01 15:37:28Z matt $
+ * @version $Id: Piwik.php 6727 2012-08-13 20:26:46Z JulienM $
  *
  * @category Piwik
  * @package Piwik
@@ -25,9 +25,9 @@ class Piwik
 	const CLASSES_PREFIX = 'Piwik_';
 	const COMPRESSED_FILE_LOCATION = '/tmp/assets/';
 
-	/*
+	/**
 	 * Piwik periods
-	 * @var arrray
+	 * @var array
 	 */
 	public static $idPeriods =  array(
 			'day'	=> 1,
@@ -1428,7 +1428,7 @@ class Piwik
 			return Piwik::getPrettyTimeFromSeconds($value, $timeAsSentence);
 		}
 		// Add revenue symbol to revenues
-		if(strpos($columnName, 'revenue') !== false)
+		if(strpos($columnName, 'revenue') !== false && strpos($columnName, 'evolution') === false)
 		{
 			return Piwik::getPrettyMoney($value, $idSite, $htmlAllowed);
 		}
@@ -1684,6 +1684,17 @@ class Piwik
 			return $user['email'];
 		}
 		return self::getSuperUserEmail();
+	}
+
+	/**
+	 * Returns Super User login
+	 *
+	 * @return string
+	 */
+	static public function getSuperUserLogin()
+	{
+		$superuser = Piwik_Config::getInstance()->superuser;
+		return $superuser['login'];
 	}
 
 	/**
@@ -2345,6 +2356,25 @@ class Piwik
 	{
 		return Piwik_Db_Schema::getInstance()->getTablesInstalled($forceReload);
 	}
+	
+	/**
+	 * Returns all table names archive_*
+	 * 
+	 * @return array 
+	 */
+	static public function getTablesArchivesInstalled()
+	{
+		$archiveTables = array();
+		$tables = Piwik::getTablesInstalled();
+		foreach($tables as $table)
+		{
+			if(strpos($table, 'archive_') !== false)
+			{
+				$archiveTables[] = $table;
+			}
+		}
+		return $archiveTables;
+	}
 
 	/**
 	 * Batch insert into table from CSV (or other delimited) file.
@@ -2546,26 +2576,7 @@ class Piwik
 	static public function getArchiveProcessingLock($idsite, $period, $segment)
 	{
 		$lockName = self::getArchiveProcessingLockName($idsite, $period, $segment);
-		/*
-		 * the server (e.g., shared hosting) may have a low wait timeout
-		 * so instead of a single GET_LOCK() with a 30 second timeout,
-		 * we use a 1 second timeout and loop, to avoid losing our MySQL
-		 * connection
-		 */
-		$sql = 'SELECT GET_LOCK(?, 1)';
-
-		$db = Zend_Registry::get('db');
-
-		$maxRetries = 30;
-		while ($maxRetries > 0)
-		{
-			if ($db->fetchOne($sql, array($lockName)) == '1')
-			{
-				return true;
-			}
-			$maxRetries--;
-		}
-		return false;
+		return Piwik_GetDbLock($lockName, $maxRetries = 30);
 	}
 
 	/**
@@ -2579,9 +2590,40 @@ class Piwik
 	static public function releaseArchiveProcessingLock($idsite, $period, $segment)
 	{
 		$lockName = self::getArchiveProcessingLockName($idsite, $period, $segment);
-		$sql = 'SELECT RELEASE_LOCK(?)';
-
-		$db = Zend_Registry::get('db');
-		return $db->fetchOne($sql, array($lockName)) == '1';
+		return Piwik_ReleaseDbLock($lockName);
+	}
+	
+	/**
+	 * Cached result of isLockprivilegeGranted function.
+	 * 
+	 * Public so tests can simulate the situation where the lock tables privilege isn't granted.
+	 * 
+	 * @var bool
+	 */
+	static public $lockPrivilegeGranted = null;
+	
+	/**
+	 * Checks whether the database user is allowed to lock tables.
+	 * 
+	 * @return bool
+	 */
+	static public function isLockPrivilegeGranted()
+	{
+		if (is_null(self::$lockPrivilegeGranted))
+		{
+			try
+			{
+				Piwik_LockTables(Piwik_Common::prefixTable('log_visit'));
+				Piwik_UnlockAllTables();
+				
+				self::$lockPrivilegeGranted = true;
+			}
+			catch (Exception $ex)
+			{
+				self::$lockPrivilegeGranted = false;
+			}
+		}
+		
+		return self::$lockPrivilegeGranted;
 	}
 }

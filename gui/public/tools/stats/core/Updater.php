@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Updater.php 6300 2012-05-23 21:19:25Z SteveG $
+ * @version $Id: Updater.php 6743 2012-08-14 03:30:08Z matt $
  * 
  * @category Piwik
  * @package Piwik
@@ -265,7 +265,8 @@ class Piwik_Updater
 			{
 				if($name === 'core')
 				{
-					$currentVersion = '0.2.9';
+					// This should not happen
+					$currentVersion = Piwik_Version::VERSION;
 				}
 				else
 				{

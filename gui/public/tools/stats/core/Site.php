@@ -4,7 +4,7 @@
  * 
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Site.php 6325 2012-05-26 21:08:06Z SteveG $
+ * @version $Id: Site.php 6611 2012-07-31 07:56:34Z matt $
  * 
  * @category Piwik
  * @package Piwik
@@ -118,7 +118,7 @@ class Piwik_Site
 	{
 		if(!isset(self::$infoSites[$this->id][$name]))
 		{
-			throw new Exception('The requested website id = '.(int)$this->id.' couldn\'t be found');
+			throw new Exception('The requested website id = '.(int)$this->id.' (or its property '.$name.') couldn\'t be found');
 		}
 		return self::$infoSites[$this->id][$name];
 	}

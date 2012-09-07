@@ -4,7 +4,7 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- * @version $Id: Controller.php 6371 2012-05-29 09:13:39Z capedfuzz $
+ * @version $Id: Controller.php 6515 2012-07-19 00:26:43Z matt $
  *
  * @category Piwik_Plugins
  * @package Piwik_Installation
@@ -848,7 +848,7 @@ class Piwik_Installation_Controller extends Piwik_Controller
 		$infos['protocol'] = Piwik_ProxyHeaders::getProtocolInformation();
 		if(!Piwik::isHttps() && $infos['protocol'] !== null)
 		{
-			$infos['general_infos']['secure_protocol'] = '1';
+			$infos['general_infos']['assume_secure_protocol'] = '1';
 		}
 		if(count($headers = Piwik_ProxyHeaders::getProxyClientHeaders()) > 0)
 		{
