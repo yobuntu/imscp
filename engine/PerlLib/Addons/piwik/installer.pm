@@ -265,7 +265,11 @@ error("Debug1");
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		## Inserting new data into the database
+=======
+		## GRANT database permsions to piwik user
+>>>>>>> piwik integration part 6, database and crontab creation
 		$err = $database->doQuery(
 			'dummy',
 			"
@@ -298,6 +302,23 @@ error("Debug2");
 			error("$err");
 			return 1;
 		}
+		## CREATE the database and load the default schema
+		##TODO
+
+                ## INSERT the default anonymous user, required start
+                $err = $database->doQuery(
+                        'dummy',
+                        "
+                                REPLACE INTO `".$main::imscpConfig{DATABASE_NAME}.'_piwik`'.".`user` 
+                                (`login` ,`password` ,`alias` ,`email` ,`token_auth` ,`date_registered`)
+				VALUES ('anonymous', '', '', '', '', NOW( ));
+                        "
+                );
+                if (ref $err ne 'HASH'){
+                        error("$err");
+                        return 1;
+                }
+
 	}
 <<<<<<< HEAD
 <<<<<<< HEAD

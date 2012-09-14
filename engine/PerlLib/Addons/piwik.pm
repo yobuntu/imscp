@@ -61,4 +61,59 @@ sub install{
 	$rs;
 }
 
+sub addDmn{
+
+        my $self        = shift;
+        my $data        = shift;
+        my $rs          = 0;
+
+        local $Data::Dumper::Terse = 1;
+        debug("Data: ". (Dumper $data));
+
+        my $errmsg = {
+                'DMN_NAME'      => 'You must supply domain name!',
+        };
+
+        foreach(keys %{$errmsg}){
+                error("$errmsg->{$_}") unless $data->{$_};
+                return 1 unless $data->{$_};
+        }
+
+        if($main::imscpConfig{STATS_SERVER} =~ m/piwik/i){
+                $rs |= $self->addPiwikCron($data)
+        }
+        $rs;
+}
+
+
+sub addPiwikCron{
+
+        use iMSCP::File;
+        use iMSCP::Templator;
+        use Servers::cron;
+
+        my $self        = shift;
+        my $data        = shift;
+        my $rs          = 0;
+
+	#FIXME, we are programming the cron as root so it can read the logs
+	# is there a more appropiete user?
+        my $cron = Servers::cron->factory();
+        $rs = $cron->addTask({
+                MINUTE  => int(rand(61)),       #random number between 0..60
+                HOUR    => int(rand(6)),        #random number between 0..5
+                DAY             => '*',
+                MONTH   => '*',
+                DWEEK   => '*',
+                USER    => 'root',
+		COMMAND =>	"python /var/www/imscp/gui/public/tools/stats/misc/log-analytics/import_logs.py ".
+				"--url={BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/tools/stats   --add-sites-new-hosts ".
+				"--enable-http-errors --enable-http-redirects --enable-static --enable-bots ".
+				"/var/log/apache2/{DMN_NAME}-combined.log --show-progress --log-hostname={DMN_NAME}",
+                TASKID  => "PIWIK:$data->{DMN_NAME}"
+        });
+
+        $rs;
+}
+
 1;
