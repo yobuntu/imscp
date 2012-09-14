@@ -223,7 +223,7 @@ sub setupDB{
 			error("$err");
 			return 1;
 		}
-		## Inserting new data into the database
+		## GRANT database permsions to piwik user
 		$err = $database->doQuery(
 			'dummy',
 			"
@@ -239,6 +239,23 @@ sub setupDB{
 			error("$err");
 			return 1;
 		}
+		## CREATE the database and load the default schema
+		##TODO
+
+                ## INSERT the default anonymous user, required start
+                $err = $database->doQuery(
+                        'dummy',
+                        "
+                                REPLACE INTO `".$main::imscpConfig{DATABASE_NAME}.'_piwik`'.".`user` 
+                                (`login` ,`password` ,`alias` ,`email` ,`token_auth` ,`date_registered`)
+				VALUES ('anonymous', '', '', '', '', NOW( ));
+                        "
+                );
+                if (ref $err ne 'HASH'){
+                        error("$err");
+                        return 1;
+                }
+
 	}
 	0;
 }
