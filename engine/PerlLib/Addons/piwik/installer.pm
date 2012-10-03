@@ -61,11 +61,7 @@ sub install{
 	$self->{user} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningUser() : $main::imscpConfig{ROOT_USER};
 	$self->{group} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningGroup() : $main::imscpConfig{ROOT_GROUP};
 
-	for ((
-		"$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php",
-	)) {
-		$rs |= $self->bkpConfFile($_);
-	}
+	$rs |= $self->bkpConfFile("$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php");
 
 	$rs |= $self->chmodDirs($_);
 	$rs |= $self->setupDB();
