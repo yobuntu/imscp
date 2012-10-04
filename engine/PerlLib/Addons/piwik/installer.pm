@@ -30,6 +30,7 @@ use strict;
 use warnings;
 use Digest::MD5 qw(md5_hex);
 use iMSCP::Debug;
+use Data::Dumper;
 
 use vars qw/@ISA/;
 
@@ -114,26 +115,132 @@ sub bkpConfFile{
 	0;
 }
 
+################################################################################
+# Creating piwik database
+#
+# @return int 0 on success, other on failure
+#
+sub createDB{
+	my $dbName = shift;
+	my $dbType = shift;
+
+	use iMSCP::Database;
+
+        my $database = iMSCP::Database->new(db => $dbType)->factory();
+        $database->set('DATABASE_NAME', '');
+        my $err = $database->connect();
+        return $err if $err;
+
+        my $qdbName = $database->quoteIdentifier($dbName);
+        $err = $database->doQuery('dummy', "CREATE DATABASE ".$self::piwikConfig{'DATABASE_NAME'}." CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+
+        $database->set('DATABASE_NAME', $self::piwikConfig{'DATABASE_NAME'});
+        $err = $database->connect();
+        return $err if $err;
+
+        $err = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/piwik.sql");
+        return $err if ($err);
+
+	## We ensure that new data doesn't exist in database
+	$err = $database->doQuery(
+		'dummy',"
+			DELETE FROM `mysql`.`tables_priv`
+			WHERE `Host` = ?
+			AND `Db` = 'mysql' AND `User` = ?;
+		", $main::imscpConfig{'DATABASE_HOST'}, $self::piwikConfig{'DATABASE_USER'}
+	);
+	if (ref $err ne 'HASH'){
+		error("$err");
+		return 1;
+	}
+
+	$err = $database->doQuery(
+		'dummy',"
+			DELETE FROM `mysql`.`user`
+			WHERE `Host` = ?
+			AND `User` = ?;
+		", $main::imscpConfig{'DATABASE_HOST'}, $self::piwikConfig{'DATABASE_USER'}
+	);
+	if (ref $err ne 'HASH'){
+		error("$err");
+		return 1;
+	}
+
+	$err = $database->doQuery(
+		'dummy',"
+			DELETE FROM `mysql`.`columns_priv`
+			WHERE `Host` = ?
+			AND `User` = ?;
+		", $main::imscpConfig{'DATABASE_HOST'}, $self::piwikConfig{'DATABASE_USER'}
+	);
+	if (ref $err ne 'HASH'){
+		error("$err");
+		return 1;
+	}
+	# Flushing privileges
+	$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	if (ref $err ne 'HASH'){
+		error("$err");
+		return 1;
+	}
+	## GRANT database permsions to piwik user
+	$err = $database->doQuery(
+		'dummy',
+		"
+			GRANT ALL PRIVILEGES ON `".$main::imscpConfig{DATABASE_NAME}.'_piwik'."`.*
+			TO ?@?
+			IDENTIFIED BY ?;
+		",
+		$self::piwikConfig{'DATABASE_USER'},
+		$main::imscpConfig{'DATABASE_HOST'},
+		$self::piwikConfig{'DATABASE_PASSWORD'}
+	);
+	if (ref $err ne 'HASH'){
+		error("$err");
+		return 1;
+	}
+	## CREATE the database and load the default schema
+	##TODO
+
+	## INSERT the default anonymous user, required start
+	$err = $database->doQuery(
+		'dummy',
+		"
+			REPLACE INTO `".$main::imscpConfig{DATABASE_NAME}.'_piwik`'.".`user` 
+			(`login` ,`password` ,`alias` ,`email` ,`token_auth` ,`date_registered`)
+			VALUES ('anonymous', '', '', '', '', NOW( ));
+		"
+	);
+	if (ref $err ne 'HASH'){
+		error("$err");
+		return 1;
+	}
+}
+
 sub setupDB{
 
 	my $self		= shift;
 	my $connData;
 
+	#recover the piwik db username and password from config or ask for a new one
 	if(!$self->check_sql_connection
 		(
 			$self::piwikConfig{'DATABASE_USER'} || '',
-			$self::piwikConfig{'DATABASE_PASSWORD'} || ''
+			$self::piwikConfig{'DATABASE_PASSWORD'} || '',
+			$self::piwikConfig{'DATABASE_NAME'} || ''
 		)
 	){
 		$connData = 'yes';
 	}elsif($self::piwikOldConfig{'DATABASE_USER'} && !$self->check_sql_connection
 		(
 			$self::piwikOldConfig{'DATABASE_USER'} || '',
-			$self::piwikOldConfig{'DATABASE_PASSWORD'} || ''
+			$self::piwikOldConfig{'DATABASE_PASSWORD'} || '',
+			$self::piwikConfig{'DATABASE_NAME'} || ''
 		)
 	){
 		$self::piwikConfig{'DATABASE_USER'}		= $self::piwikOldConfig{'DATABASE_USER'};
 		$self::piwikConfig{'DATABASE_PASSWORD'}	= $self::piwikOldConfig{'DATABASE_PASSWORD'};
+		$self::piwikConfig{'DATABASE_NAME'}	= $self::piwikOldConfig{'DATABASE_NAME'};
 		$connData = 'yes';
 	} else {
 		my $dbUser = 'piwik_user';
@@ -160,6 +267,7 @@ sub setupDB{
 		iMSCP::Dialog->factory()->set('cancel-label');
 		$self::piwikConfig{'DATABASE_USER'}		= $dbUser;
 		$self::piwikConfig{'DATABASE_PASSWORD'}	= $dbPass;
+		$self::piwikConfig{'DATABASE_NAME'}	= $main::imscpConfig{DATABASE_NAME}.'_piwik';
 	}
 
 	#restore db connection
@@ -173,85 +281,38 @@ sub setupDB{
 		error("$err");
 		return 1;
 	}
-
+	
 	if(!$connData) {
 		my $database = iMSCP::Database->new(db => $main::imscpConfig{DATABASE_TYPE})->factory();
 
-		## We ensure that new data doesn't exist in database
+		## Is the database already created?
 		$err = $database->doQuery(
 			'dummy',"
-				DELETE FROM `mysql`.`tables_priv`
-				WHERE `Host` = ?
-				AND `Db` = 'mysql' AND `User` = ?;
-			", $main::imscpConfig{'DATABASE_HOST'}, $self::piwikConfig{'DATABASE_USER'}
-		);
-		if (ref $err ne 'HASH'){
-			error("$err");
-			return 1;
-		}
-
-		$err = $database->doQuery(
-			'dummy',"
-				DELETE FROM `mysql`.`user`
-				WHERE `Host` = ?
-				AND `User` = ?;
-			", $main::imscpConfig{'DATABASE_HOST'}, $self::piwikConfig{'DATABASE_USER'}
-		);
-		if (ref $err ne 'HASH'){
-			error("$err");
-			return 1;
-		}
-
-		$err = $database->doQuery(
-			'dummy',"
-				DELETE FROM `mysql`.`columns_priv`
-				WHERE `Host` = ?
-				AND `User` = ?;
-			", $main::imscpConfig{'DATABASE_HOST'}, $self::piwikConfig{'DATABASE_USER'}
-		);
-		if (ref $err ne 'HASH'){
-			error("$err");
-			return 1;
-		}
-		# Flushing privileges
-		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
-		if (ref $err ne 'HASH'){
-			error("$err");
-			return 1;
-		}
-		## GRANT database permsions to piwik user
-		$err = $database->doQuery(
-			'dummy',
+				SHOW DATABASES LIKE '".$main::imscpConfig{DATABASE_NAME}.'_piwik'."'
 			"
-				GRANT ALL PRIVILEGES ON `".$main::imscpConfig{DATABASE_NAME}.'_piwik'."`.*
-				TO ?@?
-				IDENTIFIED BY ?;
-			",
-			$self::piwikConfig{'DATABASE_USER'},
-			$main::imscpConfig{'DATABASE_HOST'},
-			$self::piwikConfig{'DATABASE_PASSWORD'}
 		);
 		if (ref $err ne 'HASH'){
 			error("$err");
 			return 1;
+		} else {
+			local $Data::Dumper::Terse = 1;
+			debug("Data: ". (Dumper $err));
+			if ($err) {
+				#piwik database not present, create
+				debug("Piwik was not present, installing: ". (Dumper $err));
+				if (my $err = createDB($self::piwikConfig{'DATABASE_NAME'}, $main::imscpConfig{'DATABASE_TYPE'})){
+					error("$err");
+					return 1;
+				}
+			} else {
+				#piwik database present, upgrade
+				debug("Piwik present present, updating: ". (Dumper $err));
+				if (my $err = updateDB($self::piwikConfig{'DATABASE_NAME'})){
+					error("$err");
+					return 1;
+				}
+			}
 		}
-		## CREATE the database and load the default schema
-		##TODO
-
-                ## INSERT the default anonymous user, required start
-                $err = $database->doQuery(
-                        'dummy',
-                        "
-                                REPLACE INTO `".$main::imscpConfig{DATABASE_NAME}.'_piwik`'.".`user` 
-                                (`login` ,`password` ,`alias` ,`email` ,`token_auth` ,`date_registered`)
-				VALUES ('anonymous', '', '', '', '', NOW( ));
-                        "
-                );
-                if (ref $err ne 'HASH'){
-                        error("$err");
-                        return 1;
-                }
-
 	}
 	0;
 }
@@ -266,6 +327,35 @@ sub check_sql_connection{
 	$database->set('DATABASE_PASSWORD',	$dbPass);
 
 	return $database->connect();
+}
+
+sub importSQLFile{
+	my $database	= shift;
+	my $file		= shift;
+
+	use iMSCP::File;
+	use iMSCP::Dialog;
+	use iMSCP::Stepper;
+
+	my $content = iMSCP::File->new(filename => $file)->get();
+	$content =~ s/^(--[^\n]{0,})?\n//mg;
+	my @queries = (split /;\n/, $content);
+
+	my $title = "Executing ".@queries." queries:";
+
+	startDetail();
+
+	my $step = 1;
+	for (@queries){
+		my $err = $database->doQuery('dummy', $_);
+		return $err if (ref $err ne 'HASH');
+		my $msg = $queries[$step] ? "$title\n$queries[$step]" : $title;
+		step('', $msg, scalar @queries, $step);
+		$step++;
+	}
+
+	endDetail();
+	0;
 }
 
 sub superuserpw{

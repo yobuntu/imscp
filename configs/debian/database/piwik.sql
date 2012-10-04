@@ -31,10 +31,6 @@
 --
 -- --------------------------------------------------------
 
-CREATE DATABASE IF NOT EXISTS `{PIWIK_DATABASE}` CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-USE `{PIWIK_DATABASE}`;
-
 --
 -- Structure for table `access`
 --
