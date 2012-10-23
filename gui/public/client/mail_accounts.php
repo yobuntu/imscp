@@ -66,15 +66,12 @@ function formatBytes($bytes, $precision = 0) {
 	return round($bytes, $precision) . ' ' . $units[$pow];
 }
 
-
-
-
 // Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('mail')) {
@@ -131,16 +128,15 @@ function gen_user_mail_action($mail_id, $mail_status) {
 }
 
 /**
+ * Generate auto-resonder action links
  *
  * @param iMSCP_pTemplate $tpl pTemplate instance
  * @param int $mail_id
- * @param string $mail_type
  * @param string $mail_status
  * @param int $mail_auto_respond
  * @return void
  */
-function gen_user_mail_auto_respond(
-	$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
+function gen_user_mail_auto_respond($tpl, $mail_id, $mail_status, $mail_auto_respond) {
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -151,20 +147,24 @@ function gen_user_mail_auto_respond(
 				array(
 					'AUTO_RESPOND_DISABLE' => tr('Enable'),
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
-						"mail_autoresponder_enable.php?id=$mail_id",
+						"mail_autoresponder_enable.php?mail_account_id=$mail_id",
 					'AUTO_RESPOND_EDIT' => tr('N/A'),
 					'AUTO_RESPOND_EDIT_SCRIPT' => '#',
-					'AUTO_RESPOND_VIS' => 'inline'));
+					'AUTO_RESPOND_VIS' => 'inline'
+				)
+			);
 		} else {
 			$tpl->assign(
 				array(
 					'AUTO_RESPOND_DISABLE' => tr('Disable'),
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
-						"mail_autoresponder_disable.php?id=$mail_id",
+						"mail_autoresponder_disable.php?mail_account_id=$mail_id",
 					'AUTO_RESPOND_EDIT' => tr('Edit'),
 					'AUTO_RESPOND_EDIT_SCRIPT' =>
-						"mail_autoresponder_edit.php?id=$mail_id",
-					'AUTO_RESPOND_VIS' => 'inline'));
+						"mail_autoresponder_edit.php?mail_account_id=$mail_id",
+					'AUTO_RESPOND_VIS' => 'inline'
+				)
+			);
 		}
 	} else {
 		$tpl->assign(
@@ -173,7 +173,9 @@ function gen_user_mail_auto_respond(
 				'AUTO_RESPOND_DISABLE_SCRIPT' => '#',
 				'AUTO_RESPOND_EDIT' => tr('N/A'),
 				'AUTO_RESPOND_EDIT_SCRIPT' => '#',
-				'AUTO_RESPOND_VIS' => 'inline'));
+				'AUTO_RESPOND_VIS' => 'inline'
+			)
+		);
 	}
 }
 
@@ -317,8 +319,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			);
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
 			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
@@ -335,7 +336,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
  *
  * @param iMSCP_pTemplate $tpl reference to the template object
  * @param int $dmn_id domain name id
- * @param strinc $dmn_name domain name
+ * @param string $dmn_name domain name
  * @return int number of subdomain mails addresses
  */
 function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
@@ -391,8 +392,12 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 	} else {
 		while (!$rs->EOF) {
 			list(
-				$mail_delete, $mail_delete_script,
-				$mail_edit, $mail_edit_script
+				$mail_delete,
+				$mail_delete_script,
+				$mail_edit,
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
@@ -405,18 +410,57 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
+			$is_mailbox = 0;
+
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-						$mail_type .= ': ' . str_replace(
-							array("\r\n", "\n", "\r"),
-							", ",
+					$mail_type .= ': ' .
+						str_replace(
+							array("\r\n", "\n", "\r"), ", ",
 							$rs->fields['mail_forward']
 						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
+			}
+
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_sub_name.'.'.$show_dmn_name;
+				$quota_query = "SELECT
+						`bytes`,
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -429,12 +473,15 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']);
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
+			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
@@ -509,27 +556,73 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 	} else {
 		while (!$rs->EOF) {
 			list(
-				$mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script
+				$mail_delete,
+				$mail_delete_script,
+				$mail_edit,
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
 			$show_alssub_name = decode_idna($rs->fields['alssub_name']);
+
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
+
+			$is_mailbox = 0;
 
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-					$mail_type .= ': ' . str_replace(
-						array("\r\n", "\n", "\r"), ", ",
-						$rs->fields['mail_forward']
-					);
+					$mail_type .= ': ' .
+						str_replace(
+							array("\r\n", "\n", "\r"), ", ",
+							$rs->fields['mail_forward']
+						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
+			}
+
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_alssub_name;
+				$quota_query = "SELECT
+						`bytes`,
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -541,12 +634,14 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
 			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
@@ -560,7 +655,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 /**
  * Must be documented
  *
- * @param pTtempalte $tpl reference to pTemplate object
+ * @param iMSCP_pTemplate $tpl reference to pTemplate object
  * @param int $dmn_id domain name id;
  * @param string $dmn_name domain name
  * @return int number of domain alias mails addresses
@@ -614,30 +709,73 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 		while (!$rs->EOF) {
 
 			list(
-				$mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script
+				$mail_delete,
+				$mail_delete_script,
+				$mail_edit,
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
-			// Unused variable
-			// $show_dmn_name = decode_idna($dmn_name);
 			$show_als_name = decode_idna($rs->fields['als_name']);
+
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
+
+			$is_mailbox = 0;
 
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-					 $mail_type .= ': ' . str_replace(
-					 	array("\r\n", "\n", "\r"),
-						", ",
-						$rs->fields['mail_forward']
-					 );
+					$mail_type .= ': ' .
+						str_replace(
+							array("\r\n", "\n", "\r"), ", ",
+							$rs->fields['mail_forward']
+						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
+			}
+
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_als_name;
+				$quota_query = "SELECT
+						`bytes`,
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -649,12 +787,15 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
-				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']);
+				$tpl, $rs->fields['mail_id'], $rs->fields['status'], $rs->fields['mail_auto_respond']
+			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 			$rs->moveNext();
@@ -678,8 +819,10 @@ function gen_page_lists($tpl, $user_id) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list($domainId,$dmn_name,,,,,,,$dmn_mailacc_limit
-	) = get_domain_default_props($user_id);
+    $domainProps = get_domain_default_props($user_id);
+    $domainId = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
 
 	$dmn_mails = gen_page_dmn_mail_list($tpl, $domainId, $dmn_name);
 	$sub_mails = gen_page_sub_mail_list($tpl, $domainId, $dmn_name);
