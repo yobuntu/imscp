@@ -217,32 +217,39 @@ sub createDB{
 	}
 }
 
+
 sub setupDB{
 
 	my $self		= shift;
 	my $connData;
 
 	#recover the piwik db username and password from config or ask for a new one
-	if(!$self->check_sql_connection
+
+	# First, we try to to connect to to the piwik db with data from imscp.conf. If connection is ok, we does an update
+	if(!$self->getDbConnection
 		(
 			$self::piwikConfig{'DATABASE_USER'} || '',
 			$self::piwikConfig{'DATABASE_PASSWORD'} || '',
 			$self::piwikConfig{'DATABASE_NAME'} || ''
 		)
 	){
-		$connData = 'yes';
-	}elsif($self::piwikOldConfig{'DATABASE_USER'} && !$self->check_sql_connection
+		debug('Piwik db connect with data from imscp.conf OK');
+		$connData = 'yes'; 
+	# If connect fail, we try to connect with data from imscp.old.conf file. If connection is ok, we does an update
+	}elsif($self::piwikOldConfig{'DATABASE_USER'} && !$self->getDbConnection
 		(
 			$self::piwikOldConfig{'DATABASE_USER'} || '',
 			$self::piwikOldConfig{'DATABASE_PASSWORD'} || '',
 			$self::piwikConfig{'DATABASE_NAME'} || ''
 		)
 	){
-		$self::piwikConfig{'DATABASE_USER'}		= $self::piwikOldConfig{'DATABASE_USER'};
+		$self::piwikConfig{'DATABASE_USER'}	= $self::piwikOldConfig{'DATABASE_USER'};
 		$self::piwikConfig{'DATABASE_PASSWORD'}	= $self::piwikOldConfig{'DATABASE_PASSWORD'};
 		$self::piwikConfig{'DATABASE_NAME'}	= $self::piwikOldConfig{'DATABASE_NAME'};
+		debug('Piwik db connect with data from imscp.old.conf OK');
 		$connData = 'yes';
-	} else {
+	} else { # All piwik db connection attemps failed, so we must create piwik db
+		debug('Piwik db connect failed - New db creation');
 		my $dbUser = 'piwik_user';
 
 		do{
@@ -265,14 +272,19 @@ sub setupDB{
 		$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
 		iMSCP::Dialog->factory()->msgbox("Your password is '".$dbPass."' (we have stripped not allowed chars)");
 		iMSCP::Dialog->factory()->set('cancel-label');
+
+		debug('Piwik - Setup db data');
 		$self::piwikConfig{'DATABASE_USER'}		= $dbUser;
 		$self::piwikConfig{'DATABASE_PASSWORD'}	= $dbPass;
 		$self::piwikConfig{'DATABASE_NAME'}	= $main::imscpConfig{DATABASE_NAME}.'_piwik';
 	}
 
+
+
 	#restore db connection
+	debug('Restore db connection');
 	my $crypt = iMSCP::Crypt->new();
-	my $err = $self->check_sql_connection(
+	my $err = $self->getDbConnection(
 			$main::imscpConfig{'DATABASE_USER'},
 			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
 	);
@@ -283,14 +295,15 @@ sub setupDB{
 	}
 	
 	if(!$connData) {
+		debug('Piwik - no db connection so we create new one');
 		my $database = iMSCP::Database->new(db => $main::imscpConfig{DATABASE_TYPE})->factory();
 
 		## Is the database already created?
-		$err = $database->doQuery(
-			'dummy',"
-				SHOW DATABASES LIKE '".$main::imscpConfig{DATABASE_NAME}.'_piwik'."'
-			"
-		);
+		# This query fail ? It's weird but it worlks when called from cli, but not when called from the code
+		# strange
+		$err = $database->doQuery('dummy', "SHOW DATABASES LIKE '".$main::imscpConfig{DATABASE_NAME}.'_piwik'."'");
+		
+
 		if (ref $err ne 'HASH'){
 			error("$err");
 			return 1;
@@ -317,14 +330,15 @@ sub setupDB{
 	0;
 }
 
-sub check_sql_connection{
+sub getDbConnection{
 
 	use iMSCP::Database;
 
-	my ($self, $dbUser, $dbPass) = (@_);
+	my ($self, $dbUser, $dbPass, $dbName) = (@_);
 	my $database = iMSCP::Database->new(db => $main::imscpConfig{DATABASE_TYPE})->factory();
 	$database->set('DATABASE_USER',		$dbUser);
 	$database->set('DATABASE_PASSWORD',	$dbPass);
+	$database->set('DATABASE_NAME',	$dbName);
 
 	return $database->connect();
 }
