@@ -30,12 +30,16 @@ use strict;
 use warnings;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Digest::MD5 qw(md5_hex);
 =======
 >>>>>>> piwik integration part 3
 =======
 use Digest::MD5 qw(md5_hex);
 >>>>>>> piwik integration part 4
+=======
+use Digest::MD5 qw(md5_hex);
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 use iMSCP::Debug;
 use Data::Dumper;
 
@@ -70,6 +74,7 @@ sub install{
 	$self->{group} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningGroup() : $main::imscpConfig{ROOT_GROUP};
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	for ((
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -103,6 +108,13 @@ sub install{
 =======
 	$rs |= $self->superuserpw();
 >>>>>>> piwik integration part 4
+=======
+	$rs |= $self->bkpConfFile("$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php");
+
+	$rs |= $self->chmodDirs($_);
+	$rs |= $self->setupDB();
+	$rs |= $self->superuserpw();
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
 
@@ -336,6 +348,7 @@ sub setupDB{
 
 		## Is the database already created?
 <<<<<<< HEAD
+<<<<<<< HEAD
 		$err = $database->doQuery(
 			'dummy',"
 <<<<<<< HEAD
@@ -418,12 +431,17 @@ error("Debug2");
 >>>>>>> Progress separating updates from new installs in piwik installer
 		);
 =======
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 		# This query fail ? It's weird but it worlks when called from cli, but not when called from the code
 		# strange
 		$err = $database->doQuery('dummy', "SHOW DATABASES LIKE '".$main::imscpConfig{DATABASE_NAME}.'_piwik'."'");
 		
 
+<<<<<<< HEAD
 >>>>>>> Several improvement to fix the problem when creating piwik db
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 		if (ref $err ne 'HASH'){
 			error("$err");
 			return 1;
@@ -450,6 +468,7 @@ error("Debug2");
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> piwik integration part 3
@@ -458,6 +477,8 @@ error("Debug3");
 >>>>>>> piwik integration part 4
 =======
 >>>>>>> piwik integration part 5, fixed tmp permissions and database use
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 	0;
 }
 
@@ -477,7 +498,10 @@ sub getDbConnection{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 sub importSQLFile{
 	my $database	= shift;
 	my $file		= shift;
@@ -507,6 +531,7 @@ sub importSQLFile{
 	0;
 }
 
+<<<<<<< HEAD
 >>>>>>> Progress separating updates from new installs in piwik installer
 sub superuserpw{
 
@@ -525,6 +550,9 @@ sub SALT{
 =======
 sub superuserpw{
 >>>>>>> piwik integration part 4
+=======
+sub superuserpw{
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 
 	my $self = shift;
 
@@ -535,6 +563,7 @@ sub superuserpw{
 		my $superuserpw = '';
 		my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
 <<<<<<< HEAD
+<<<<<<< HEAD
 		$SALT .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
 		$self::piwikConfig{'SALT'} = $SALT;
 >>>>>>> piwik integration part 3
@@ -542,6 +571,10 @@ sub superuserpw{
 		$superuserpw .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
 		$self::piwikConfig{'SUPERUSERPW'} = $superuserpw;
 >>>>>>> piwik integration part 4
+=======
+		$superuserpw .= $allowedChars[rand()*($#allowedChars + 1)] for (1..24);
+		$self::piwikConfig{'SUPERUSERPW'} = $superuserpw;
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 	}
 
 	0;
@@ -564,6 +597,7 @@ sub buildConf{
 		DB_PASS				=> $self::piwikConfig{DATABASE_PASSWORD},
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		DB_NAME				=> $main::imscpConfig{DATABASE_NAME}.'_piwik',
 		DEFAULT_ADMIN_ADDRESS		=> $main::imscpConfig{DEFAULT_ADMIN_ADDRESS},
 		SUPERUSERMD5			=> md5_hex($self::piwikConfig{SUPERUSERPW}),
@@ -580,6 +614,8 @@ sub buildConf{
 		'main.ini.php'		=> "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/main.ini.php",
 >>>>>>> piwik integration part 3
 =======
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 		DB_NAME				=> $main::imscpConfig{DATABASE_NAME}.'_piwik',
 		DEFAULT_ADMIN_ADDRESS		=> $main::imscpConfig{DEFAULT_ADMIN_ADDRESS},
 		SUPERUSERMD5			=> md5_hex($self::piwikConfig{SUPERUSERPW}),
@@ -587,7 +623,10 @@ sub buildConf{
 
 	my $cfgFiles = {
 		'config.ini.php'		=> "$main::imscpConfig{'GUI_PUBLIC_DIR'}/$self::piwikConfig{'PIWIK_CONF_DIR'}/config.ini.php",
+<<<<<<< HEAD
 >>>>>>> piwik integration part 4
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 	};
 
 	for (keys %{$cfgFiles}) {
@@ -617,8 +656,11 @@ sub buildConf{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> piwik integration part 5, fixed tmp permissions and database use
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 sub chmodDirs{
 
 	use iMSCP::Dir;
@@ -635,9 +677,12 @@ sub chmodDirs{
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> piwik integration part 3
 =======
 >>>>>>> piwik integration part 5, fixed tmp permissions and database use
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 
 1;

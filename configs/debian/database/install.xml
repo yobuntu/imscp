@@ -28,4 +28,15 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<copy_config>${SYSTEM_CONF}/database/database.sql</copy_config>
 	<copy_config>${SYSTEM_CONF}/database/spamassassin.sql</copy_config>
 	<copy_config>${SYSTEM_CONF}/database/piwik.sql</copy_config>
+<<<<<<< HEAD
+=======
+
+	<copy />
+
+	<create_file />
+
+	<chown_file />
+
+	<chmod_file />
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 </install>

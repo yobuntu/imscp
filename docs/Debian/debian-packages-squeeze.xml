@@ -45,6 +45,7 @@
 			<awstats>awstats</awstats>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			<piwik></piwik>
 =======
 			<piwik>piwik</piwik>
@@ -52,6 +53,9 @@
 =======
 			<piwik></piwik>
 >>>>>>> piwik integration part 5, fixed tmp permissions and database use
+=======
+			<piwik></piwik>
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 		</alternative>
 	</stats>
 	<sql>
@@ -114,7 +118,10 @@
 =======
 	<other>lsb-base</other>
 	<other>lsb-release</other>
+<<<<<<< HEAD
 >>>>>>> piwik integration part 4
+=======
+>>>>>>> da7a452909b42f07108d6ae42227f4842e0330c2
 	<other>chkrootkit</other>
 	<other>dialog</other>
 	<other>diff</other>
