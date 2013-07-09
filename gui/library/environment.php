@@ -40,7 +40,8 @@ iMSCP_Bootstrap::boot();
 $config = iMSCP_Config::getInstance();
 
 // Template root directory
-$config->ROOT_TEMPLATE_PATH = dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME;
+//$config->ROOT_TEMPLATE_PATH = dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME;
+$config->ROOT_TEMPLATE_PATH = dirname(dirname(__FILE__)) . '/themes/2014';
 
 // Set the isp logos path
 $config->ISP_LOGO_PATH = '/ispLogos';
