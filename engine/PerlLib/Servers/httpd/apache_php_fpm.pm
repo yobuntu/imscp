@@ -1650,7 +1650,7 @@ sub stopPhpFpm
 	my ($stdout, $stderr);
 	$rs = execute("$self::phpfpmConfig{'CMD_PHP_FPM'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while stopping PHP FPM') if $rs && ! $stderr;
 	return $rs if $rs;
@@ -1747,7 +1747,7 @@ sub stopApache
 	my ($stdout, $stderr);
 	$rs = execute("$self::apacheConfig{'CMD_HTTPD'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error('Error while stopping Apache') if $rs && ! $stderr;
 	return $rs if $rs;
@@ -1808,11 +1808,11 @@ sub apacheBkpConfFile($$;$$)
 		my $file = iMSCP::File->new('filename' => $filepath);
 		my $filename = fileparse($filepath);
 
-		if($system && ! -f "$self->{'apacheBkpDir'}/$filename.system") {
-			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename.system");
+		if($system && ! -f "$self->{'apacheBkpDir'}/$prefix$filename.system") {
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$prefix$filename.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$filename." . time);
+			$rs = $file->copyFile("$self->{'apacheBkpDir'}/$prefix$filename." . time);
 			return $rs if $rs;
 		}
 	}
@@ -1845,11 +1845,11 @@ sub phpfpmBkpConfFile($$;$$)
 		my $file = iMSCP::File->new('filename' => $filepath);
 		my $filename = fileparse($filepath);
 
-		if($system && ! -f "$self->{'phpfpmBkpDir'}/$filename.system") {
-			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$filename.system");
+		if($system && ! -f "$self->{'phpfpmBkpDir'}/$prefix$filename.system") {
+			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$filename.system");
 			return $rs if $rs;
 		} else {
-			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$filename." . time);
+			$rs = $file->copyFile("$self->{'phpfpmBkpDir'}/$prefix$filename." . time);
 			return $rs if $rs;
 		}
 	}
@@ -2300,6 +2300,7 @@ sub _addFiles($$)
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::httpd::apache_php_fpm->getInstance();
 	my $trafficDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
@@ -2314,7 +2315,7 @@ END
 
 	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove() if -d "$trafficDir.old";
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 =back

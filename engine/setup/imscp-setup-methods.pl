@@ -823,9 +823,10 @@ sub setupAskDefaultAdmin
 
 		if(%{$defaultAdmin}) {
 			$adminLoginName = $$defaultAdmin{'0'}->{'admin_name'};
-			$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
 		}
 	}
+
+	$main::questions{'ADMIN_OLD_LOGIN_NAME'} = $adminLoginName;
 
 	if($main::reconfigure ~~ ['admin', 'all', 'forced'] || $adminLoginName eq '') {
 
@@ -943,8 +944,6 @@ sub setupAskSsl
 	my($dialog) = shift;
 
 	my $sslEnabled = setupGetQuestion('SSL_ENABLED');
-	my $hostname = setupGetQuestion('SERVER_HOSTNAME');
-	my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
 	my $cmdOpenSsl = $main::imscpConfig{'CMD_OPENSSL'};
 	my $openSSL = Modules::openssl->getInstance();
 
@@ -954,8 +953,13 @@ sub setupAskSsl
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$rs = setupSslDialog($dialog);
 		return $rs if $rs;
+
+		$sslEnabled = setupGetQuestion('SSL_ENABLED');
 	} elsif(setupGetQuestion('SSL_ENABLED', 'preseed') eq 'yes') { # We are in preseed mode
-		$main::questions{'SSL_ENABLED'} = $sslEnabled;
+		$sslEnabled = 'yes';
+
+		$main::questions{'BASE_SERVER_VHOST_PREFIX'} =
+			(setupGetQuestion('BASE_SERVER_VHOST_PREFIX', 'preseed') eq 'https://') ? 'https://' : 'http://';
 
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$openSSL->{'new_cert_path'} = $main::imscpConfig{'GUI_CERT_DIR'};
@@ -981,6 +985,9 @@ sub setupAskSsl
 			return $rs if $rs;
 		}
 	} elsif($sslEnabled eq 'yes') {
+		my $hostname = setupGetQuestion('SERVER_HOSTNAME');
+		my $guiCertDir = $main::imscpConfig{'GUI_CERT_DIR'};
+
 		$openSSL->{'openssl_path'} = $cmdOpenSsl;
 		$openSSL->{'key_path'} = "$guiCertDir/$hostname.pem";
 		$openSSL->{'cert_path'} = "$guiCertDir/$hostname.pem";
@@ -991,11 +998,10 @@ sub setupAskSsl
 			$rs = setupSslDialog($dialog);
 			return $rs if $rs;
 		}
-	} else {
-		$main::questions{'SSL_ENABLED'} = 'no';
 	}
 
-	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $main::imscpConfig{'SSL_ENABLED'} eq 'no';
+	$main::questions{'SSL_ENABLED'} = $sslEnabled;
+	$main::questions{'BASE_SERVER_VHOST_PREFIX'} = 'http://' if $sslEnabled eq 'no';
 
 	$rs;
 }
@@ -2102,8 +2108,7 @@ sub setupRebuildCustomerFiles
 		mail_users => 'status',
 		htaccess => 'status',
 		htaccess_groups => 'status',
-		htaccess_users => 'status',
-		plugin => ['plugin_status', "AND `plugin_backend` = 'yes'"]
+		htaccess_users => 'status'
 	};
 
 	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
@@ -2112,32 +2117,51 @@ sub setupRebuildCustomerFiles
 		return 1;
 	}
 
-	my $aditionalCondition;
+	# Enable transaction support
+	my $rawDb = $database->getRawDb();
+	$rawDb->{'AutoCommit'} = 0;
+	$rawDb->{'RaiseError'} = 1;
 
-	while (my ($table, $field) = each %$tables) {
-		if(ref $field eq 'ARRAY') {
-			$aditionalCondition = $field->[1];
-			$field = $field->[0];
-		} else {
-			$aditionalCondition = ''
+	eval {
+		my $aditionalCondition;
+
+		while (my ($table, $field) = each %$tables) {
+			if(ref $field eq 'ARRAY') {
+				$aditionalCondition = $field->[1];
+				$field = $field->[0];
+			} else {
+				$aditionalCondition = ''
+			}
+
+			$rawDb->do("UPDATE `$table` SET `$field` = 'tochange' WHERE `$field` = 'ok' $aditionalCondition");
 		}
 
-		$rs = $database->doQuery(
-			'dummy',
+		$rawDb->do(
 			"
 				UPDATE
-					`$table`
+					`plugin`
 				SET
-					`$field` = 'tochange'
+					`plugin_status` = 'tochange', `plugin_previous_status` = `plugin_status`
 				WHERE
-					`$field` IN('ok', 'enabled')
-				$aditionalCondition
+					`plugin_status` = 'enabled'
+				AND
+					`plugin_error` IS NULL
+				AND
+					`plugin_backend` = 'yes'
 			"
 		);
-		unless(ref $rs eq 'HASH') {
-			error("Unable to execute SQL query: $rs");
-			return 1;
-		}
+
+		$rawDb->commit();
+	};
+
+	if($@) {
+		$rawDb->rollback();
+		error("Unable to execute SQL query: $@");
+		return 1;
+	} else {
+		# Disable transaction support
+		$rawDb->{'AutoCommit'} = 1;
+		$rawDb->{'RaiseError'} = 0;
 	}
 
 	iMSCP::Boot->getInstance()->unlock();

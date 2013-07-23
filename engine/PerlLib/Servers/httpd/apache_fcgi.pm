@@ -878,7 +878,7 @@ sub deleteHtgroup($$)
 
 	$fileContent =~ s/^$data->{'HTGROUP_NAME'}:[^\n]*\n//gim;
 
-	$rs = set($fileContent);
+	$rs = $file->set($fileContent);
 	return $rs if $rs;
 
 	$rs = $self->{'hooksManager'}->trigger('afterHttpdDelHtgroup', \$fileContent, $data);
@@ -1705,7 +1705,7 @@ sub stop
 	my ($stdout, $stderr);
 	$rs = execute("$self->{'tplValues'}->{'CMD_HTTPD'} stop", \$stdout, \$stderr);
 	debug($stdout) if $stdout;
-	warning($stderr) if $stderr && ! $rs;
+	debug($stderr) if $stderr && ! $rs;
 	error($stderr) if $stderr && $rs;
 	error("Error while stopping") if $rs && ! $stderr;
 	return $rs if $rs;
@@ -2241,6 +2241,7 @@ sub _buildPHPini($$)
 
 END
 {
+	my $exitCode = $?;
 	my $self = Servers::httpd::apache_fcgi->getInstance();
 	my $trafficDir = "$self::apacheConfig{'APACHE_LOG_DIR'}/traff";
 	my $rs = 0;
@@ -2253,7 +2254,7 @@ END
 
 	$rs |= iMSCP::Dir->new('dirname' => "$trafficDir.old")->remove() if -d "$trafficDir.old";
 
-	$? ||= $rs;
+	$? = $exitCode || $rs;
 }
 
 =back
