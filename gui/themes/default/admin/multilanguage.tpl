@@ -18,7 +18,7 @@
 						<th>{TR_DEFAULT_LANGUAGE}</th>
 					</tr>
 					</thead>
-					<tfoot>
+					<tfoot class="ui-widget-header">
 					<tr>
 						<td colspan="5" class="buttons">
 							<button name="rebuildIndex" type="submit" onclick="$('#uaction').val('rebuildIndex')">{TR_REBUILD_INDEX}</button>

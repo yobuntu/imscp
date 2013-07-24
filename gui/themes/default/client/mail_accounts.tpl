@@ -53,6 +53,15 @@
                     <th>{TR_DEL_ITEM}  <!-- BDP: mark_all_mails_to_delete --><input type="checkbox" id="checkAll" name="checkAll" /><!-- EDP: mark_all_mails_to_delete --></th>
 				</tr>
 			</thead>
+			<!-- BDP: mails_total -->
+			<tfoot class="ui-widget-header">
+			<tr>
+				<td colspan="6">
+					{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}
+				</td>
+			</tr>
+			</tfoot>
+			<!-- EDP: mails_total -->
 			<tbody class="ui-widget-content">
 				<!-- BDP: mail_item -->
 				<tr>
@@ -83,15 +92,6 @@
 				</tr>
 				<!-- EDP: mail_item -->
 			</tbody>
-			<!-- BDP: mails_total -->
-			<tfoot>
-				<tr>
-					<td colspan="6">
-						{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}
-					</td>
-				</tr>
-			</tfoot>
-			<!-- EDP: mails_total -->
 		</table>
         <!-- BDP: delete_marked_mails_form_bottom -->
             <div class="buttons">

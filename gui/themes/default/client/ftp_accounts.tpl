@@ -14,6 +14,13 @@
                 <th>{TR_FTP_ACTION}</th>
             </tr>
             </thead>
+			<!-- BDP: ftps_total -->
+			<tfoot class="ui-widget-header">
+			<tr>
+				<td colspan="2">{TR_TOTAL_FTP_ACCOUNTS} {TOTAL_FTP_ACCOUNTS}</td>
+			</tr>
+			</tfoot>
+			<!-- EDP: ftps_total -->
 			<tbody class="ui-widget-content">
             <!-- BDP: ftp_item -->
             <tr>
@@ -28,12 +35,5 @@
             </tr>
             <!-- EDP: ftp_item -->
             </tbody>
-            <!-- BDP: ftps_total -->
-            <tfoot>
-            <tr>
-                <td colspan="2">{TR_TOTAL_FTP_ACCOUNTS} {TOTAL_FTP_ACCOUNTS}</td>
-            </tr>
-            </tfoot>
-            <!-- EDP: ftps_total -->
 			</table>
 			<!-- EDP: ftp_accounts -->

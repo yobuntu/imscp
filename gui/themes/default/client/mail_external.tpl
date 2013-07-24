@@ -37,7 +37,7 @@
             <th>{TR_ACTION}</th>
         </tr>
         </thead>
-        <tfoot>
+        <tfoot class="ui-widget-header">
         <tr>
             <th style="width:21px;"><label><input type="checkbox"/></label></th>
             <th>{TR_DOMAIN}</th>

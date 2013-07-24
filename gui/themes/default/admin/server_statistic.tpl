@@ -34,7 +34,7 @@
 					<th>{TR_ALL}</th>
 				</tr>
 				</thead>
-				<tfoot>
+				<tfoot class="ui-widget-header">
 				<tr>
 					<td>{TR_ALL}</td>
 					<td>{WEB_IN_ALL}</td>

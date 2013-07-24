@@ -7,7 +7,7 @@
 					<th colspan="2">{IP}</th>
 				</tr>
 				</thead>
-				<tfoot>
+				<tfoot class="ui-widget-header">
 				<tr>
 					<td colspan="2"><span class="bold">{RECORD_COUNT}</span></td>
 				</tr>

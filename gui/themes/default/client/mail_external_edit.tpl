@@ -82,7 +82,7 @@
             <th>{TR_HOST}</th>
         </tr>
         </thead>
-        <tfoot>
+        <tfoot class="ui-widget-header">
         <tr>
             <th style="width:21px;">
                 <a href="#" title="{TR_SELECT_ALL_ENTRIES_MESSAGE}"><label><input type="checkbox"/></label></a>

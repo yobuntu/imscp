@@ -29,7 +29,7 @@
 					<th>{TR_ALL_TRAFFIC}</th>
 				</tr>
 				</thead>
-				<tfoot>
+				<tfoot class="ui-widget-header">
 				<tr>
 					<td>{TR_ALL}</td>
 					<td>{ALL_WEB_TRAFFIC}</td>

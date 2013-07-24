@@ -24,7 +24,7 @@
 					<th>{TR_SQL_USER}</th>
 				</tr>
 				</thead>
-				<tfoot>
+				<tfoot class="ui-widget-header">
 				<tr>
 					<th>{TR_DOMAIN_NAME}</th>
 					<th>{TR_TRAFF}</th>

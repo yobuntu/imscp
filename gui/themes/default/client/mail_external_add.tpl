@@ -57,7 +57,7 @@
             <th>{TR_HOST}</th>
         </tr>
         </thead>
-        <tfoot>
+        <tfoot class="ui-widget-header">
         <tr>
             <th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></th>
             <th>{TR_PRIORITY}</th>
