@@ -25,9 +25,12 @@
 		<!-- BDP: add_customer_block -->
 		<form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_CORE_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>
 						<label for="dmn_name">{TR_DOMAIN_NAME}</label>
@@ -71,6 +74,7 @@
 				</tr>
 				<!-- EDP: customize_hosting_plan_block -->
 				<!-- EDP: hosting_plan_entries_block -->
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}"/>

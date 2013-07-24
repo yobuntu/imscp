@@ -2,9 +2,12 @@
 			<!-- BDP: add_user -->
 			<form name="addCustomerFrm3" method="post" action="user_add3.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_CORE_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_USERNAME}</td>
 						<td>{VL_USERNAME}</td>
@@ -37,11 +40,15 @@
 						<td><input name="add_alias" type="checkbox" id="add_alias" value="on"/></td>
 					</tr>
 					<!-- EDP: alias_feature -->
+					</tbody>
 				</table>
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_ADDITIONAL_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="useruid">{TR_CUSTOMER_ID}</label></td>
 						<td><input type="text" name="useruid" id="useruid" value="{VL_USR_ID}"/></td>
@@ -100,6 +107,7 @@
 						<td><label for="userfax">{TR_FAX}</label></td>
 						<td><input type="text" name="userfax" id="userfax" value="{VL_FAX}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="submit" type="submit" value="{TR_BTN_ADD_USER}"/>

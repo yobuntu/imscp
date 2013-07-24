@@ -18,11 +18,14 @@
 	</script>
 		<form name="editFrm" method="post" action="mail_edit.php?id={MAIL_ID_VAL}">
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">
 						<span style="vertical-align: middle">{TR_MAIL_ACCOUNT} : {MAIL_ADDRESS_VAL}</span>
 					</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: password_frm -->
 				<tr>
 					<td><label for="password">{TR_PASSWORD}</label></td>
@@ -51,6 +54,7 @@
 						<textarea name="forwardList" id="forwardList">{FORWARD_LIST_VAL}</textarea>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input name="submit" type="submit" value="{TR_UPDATE}"/>

@@ -9,7 +9,7 @@
 			<form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
 				<!-- BDP: languages_block -->
 				<table class="datatable firstColFixed">
-					<thead>
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_LANGUAGE_NAME}</th>
 						<th>{TR_NUMBER_TRANSLATED_STRINGS}</th>
@@ -26,7 +26,7 @@
 						</td>
 					</tr>
 					</tfoot>
-					<tbody>
+					<tbody class="ui-widget-content">
 					<!-- BDP: language_block -->
 					<tr>
 						<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
@@ -40,9 +40,12 @@
 				</table>
 				<!-- EDP: languages_block -->
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_INSTALL_NEW_LANGUAGE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_LANGUAGE_FILE} <span class="upload_help icon i_help"  title="{TR_UPLOAD_HELP}" style="vertical-align: middle;">{TR_HELP}</span></td>
 						<td>
@@ -50,6 +53,7 @@
 							<button name="uploadLanguage" type="submit" onclick="$('#uaction').val('uploadLanguage')" class="frm-button">{TR_INSTALL}</button>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" id="uaction" value=""/>

@@ -20,7 +20,7 @@
 			<!-- EDP: search_form -->
 			<!-- BDP: table_list -->
 			<table>
-				<thead>
+				<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_NAME}</th>
 						<th>{TR_MOUNT_POINT}</th>
@@ -30,7 +30,7 @@
 						<th>{TR_ACTION}</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="ui-widget-content">
 					<!-- BDP: table_item -->
 					<tr>
 						<td>

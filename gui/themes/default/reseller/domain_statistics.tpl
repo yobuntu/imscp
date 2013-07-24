@@ -19,7 +19,7 @@
 
 			<!-- BDP: domain_statistics_block -->
 			<table>
-				<thead>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_DAY}</th>
 					<th>{TR_WEB_TRAFFIC}</th>
@@ -39,7 +39,7 @@
 					<td>{ALL_ALL_TRAFFIC}</td>
 				</tr>
 				</tfoot>
-				<tbody>
+				<tbody class="ui-widget-content">
 				<!-- BDP: traffic_table_item -->
 				<tr>
 					<td>{DATE}</td>

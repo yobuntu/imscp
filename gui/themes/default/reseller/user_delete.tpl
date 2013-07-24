@@ -1,9 +1,12 @@
 
             <form name="reseller_delete_customer_frm" method="post" action="user_delete.php">
                 <table>
+					<thead class="ui-widget-header">
                     <tr>
                         <th colspan="2">{TR_ACCOUNT_SUMMARY}</th>
                     </tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: dmn_list -->
 					<tr>
 						<td colspan="2"><strong><i>{TR_DOMAINS}</i></strong></td>
@@ -85,6 +88,7 @@
                             <label for="delete">{TR_YES_DELETE_ACCOUNT}</label>
                         </td>
                     </tr>
+					</tbody>
                 </table>
                 <div class="buttons">
                     <input type="submit" value="{TR_DELETE_ACCOUNT}" />

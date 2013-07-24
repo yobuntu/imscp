@@ -42,9 +42,12 @@
 			<div id="dialog_box"></div>
 			<form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="3">{TR_CORE_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_USERNAME}</td>
 						<td colspan="2">{USERNAME}</td>
@@ -68,11 +71,15 @@
 						<td><label for="email">{TR_EMAIL}</label></td>
 						<td colspan="2"><input type="text" name="email" id="email" value="{EMAIL}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_ADDITIONAL_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="fname">{TR_FIRST_NAME}</label></td>
 						<td><input type="text" name="fname" id="fname" value="{FIRST_NAME}"/></td>
@@ -127,6 +134,7 @@
 						<td><label for="fax">{TR_FAX}</label></td>
 						<td><input type="text" name="fax" id="fax" value="{FAX}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="submit" type="submit" value="{TR_UPDATE}"/>

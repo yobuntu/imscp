@@ -1,8 +1,11 @@
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_PROPERTIES}</th>
 					<th>{TR_VALUES}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_ADMIN_USERS}</td>
 					<td>{ADMIN_USERS}</td>
@@ -43,6 +46,7 @@
 					<td>{TR_SQL_USERS}</td>
 					<td>{SQL_USERS}</td>
 				</tr>
+				</tbody>
 			</table>
 
 			<h2 class="traffic"><span>{TR_SERVER_TRAFFIC}</span></h2>

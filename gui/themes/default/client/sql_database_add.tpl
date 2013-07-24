@@ -1,11 +1,14 @@
 
 			<form name="sql_add_database_frm" method="post" action="sql_database_add.php">
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">
 							{TR_DATABASE}
 						</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td style="width:300px;"><label for="db_name">{TR_DB_NAME}</label></td>
 						<td><input type="text" id="db_name" name="db_name" value="{DB_NAME}" /></td>
@@ -33,6 +36,7 @@
 							<!-- EDP: mysql_prefix_behind -->
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="Add_New" type="submit" class="button" id="Add_New" value="{TR_ADD}" />

@@ -26,7 +26,7 @@
 			<h3 class="ip"><span>{TR_CONFIGURED_IPS}</span></h3>
 
 			<table class="datatable">
-				<thead>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_IP}</th>
 					<th>{TR_DOMAIN}</th>
@@ -35,7 +35,7 @@
 					<th>{TR_ACTION}</th>
 				</tr>
 				</thead>
-				<tbody>
+				<tbody class="ui-widget-content">
 				<!-- BDP: ip_address_block -->
 				<tr>
 					<td>{IP}</td>
@@ -56,10 +56,12 @@
 
 			<form name="addIpFrm" method="post" action="ip_manage.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_IP_DATA}</th>
 					</tr>
-
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="ip_number">{TR_IP}</label></td>
 						<td><input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="39"/></td>
@@ -82,6 +84,7 @@
 							</select>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<button name="submit" type="submit" class="frm-button">{TR_ADD}</button>

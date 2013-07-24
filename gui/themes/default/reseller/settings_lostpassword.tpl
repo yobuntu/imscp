@@ -1,9 +1,12 @@
 
 			<form name="lostPasswordEmailFrm" action="settings_lostpassword.php" method="post">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="4">{TR_MESSAGE_TEMPLATE_INFO}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td colspan="2"><span class="bold">{TR_ACTIVATION_EMAIL}</span></td>
 						<td colspan="2"><span class="bold">{TR_PASSWORD_EMAIL}</span></td>
@@ -38,12 +41,16 @@
 						<td>{TR_BASE_SERVER_VHOST_PREFIX}</td>
 						<td>{BASE_SERVER_VHOST_PREFIX}</td>
 					</tr>
+					</tbody>
 				</table>
 
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="3">{TR_MESSAGE_TEMPLATE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_SENDER_EMAIL}</td>
 						<td colspan="2">{SENDER_EMAIL_VALUE}</td>
@@ -63,6 +70,7 @@
 						<td><textarea name="message1" id="message1">{MESSAGE_VALUE1}</textarea></td>
 						<td><textarea name="message2" id="message2">{MESSAGE_VALUE2}</textarea></td>
 					</tr>
+					</tbody>
 				</table>
 
 				<div class="buttons">

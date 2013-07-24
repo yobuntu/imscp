@@ -33,9 +33,12 @@
 			</script>
 			<form name="add_alias_frm" method="post" action="alias_add.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_ALIAS_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="user_domain_account">{TR_DOMAIN_ACCOUNT}</label></td>
 						<td>
@@ -76,6 +79,7 @@
 							<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="add_alias"/>

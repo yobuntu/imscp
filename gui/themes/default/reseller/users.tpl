@@ -39,7 +39,7 @@
 
 			<!-- BDP: users_list -->
 			<table>
-				<thead>
+				<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_USER_STATUS}</th>
 						<th>{TR_USERNAME}</th>
@@ -48,7 +48,7 @@
 						<th>{TR_ACTION}</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="ui-widget-content">
 					<!-- BDP: user_entry -->
 					<tr>
 						<td>

@@ -7,11 +7,14 @@
 		</script>
 		<!-- BDP: protected_areas -->
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_HTACCESS}</th>
 				<th>{TR_STATUS}</th>
 				<th>{TR__ACTION}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: dir_item -->
 			<tr>
 				<td>{AREA_NAME}<br/><span style="text-decoration: underline;">{AREA_PATH}</span></td>
@@ -22,6 +25,7 @@
 				</td>
 			</tr>
 			<!-- EDP: dir_item -->
+			</tbody>
 		</table>
 		<!-- EDP: protected_areas -->
 

@@ -2,12 +2,15 @@
 			<form action="manage_reseller_owners.php" method="post" name="admin_reseller_assignment" id="admin_reseller_assignment">
 				<!-- BDP: reseller_list -->
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_NUMBER}</th>
 						<th>{TR_MARK}</th>
 						<th>{TR_RESELLER_NAME}</th>
 						<th>{TR_OWNER}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: reseller_item -->
 					<tr>
 						<td>{NUMBER}</td>
@@ -16,6 +19,7 @@
 						<td>{OWNER}</td>
 					</tr>
 					<!-- EDP: reseller_item -->
+					</tbody>
 				</table>
 				<!-- EDP: reseller_list -->
 

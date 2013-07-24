@@ -79,9 +79,12 @@
 		<!-- BDP: add_user -->
 		<form id="addFrm2" name="addFrm2" method="post" action="user_add2.php">
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_HOSTING_PLAN}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td style="width:300px;">{TR_NAME}</td>
 					<td>
@@ -180,9 +183,12 @@
 						</div>
 						<table>
 							<!-- BDP: php_editor_permissions_block -->
+							<thead class="ui-widget-header">
 							<tr class="description">
 								<th colspan="2">{TR_PERMISSIONS}</th>
 							</tr>
+							</thead>
+							<tbody class="ui-widget-content">
 							<!-- BDP: php_editor_allow_url_fopen_block -->
 							<tr>
 								<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -261,6 +267,7 @@
 								</td>
 							</tr>
 							<!-- EDP: php_editor_default_values_block -->
+							</tbody>
 						</table>
 					</div>
 				</td>
@@ -348,6 +355,7 @@
 						</div>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="user_add2_nxt"/>

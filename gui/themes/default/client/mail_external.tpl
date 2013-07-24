@@ -29,7 +29,7 @@
 </script>
 <form name="mail_external_delete" action="mail_external_delete.php" method="post">
     <table>
-        <thead>
+		<thead class="ui-widget-header">
         <tr>
             <th style="width:21px;"><label><input type="checkbox"/></label></th>
             <th>{TR_DOMAIN}</th>
@@ -45,7 +45,7 @@
             <th>{TR_ACTION}</th>
         </tr>
         </tfoot>
-        <tbody>
+		<tbody class="ui-widget-content">
         <!-- BDP: item -->
         <tr>
             <td><label><input type="checkbox" name="{ITEM_TYPE}[]" value="{ITEM_ID}"{DISABLED}/></label></td>

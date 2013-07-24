@@ -50,6 +50,7 @@
 				</table>
 
 				<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
 					<th width="60">{TR_SOFTWARE_VERSION}</th>
@@ -60,6 +61,8 @@
 					<th align="center" width="65">{TR_SOFTWARE_DELETE}</th>
 					<th align="center" width="90">{TR_SOFTWARE_RIGHTS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_softwaredepot_list -->
 				<tr>
 					<td colspan="8"><div class="info">{NO_SOFTWAREDEPOT}</div></td>
@@ -80,12 +83,14 @@
 				<tr>
 					<th colspan="8">{TR_SOFTWAREDEPOT_COUNT}:&nbsp;{TR_SOFTWAREDEPOT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 			<!-- BDP: webdepot_list -->
 
 			<h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_PACKAGE_TITLE}</th>
 					<th width="120">{TR_PACKAGE_INSTALL_TYPE}</th>
@@ -95,6 +100,8 @@
 					<th width="120">{TR_PACKAGE_VENDOR_HP}</th>
 					<th width="180">{TR_PACKAGE_ACTION}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_webdepotsoftware_list -->
 				<tr>
 					<td colspan="7"><div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div></td>
@@ -129,12 +136,14 @@
 				<tr>
 					<th colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 			<!-- EDP: webdepot_list -->
 
 			<h2 class="apps_installer"><span>{TR_AWAITING_ACTIVATION}</span></h2>
 
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
 					<th width="60">{TR_SOFTWARE_VERSION}</th>
@@ -146,6 +155,8 @@
 					<th align="center" width="65">{TR_SOFTWARE_ACTIVATION}</th>
 					<th align="center" width="65">{TR_SOFTWARE_DELETE}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_software_list -->
 				<tr>
 					<td colspan="9"><div class="info">{NO_SOFTWARE}</div></td>
@@ -167,11 +178,13 @@
 				<tr>
 					<th colspan="9">{TR_SOFTWARE_ACT_COUNT}:&nbsp;{TR_SOFTWARE_ACT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 
 			<h2 class="apps_installer"><span>{TR_ACTIVATED_SOFTWARE}</span></h2>
 
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_RESELLER_NAME}</th>
 					<th align="center" width="150">{TR_RESELLER_COUNT_SWDEPOT}</th>
@@ -179,6 +192,8 @@
 					<th align="center" width="150">{TR_RESELLER_COUNT_ACTIVATED}</th>
 					<th align="center" width="150">{TR_RESELLER_SOFTWARE_IN_USE}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_reseller_list -->
 				<tr>
 					<td colspan="5"><div class="info">{NO_RESELLER}</div></td>
@@ -196,6 +211,7 @@
 				<tr>
 					<th colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 
 			<div class="paginator"></div>

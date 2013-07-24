@@ -37,6 +37,7 @@
 			<!-- start form edit -->
 			<form name="editFrm" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_SERVICE}</th>
 						<th>{TR_IP}</th>
@@ -45,6 +46,8 @@
 						<th>{TR_SHOW}</th>
 						<th>{TR_ACTION}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: service_ports -->
 					<tr>
 						<td>
@@ -83,6 +86,7 @@
 						</td>
 					</tr>
 					<!-- EDP: service_ports -->
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="update"/>
@@ -93,6 +97,7 @@
 
 			<form name="addFrm" method="post" action="settings_ports.php">
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_SERVICE}</th>
 						<th>{TR_IP}</th>
@@ -100,6 +105,8 @@
 						<th>{TR_PROTOCOL}</th>
 						<th>{TR_SHOW}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><input name="name_new" type="text" id="name" value="{VAL_FOR_NAME_NEW}" maxlength="25"/></td>
 						<td><input name="ip_new" type="text" id="ip" value="{VAL_FOR_IP_NEW}" maxlength="15"/></td>
@@ -118,6 +125,7 @@
 							</select>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="add"/>

@@ -1,7 +1,10 @@
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_USER_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: user_message -->
 			<tr>
 				<td>{TR_USER_MESSAGE}</td>
@@ -19,12 +22,16 @@
 				</td>
 			</tr>
 			<!-- EDP: user_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_DMN_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: dmn_message -->
 			<tr>
 				<td>{TR_DMN_MESSAGE}</td>
@@ -42,12 +49,16 @@
 				</td>
 			</tr>
 			<!-- EDP: dmn_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_ALS_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: als_message -->
 			<tr>
 				<td>{TR_ALS_MESSAGE}</td>
@@ -63,12 +74,16 @@
 				</td>
 			</tr>
 			<!-- EDP: als_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_SUB_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: sub_message -->
 			<tr>
 				<td>{TR_SUB_MESSAGE}</td>
@@ -86,12 +101,16 @@
 				</td>
 			</tr>
 			<!-- EDP: sub_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_ALSSUB_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: alssub_message -->
 			<tr>
 				<td>{TR_ALSSUB_MESSAGE}</td>
@@ -109,12 +128,16 @@
 				</td>
 			</tr>
 			<!-- EDP: alssub_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_HTACCESS_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: htaccess_message -->
 			<tr>
 				<td>{TR_HTACCESS_MESSAGE}</td>
@@ -131,12 +154,16 @@
 					<span style="color:red;">{TR_HTACCESS_ERROR}</span></td>
 			</tr>
 			<!-- EDP: htaccess_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_MAIL_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: mail_message -->
 			<tr>
 				<td>{TR_MAIL_MESSAGE}</td>
@@ -153,12 +180,16 @@
 					<span style="color:red;">{TR_MAIL_ERROR}</span></td>
 			</tr>
 			<!-- EDP: mail_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_PLUGINS_ERRORS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: plugins_message -->
 			<tr>
 				<td>{TR_PLUGIN_MESSAGE}</td>
@@ -175,14 +206,19 @@
 					<span style="color:red;">{TR_PLUGIN_ERROR}</span></td>
 			</tr>
 			<!-- EDP: plugin_list -->
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_DAEMON_TOOLS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<tr>
 				<td><a href="imscp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
 			</tr>
+			</tbody>
 		</table>
 

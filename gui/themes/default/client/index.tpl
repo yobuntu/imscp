@@ -1,8 +1,11 @@
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th colspan="2">{TR_DOMAIN_ACCOUNT}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<tr>
 				<td style="width: 300px;">{TR_ACCOUNT_NAME} / {TR_DOMAIN_NAME}</td>
 				<td>{DOMAIN_NAME}</td>
@@ -19,14 +22,17 @@
 				<td>{TR_DOMAIN_EXPIRES_DATE}</td>
 				<td>{DOMAIN_REMAINING_TIME} {DOMAIN_EXPIRES_DATE}</td>
 			</tr>
+			</tbody>
 		</table>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th  style="width: 300px;">{TR_FEATURE}</th>
 				<th>{TR_FEATURE_STATUS}</th>
 			</tr>
-
+			</thead>
+			<tbody class="ui-widget-content">
 			<tr>
 				<td>{TR_DOMAIN_FEATURE}</td>
 				<td>{DOMAIN_FEATURE_STATUS}</td>
@@ -100,6 +106,7 @@
 				<td>{TR_BACKUP_FEATURE}</td>
 				<td>{BACKUP_FEATURE_STATUS}</td>
 			</tr>
+			</tbody>
 		</table>
 
 		<h2 class="traffic"><span>{TR_TRAFFIC_USAGE}</span></h2>
@@ -121,9 +128,12 @@
 		<p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
 
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th colspan="2">{TR_DISK_USAGE_DETAIL}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
             <tr>
                 <td style="width: 300px;">{TR_DISK_FILE_USAGE}</td>
                 <td>{DISK_FILESIZE}</td>
@@ -136,4 +146,5 @@
                 <td>{TR_DISK_MAIL_USAGE}</td>
                 <td>{DISK_MAILSIZE}</td>
             </tr>
+			</tbody>
         </table>

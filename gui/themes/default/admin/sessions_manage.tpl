@@ -1,10 +1,13 @@
 
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_USERNAME}</th>
 					<th>{TR_LOGIN_ON}</th>
 					<th>{TR_ACTIONS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: user_session -->
 				<tr>
 					<td>{ADMIN_USERNAME}</td>
@@ -15,4 +18,5 @@
 					</td>
 				</tr>
 				<!-- EDP: user_session -->
+				</tbody>
 			</table>

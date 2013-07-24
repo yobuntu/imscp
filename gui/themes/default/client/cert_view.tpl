@@ -1,9 +1,12 @@
 
 			<form name="cert_edit" method="post" action="cert_view.php?id={ID}&type={TYPE}">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_CERTIFICATE_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_CERT_FOR}</td>
 						<td>{DOMAIN_NAME}</td>
@@ -32,6 +35,7 @@
 						<td><label for="ca_cert">{TR_INTERM_CERTIFICATE}</label></td>
 						<td><textarea name="ca_cert" id="ca_cert">{CA_CERT}</textarea></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<!-- BDP: cert_enable -->

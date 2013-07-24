@@ -7,9 +7,12 @@
 
             <!-- BDP: tickets_list -->
             <table>
+				<thead class="ui-widget-header">
                 <tr>
                     <th colspan="2">{TR_TICKET_INFO}</th>
                 </tr>
+				</thead>
+				<tbody class="ui-widget-content">
                 <tr>
                     <td style="width:200px;"><strong>{TR_TICKET_URGENCY}:</strong></td>
                     <td>{TICKET_URGENCY_VAL}</td>
@@ -45,6 +48,7 @@
                     <td colspan="2" style="border:none;">&nbsp;</td>
                 </tr>
                 <!-- EDP: tickets_item -->
+				</tbody>
             </table>
 
             <h2 class="doc"><span>{TR_TICKET_NEW_REPLY}</span></h2>

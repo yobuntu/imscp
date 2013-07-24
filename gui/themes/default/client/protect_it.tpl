@@ -17,9 +17,12 @@
 </script>
 <form name="addProtectedAreaFrm" method="post" action="protected_areas_add.php">
 	<table class="firstColFixed">
+		<thead class="ui-widget-header">
 		<tr>
 			<th colspan="2">{TR_PROTECTED_AREA}</th>
 		</tr>
+		</thead>
+		<tbody class="ui-widget-content">
 		<tr>
 			<td><label for="paname">{TR_AREA_NAME}</label></td>
 			<td><input name="paname" type="text" class="textinput" id="paname" value="{AREA_NAME}"/></td>
@@ -31,12 +34,16 @@
 				<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
 			</td>
 		</tr>
+		</tbody>
 	</table>
 	<table class="firstColFixed">
+		<thead class="ui-widget-header">
 		<tr>
 			<th>{TR_USER}</th>
 			<th>{TR_GROUPS}</th>
 		</tr>
+		</thead>
+		<tbody class="ui-widget-content">
 		<tr>
 			<td>
 				<label for="ptype_1">{TR_USER_AUTH}</label>
@@ -63,6 +70,7 @@
 				</select>
 			</td>
 		</tr>
+		</tbody>
 	</table>
 	<div class="buttons">
 		<input type="hidden" name="use_other_dir"/>

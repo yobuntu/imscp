@@ -14,7 +14,7 @@
 			</script>
 			<!-- BDP: menus_list_block -->
 			<table class="firstColFixed datatable">
-				<thead>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_MENU_NAME_AND_LINK}</th>
 					<th>{TR_TH_LEVEL}</th>
@@ -22,7 +22,7 @@
 					<th>{TR_ACTIONS}</th>
 				</tr>
 				</thead>
-				<tbody>
+				<tbody class="ui-widget-content">
 				<!-- BDP: menu_block -->
 				<tr>
 					<td>
@@ -43,9 +43,12 @@
 
 			<form name="menuFrm" method="post" action="custom_menus.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_CUSTOM_MENU_PROPERTIES}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="menu_name">{TR_MENU_NAME}</label></td>
 						<td><input type="text" name="menu_name" id="menu_name" value="{MENU_NAME}"/></td>
@@ -78,6 +81,7 @@
 						<td><label for="menu_order">{TR_MENU_ORDER} <span class="italic">({TR_OPTIONAL})</span></label></td>
 						<td><input type="text" name="menu_order" id="menu_order" value="{MENU_ORDER}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<!-- BDP: add_menu -->
 				<div class="buttons">

@@ -35,7 +35,8 @@
                     <table class="firstColFixed">
                         <tr>
                             <td>
-                                <label for="useruid">{TR_CUSTOMER_ID}</label></td>
+                                <label for="useruid">{TR_CUSTOMER_ID}</label>
+							</td>
                             <td>
                                 <input type="text" name="useruid" id="useruid" value="{VL_USR_ID}" />
                             </td>

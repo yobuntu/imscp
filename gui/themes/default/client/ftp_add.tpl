@@ -25,9 +25,12 @@
 		</script>
 		<form name="add_ftp_account_frm" method="post" action="ftp_add.php" autocomplete="off">
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_FTP_ACCOUNT_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><label for="domain_type">{TR_DOMAIN_TYPE_LABEL}</label></td>
 					<td>
@@ -66,6 +69,7 @@
 						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{TR_CHOOSE_DIR}</a>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input name="submit" type="submit" value="{TR_ADD}"/>

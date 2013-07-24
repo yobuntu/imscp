@@ -8,13 +8,13 @@
 		</script>
         <!-- BDP: ftp_accounts -->
         <table>
-            <thead>
+			<thead class="ui-widget-header">
             <tr>
                 <th>{TR_FTP_ACCOUNT}</th>
                 <th>{TR_FTP_ACTION}</th>
             </tr>
             </thead>
-            <tbody>
+			<tbody class="ui-widget-content">
             <!-- BDP: ftp_item -->
             <tr>
                 <td>{FTP_ACCOUNT}</td>

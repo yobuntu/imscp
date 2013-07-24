@@ -1,8 +1,11 @@
 
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_ACCOUNT_LIMITS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td style="width: 300px;">{DOMAINS}</td>
 					<td>{DMN_MSG}</td>
@@ -31,13 +34,17 @@
 					<td>{SQL_USERS}</td>
 					<td>{SQL_USER_MSG}</td>
 				</tr>
+				</tbody>
 			</table>
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">
 						{TR_FEATURES}
 					</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_SUPPORT}</td>
 					<td>{SUPPORT_STATUS}</td>
@@ -50,6 +57,7 @@
 					<td>{TR_APS}</td>
 					<td>{APS_STATUS}</td>
 				</tr>
+				</tbody>
 			</table>
 
 			<h2 class="traffic"><span>{TR_TRAFFIC_USAGE}</span></h2>

@@ -12,10 +12,13 @@
 			<!-- BDP: ftp_chooser -->
 			<form>
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_DIRS}</th>
 						<th>{TR_ACTION}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: dir_item -->
 					<tr>
 						<!-- BDP: list_item -->
@@ -28,6 +31,7 @@
 						<!-- EDP: list_item -->
 					</tr>
 					<!-- EDP: dir_item -->
+					</tbody>
 				</table>
 			</form>
 			<!-- EDP: ftp_chooser -->

@@ -37,9 +37,12 @@
 			<form name="admin_add_user" method="post" action="admin_add.php">
                 <!-- BDP: props_list -->
                 <table class="firstColFixed">
+					<thead class="ui-widget-header">
                     <tr>
                         <th colspan="3">{TR_CORE_DATA}</th>
                     </tr>
+					</thead>
+					<tbody class="ui-widget-content">
                     <tr>
                         <td><label for="username">{TR_USERNAME}</label></td>
                         <td colspan="2"><input type="text" name="username" id="username" value="{USERNAME}"/></td>
@@ -61,11 +64,15 @@
                         <td><label for="email">{TR_EMAIL}</label></td>
                         <td colspan="2"><input type="text" name="email" id="email" value="{EMAIL}"/></td>
                     </tr>
+					</tbody>
                 </table>
                 <table class="firstColFixed">
+					<thead class="ui-widget-header">
                     <tr>
                         <th colspan="2">{TR_ADDITIONAL_DATA}</th>
                     </tr>
+					</thead>
+					<tbody class="ui-widget-content">
                     <tr>
                         <td><label for="first_name">{TR_FIRST_NAME}</label></td>
                         <td><input type="text" name="fname" id="first_name" value="{FIRST_NAME}"/></td>
@@ -120,6 +127,7 @@
                         <td><label for="fax">{TR_FAX}</label></td>
                         <td><input type="text" name="fax" id="fax" value="{FAX}"/></td>
                     </tr>
+					</tbody>
                 </table>
                 <!-- EDP: props_list -->
                 <div class="buttons">

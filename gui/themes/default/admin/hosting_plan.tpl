@@ -9,12 +9,15 @@
 			<!-- BDP hosting_plans_js -->
 			<!-- BDP: hosting_plans -->
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_NUMBER}</th>
 					<th>{TR_NAME}</th>
 					<th>{TR_STATUS}</th>
 					<th>{TR_ACTIONS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: hosting_plan -->
 				<tr>
 					<td>{NUMBER}</td>
@@ -26,5 +29,6 @@
 					</td>
 				</tr>
 				<!-- EDP: hosting_plan -->
+				</tbody>
 			</table>
 			<!-- EDP: hosting_plans -->

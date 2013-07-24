@@ -18,11 +18,14 @@
 
 			<!-- BDP: users_block -->
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_USERNAME}</th>
 					<th>{TR_STATUS}</th>
 					<th>{TR_ACTIONS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: user_block -->
 				<tr>
 					<td>{UNAME}</td>
@@ -34,6 +37,7 @@
 					</td>
 				</tr>
 				<!-- EDP: user_block -->
+				</tbody>
 			</table>
 			<!-- EDP: users_block -->
 
@@ -50,12 +54,15 @@
 
 			<!-- BDP: groups_block -->
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_GROUPNAME}</th>
 					<th>{TR_GROUP_MEMBERS}</th>
 					<th>{TR_STATUS}</th>
 					<th>{TR_ACTIONS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: group_block -->
 				<tr>
 					<td>{GNAME}</td>
@@ -70,6 +77,7 @@
 					</td>
 				</tr>
 				<!-- EDP: group_block -->
+				</tbody>
 			</table>
 			<!-- EDP: groups_block -->
 

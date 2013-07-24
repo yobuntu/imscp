@@ -15,9 +15,12 @@
 	</script>
 		<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_DOMAIN_ALIAS_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_ALIAS_NAME}</td>
 					<td>{ALIAS_NAME}</td>
@@ -46,6 +49,7 @@
 						<input type="text" name="forward" id="forward" class="textinput" value="{FORWARD}"{READONLY_FORWARD} />
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="modify" />

@@ -62,17 +62,17 @@
 			</div>
 
 			<form name="pluginsFrm" action="settings_plugins.php" method="post">
-				<table class="datatable">
-					<thead>
-					<tr style="border: none;">
-						<th style="width:21px;"><input type="checkbox"/></th>
-						<th style="width:150px">{TR_PLUGIN}</th>
+				<table class="datatables">
+					<thead class="ui-widget-header">
+					<tr>
+						<th style="width: 21px;"><input type="checkbox"/></th>
+						<th style="width: 150px">{TR_PLUGIN}</th>
 						<th>{TR_DESCRIPTION}</th>
 						<th>{TR_STATUS}</th>
 						<th>{TR_ACTIONS}</th>
 					</tr>
 					</thead>
-					<tfoot>
+					<tfoot class="ui-widget-header">
 					<tr>
 						<th><input type="checkbox"/></th>
 						<th>{TR_PLUGIN}</th>
@@ -81,7 +81,7 @@
 						<th>{TR_ACTIONS}</th>
 					</tr>
 					</tfoot>
-					<tbody>
+					<tbody class="ui-widget-content">
 					<!-- BDP: plugin_block -->
 					<tr>
 						<td><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"/></td>
@@ -140,9 +140,12 @@
 			<h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
 			<form name="pluginsUploadFrm" action="settings_plugins.php" method="post" enctype="multipart/form-data">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_UPLOAD}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_PLUGIN_ARCHIVE}<span class="upload_help icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}" style="vertical-align: middle;">Help</span></td>
 						<td>
@@ -150,5 +153,6 @@
 							<input type="submit" class="frm-button" value="{TR_UPLOAD}"/>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 			</form>

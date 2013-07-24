@@ -1,10 +1,12 @@
 
 			<form action="settings_lostpassword.php" method="post" name="frmlostpassword" id="frmlostpassword">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="4">{TR_MESSAGE_TEMPLATE_INFO}</th>
 					</tr>
-
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td colspan="2">{TR_ACTIVATION_EMAIL}</td>
 						<td colspan="2">{TR_PASSWORD_EMAIL}</td>
@@ -39,11 +41,15 @@
 						<td><strong>{TR_BASE_SERVER_VHOST_PREFIX}</strong></td>
 						<td>{BASE_SERVER_VHOST_PREFIX}</td>
 					</tr>
+					</tbody>
 				</table>
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="3">{TR_MESSAGE_TEMPLATE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><strong>{TR_SUBJECT}</strong></td>
 						<td><input name="subject1" type="text" id="subject1" class="inputTitle" value="{SUBJECT_VALUE1}"/></td>
@@ -64,6 +70,7 @@
 						<td>{SENDER_NAME_VALUE}</td>
 						<td><input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="Submit" type="submit" value="{TR_APPLY_CHANGES}"/>

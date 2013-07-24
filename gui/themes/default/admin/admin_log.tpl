@@ -15,16 +15,20 @@
 	<input type="hidden" name="uaction" value="clear_log"/>
 </form>
 <table>
+	<thead class="ui-widget-header">
 	<tr>
 		<th>{TR_DATE}</th>
 		<th>{TR_MESSAGE}</th>
 	</tr>
+	</thead>
+	<tbody class="ui-widget-content">
 	<!-- BDP: log_row -->
 	<tr>
 		<td>{DATE}</td>
 		<td>{MESSAGE}</td>
 	</tr>
 	<!-- EDP: log_row -->
+	<tbody class="ui-widget-content">
 </table>
 <div class="paginator">
 	<!-- BDP: scroll_next_gray -->

@@ -2,9 +2,12 @@
             <!-- BDP: languages_available -->
 			<form name="client_change_language" method="post" action="language.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_LANGUAGE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="def_language">{TR_CHOOSE_LANGUAGE}</label></td>
 						<td>
@@ -15,6 +18,7 @@
 							</select>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="Submit" type="submit" value="{TR_UPDATE}"/>

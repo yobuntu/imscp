@@ -1,8 +1,11 @@
 
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_DOMAIN_DETAILS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_DOMAIN_NAME}</td>
 					<td>{VL_DOMAIN_NAME}</td>
@@ -57,14 +60,18 @@
 						{VL_DISK_USED} / {VL_DISK_LIMIT}
 					</td>
 				</tr>
+				</tbody>
 			</table>
 
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_FEATURE}</th>
 					<th>{TR_USED}</th>
 					<th>{TR_LIMIT}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_SUBDOM_ACCOUNTS}</td>
 					<td>{VL_SUBDOM_ACCOUNTS_USED}</td>
@@ -95,4 +102,5 @@
 					<td>{VL_SQL_USER_ACCOUNTS_USED}</td>
 					<td>{VL_SQL_USER_ACCOUNTS_LIMIT}</td>
 				</tr>
+				</tbody>
 			</table>

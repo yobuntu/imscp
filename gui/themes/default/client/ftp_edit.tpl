@@ -1,11 +1,12 @@
 
 		<form name="edit_ftp_account_frm" method="post" action="ftp_edit.php?id={ID}">
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
-					<th colspan="2">
-						{TR_FTP_USER_DATA}
-					</th>
+					<th colspan="2">{TR_FTP_USER_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><label for="username">{TR_USERNAME}</label></td>
 					<td>
@@ -28,6 +29,7 @@
 						<a href="#" onclick="chooseFtpDir();" class="icon i_bc_folder">{CHOOSE_DIR}</a>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input name="submit" type="submit" value="{TR_CHANGE}"/>

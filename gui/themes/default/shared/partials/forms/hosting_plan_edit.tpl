@@ -102,9 +102,12 @@
         	<!-- EDP: php_editor_js -->
 			<form id="hostingPlanEditFrm" name="hostingPlanEditFrm" method="post" action="hosting_plan_edit.php?id={ID}">
             <table class="firstColFixed">
+			<thead class="ui-widget-header">
             <tr>
                 <th colspan="2">{TR_PROPERTIES}</th>
             </tr>
+			</thead>
+			<tbody class="ui-widget-content">
             <tr>
                 <td><label for="hp_name">{TR_NAME}</label></td>
                 <td><input id="hp_name" type="text" name="hp_name" value="{NAME}" class="inputTitle"{READONLY}/></td>
@@ -188,9 +191,12 @@
                         </div>
                         <table>
                             <!-- BDP: php_editor_permissions_block -->
+							<thead class="ui-widget-header">
                             <tr class="description">
                                 <th colspan="2">{TR_PERMISSIONS}</th>
                             </tr>
+							</thead>
+							<tbody class="ui-widget-content">
                             <!-- BDP: php_editor_allow_url_fopen_block -->
                             <tr>
                                 <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -268,6 +274,7 @@
                                 </td>
                             </tr>
                             <!-- EDP: php_editor_default_values_block -->
+							</tbody>
                         </table>
                     </div>
                 </td>
@@ -356,11 +363,15 @@
 			</td>
 		</tr>
 		<!-- EDP: backup_feature -->
+			</tbody>
             </table>
             <table class="firstColFixed">
+				<thead class="ui-widget-header">
                 <tr>
                     <th colspan="2">{TR_AVAILABILITY}</th>
                 </tr>
+				</thead>
+				<tbody class="ui-widget-content">
                 <tr>
                     <td>{TR_STATUS}</td>
                     <td>
@@ -372,6 +383,7 @@
                         </div>
                     </td>
                 </tr>
+				</tbody>
             </table>
             <!-- BDP: submit_button -->
             <div class="buttons">

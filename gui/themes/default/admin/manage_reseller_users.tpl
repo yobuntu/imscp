@@ -21,14 +21,14 @@
 
 				<!-- BDP: reseller_list -->
 				<table class="firstColFixed datatable">
-					<thead>
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_CUSTOMER_ID}</th>
 						<th>{TR_MARK}</th>
 						<th>{TR_USER_NAME}</th>
 					</tr>
 					</thead>
-					<tbody>
+					<tbody class="ui-widget-content">
 					<!-- BDP: reseller_item -->
 					<tr>
 						<td>{CUSTOMER_ID}</td>

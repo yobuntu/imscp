@@ -16,6 +16,7 @@
 		/*]]>*/
 		</script>
 			<table>
+				<thead class="ui-widget-header">
             	<tr>
 					<th><div style="float:left">{TR_SOFTWARE_NAME}</div><div style="float:left"><a href="{TR_SOFTWARE_NAME_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_NAME_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th width="100">{TR_SOFTWARE_VERSION}</th>
@@ -24,6 +25,8 @@
 					<th width="120"><div style="float:left">{TR_SOFTWARE_TYPE}</div><div style="float:left"><a href="{TR_SOFTWARE_TYPE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_TYPE_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th align="center" width="100">{TR_SOFTWARE_DELETE}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_software_list -->
 				<tr>
 					<td colspan="6"><div class="info">{NO_SOFTWARE}</div></td>
@@ -42,6 +45,7 @@
 				<tr>
 					<th colspan="6">{TR_SOFTWARE_COUNT}:&nbsp;{TR_SOFTWARE_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 			<br />
 			<h2 class="apps_installer"><span>{TR_UPLOAD_SOFTWARE}</span></h2>
@@ -76,6 +80,7 @@
 			<br />
 			<h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_PACKAGE_TITLE}</th>
 					<th width="120">{TR_PACKAGE_INSTALL_TYPE}</th>
@@ -85,6 +90,8 @@
 					<th width="120">{TR_PACKAGE_VENDOR_HP}</th>
 					<th width="180">{TR_PACKAGE_ACTION}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_webdepotsoftware_list -->
 				<tr>
 					<td colspan="7"><div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div></td>
@@ -119,5 +126,6 @@
 				<tr>
 					<th colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 			<!-- EDP: webdepot_list -->

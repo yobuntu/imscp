@@ -1,8 +1,11 @@
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th style="text-align: center">{TR_FEATURE}</th>
 					<th>{TR_DESCRIPTION}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><a href="protected_areas.php" class="icon_big icon_center i_htaccessicon" title="{TR_HTACCESS}"></a></td>
 					<td>{TR_HTACCESS_TXT}</td>
@@ -41,4 +44,5 @@
 					<td>{TR_WEBSTATS_TXT}</td>
 				</tr>
 				<!-- EDP: webstats_feature -->
+				</tbody>
 			</table>

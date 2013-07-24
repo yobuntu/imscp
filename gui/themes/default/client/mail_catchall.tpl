@@ -17,7 +17,7 @@
 			<!-- EDP: catchall_message -->
 
 			<table>
-				<thead>
+				<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_DOMAIN}</th>
 						<th>{TR_CATCHALL}</th>
@@ -25,7 +25,7 @@
 						<th>{TR_ACTION}</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="ui-widget-content">
 					<!-- BDP: catchall_item -->
 						<tr>
 							<td>{CATCHALL_DOMAIN}</td>

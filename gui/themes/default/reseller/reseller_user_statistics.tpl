@@ -8,7 +8,7 @@
 
 <!-- BDP: domain_statistics_entries_block -->
 <table class="datatable" style="text-align: center">
-	<thead>
+	<thead class="ui-widget-header">
 	<tr>
 		<th>{TR_DOMAIN_NAME}</th>
 		<th>{TR_TRAFF}</th>
@@ -42,7 +42,7 @@
 		<th>{TR_SQL_USER}</th>
 	</tr>
 	</tfoot>
-	<tbody>
+	<tbody class="ui-widget-content">
 	<!-- BDP: domain_statistics_entry_block -->
 	<tr>
 		<td>

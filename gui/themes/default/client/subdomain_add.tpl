@@ -47,9 +47,12 @@
 			<!-- BDP: subdomain_add_form -->
 			<form name="addSubdomainFrm" method="post" action="subdomain_add.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="3">{TR_SUBDOMAIN_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>
 							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label>
@@ -100,6 +103,7 @@
 							<input name="forward" type="text" class="textinput" id="forward" style="vertical-align:middle;" value="{FORWARD}"{READONLY_FORWARD} />
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="add_subd"/>

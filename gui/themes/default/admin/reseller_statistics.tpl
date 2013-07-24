@@ -8,7 +8,7 @@
 
 			<!-- BDP: reseller_statistics_entries_block -->
 			<table class="datatable">
-				<thead>
+				<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_RESELLER_NAME}</th>
 						<th>{TR_TRAFF}</th>
@@ -36,7 +36,7 @@
 						<th>{TR_SQL_USER}</th>
 					</tr>
 				</tfoot>
-				<tbody>
+				<tbody class="ui-widget-content">
 					<!-- BDP: reseller_statistics_entry_block -->
 					<tr>
 						<td>

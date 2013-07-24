@@ -2,7 +2,7 @@
 			<!-- BDP: day_server_statistics_block -->
             <p><strong>{TR_YEAR}:</strong> {YEAR} <strong>{TR_MONTH}:</strong> {MONTH} <strong>{TR_DAY}:</strong> {DAY}</p>
             <table>
-            	<thead>
+				<thead class="ui-widget-header">
 	                <tr>
 	                    <th>{TR_HOUR}</th>
 	                    <th>{TR_WEB_IN}</th>
@@ -33,8 +33,8 @@
 	                    <td>{ALL_OUT_ALL}</td>
 	                    <td>{ALL_ALL}</td>
 	                </tr>
-	            </tfoot>   
-                <tbody>
+	            </tfoot>
+				<tbody class="ui-widget-content">
 	                <!-- BDP: hour_list -->
 	                <tr>
 	                    <td>{HOUR}</td>

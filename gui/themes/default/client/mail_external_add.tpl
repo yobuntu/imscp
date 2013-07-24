@@ -50,7 +50,7 @@
         <a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#" class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a> | <a href="#" class="trigger_reset">{TR_RESET_ENTRIES}</a>
     </div>
     <table>
-        <thead>
+		<thead class="ui-widget-header">
         <tr>
             <th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></th>
             <th>{TR_PRIORITY}</th>
@@ -64,7 +64,7 @@
             <th>{TR_HOST}</th>
         </tr>
         </tfoot>
-        <tbody>
+		<tbody class="ui-widget-content">
         <!-- BDP: item_entries -->
         <tr>
             <td>

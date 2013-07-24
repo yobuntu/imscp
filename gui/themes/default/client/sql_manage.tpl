@@ -18,10 +18,13 @@
 		</script>
 			<!-- BDP: sql_databases_users_list -->
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_DATABASE}</th>
 					<th>{TR_ACTIONS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: sql_databases_list -->
 				<tr>
 					<td style="width:250px;"><strong>{DB_NAME}</strong></td>
@@ -47,5 +50,6 @@
 					</td>
 				</tr>
 				<!-- EDP: sql_databases_list -->
+				</tbody>
 			</table>
 			<!-- EDP: sql_databases_users_list -->

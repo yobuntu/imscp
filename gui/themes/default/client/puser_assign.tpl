@@ -1,9 +1,12 @@
 
 			<form name="assignGroupFrm" method="post" action="protected_user_assign.php?uname={UNAME}">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{UNAME}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: in_group -->
 						<tr>
 							<td><label for="groups_in">{TR_MEMBER_OF_GROUP}</label></td>
@@ -34,6 +37,7 @@
 							</td>
 						</tr>
 					<!-- EDP: not_in_group -->
+					</tbody>
 				</table>
 
 				<div class="buttons">

@@ -1,8 +1,11 @@
 			<form name="personalChangeFrm" action="personal_change.php" method="post">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_PERSONAL_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="fname">{TR_FIRST_NAME}</label></td>
 						<td><input type="text" name="fname" id="fname" value="{FIRST_NAME}"/></td>
@@ -61,6 +64,7 @@
 						<td><label for="fax">{TR_FAX}</label></td>
 						<td><input type="text" name="fax" id="fax" value="{FAX}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="submit" type="submit" value="{TR_UPDATE_DATA}"/>

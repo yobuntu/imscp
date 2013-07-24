@@ -34,14 +34,14 @@
 			<form name="add_alias_frm" method="post" action="user_add4.php">
 				<!-- BDP: alias_list -->
 				<table class="firstColFixed">
-					<thead>
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_DOMAIN_ALIAS}</th>
 						<th>{TR_FORWARD}</th>
 						<th>{TR_STATUS}</th>
 					</tr>
 					</thead>
-					<tbody>
+					<tbody class="ui-widget-content">
 					<!-- BDP: alias_entry -->
 					<tr>
 						<td>{DOMAIN_ALIAS}</td>
@@ -53,12 +53,12 @@
 				</table>
 				<!-- EDP: alias_list -->
 				<table class="firstColFixed">
-					<thead>
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_ADD_ALIAS}</th>
 					</tr>
 					</thead>
-					<tbody>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>
 							<label for="ndomain_name">{TR_DOMAIN_NAME}</label><span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>

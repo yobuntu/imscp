@@ -48,7 +48,11 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
 .main_menu a:hover, .main_menu .active a{background-color: rgba(255, 255, 255, 0.3);}
 
 /* Location */
-.location {background: rgb(0, 0, 0) url(../images/black/background/ui-bg_glass_40_000000_1x400.png) repeat-x 50% 50%;}
+.location {
+    /*background: rgb(0, 0, 0) url(../images/black/background/ui-bg_glass_40_000000_1x400.png) repeat-x 50% 50%;*/
+    border: none !important
+;
+}
 
 /* Section */
 .location-area h1 {color: rgb(255, 255, 255);}
@@ -72,37 +76,23 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
  */
 
 /* titles */
+
 h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 
 /* Tables */
-tr:nth-child(odd) {background-color: rgb(237, 237, 237);}
 
-.even {background:rgb(255,255,255);}
-.odd {background-color: rgb(237, 237, 237);}
+tbody tr:nth-child(even) {background-color: rgb(237, 237, 237);}
+table td { border-top-color: rgb(223, 223, 223); }
 
-td {
-	border-top-color: rgb(223, 223, 223);
-	border-bottom-color: rgb(223, 223, 223);
-}
-td:first-child {border-left-color: rgb(223, 223, 223);}
-td:last-child {border-right-color: rgb(223, 223, 223);}
-th, tfoot td {
-	background: rgb(0, 0, 0) url(../images/black/background/ui-bg_glass_40_000000_1x400.png) repeat-x 50% 50%;
-	color: rgb(255, 255, 255);
-	border-top-color: rgb(0, 0, 0);
-	border-bottom-color: rgb(0, 0, 0);
-}
-th:first-child, tfoot td:first-child {border-left-color: rgb(0, 0, 0);}
-th:last-child, tfoot td:last-child {border-right-color: rgb(0, 0, 0);}
-
+/* dataTables */
+/*
 .datatable tfoot td:first-child {border-left-color: rgb(223, 223, 223);}
 .datatable tfoot td:last-child {border-right-color:rgb(223, 223, 223);}
 .datatable tfoot td {border-bottom-color:rgb(223, 223, 223);}
-
-/* dataTables */
-.datatable .sorting_asc { background: url('../images/black/datatable/asc.png') no-repeat center right; }
+.datatable .sorting_asc { background: url('../images/black/datatable/asc.png') repeat-y center left; }
 .datatable .sorting_desc { background: url('../images/black/datatable/desc.png') no-repeat center right; }
 .datatable .sorting { background: url('../images/black/datatable/bg.png') no-repeat center right; }
+*/
 
 /* Form elements */
 

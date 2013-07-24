@@ -43,7 +43,7 @@
         <form action="mail_delete.php" method="post" id="delete_marked_mails">
         <!-- EDP: delete_marked_mails_form_head -->
 		<table>
-			<thead>
+			<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_MAIL}</th>
 					<th>{TR_TYPE}</th>
@@ -53,7 +53,7 @@
                     <th>{TR_DEL_ITEM}  <!-- BDP: mark_all_mails_to_delete --><input type="checkbox" id="checkAll" name="checkAll" /><!-- EDP: mark_all_mails_to_delete --></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="ui-widget-content">
 				<!-- BDP: mail_item -->
 				<tr>
 					<td style="width: 300px;">

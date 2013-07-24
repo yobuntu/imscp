@@ -2,9 +2,12 @@
 			<!-- BDP: layout_colors_block -->
 			<form method="post" action="layout.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_LAYOUT_COLOR}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="layoutColor">{TR_CHOOSE_LAYOUT_COLOR}</label></td>
 						<td>
@@ -17,16 +20,19 @@
 							<input name="submit" type="submit" value="{TR_CHANGE}"/>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 			</form>
 			<!-- EDP: layout_colors_block -->
 			<form name="otherSettings" method="post" action="layout.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_OTHER_SETTINGS}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
-
 						<td><label for="mainMenuShowLabels">{TR_MAIN_MENU_SHOW_LABELS}</label></td>
 						<td>
 							<select name="mainMenuShowLabels" id="mainMenuShowLabels">
@@ -37,5 +43,6 @@
 							<input name="submit" type="submit" value="{TR_CHANGE}"/>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 			</form>

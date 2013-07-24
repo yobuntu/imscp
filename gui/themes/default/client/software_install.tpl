@@ -15,9 +15,12 @@
 			</script>
 			<form method="post" action="{SOFTWARE_INSTALL_BUTTON}">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_INSTALLATION}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: software_item -->
 					<tr>
 						<td>{TR_NAME}</td>
@@ -85,12 +88,16 @@
 							<!-- EDP: softwaredbuser_message -->
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<!-- EDP: require_installdb -->
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_INSTALLATION_INFORMATION}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="install_username">{TR_INSTALL_USER}</label></td>
 						<td><input type="text" name="install_username" id="install_username" value="{VAL_INSTALL_USERNAME}"/></td>
@@ -104,6 +111,7 @@
 						<td><input type="text" name="install_email" id="install_email" value="{VAL_INSTALL_EMAIL}"/></td>
 					</tr>
 					<!-- EDP: software_item -->
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="button" onClick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}"/>

@@ -18,10 +18,13 @@
 			<form name="editFrm" method="post" action="phpini.php">
 				<!-- BDP: php_editor_first_block -->
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_DIRECTIVE_NAME}</th>
 						<th>{TR_DIRECTIVE_VALUE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: allow_url_fopen_block -->
 					<tr>
 						<td>
@@ -90,14 +93,18 @@
 						</td>
 					</tr>
 					<!-- EDP: disable_functions_block -->
+					</tbody>
 				</table>
 				<!-- EDP: php_editor_first_block -->
 				<!-- BDP: php_editor_second_block -->
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_PARAMETER}</th>
 						<th>{TR_STATUS}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>
 							<label>{TR_DISABLE_FUNCTIONS_EXEC}</label><span style="vertical-align: middle;" class="icon i_help" id="exec_help" title="{TR_EXEC_HELP}">{TR_HELP}</span>
@@ -111,6 +118,7 @@
 							</div>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<!-- EDP: php_editor_second_block -->
 				<div class="buttons">

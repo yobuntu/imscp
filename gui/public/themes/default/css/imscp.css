@@ -74,6 +74,7 @@ q:before, q:after {
 	content: none;
 }
 
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -317,7 +318,6 @@ h2 span, h3 span {
 /* Title icons */
 
 .body .adminlog { background-image: url(../images/content/table_icon_adminlog.png); }
-.body .billing { background-image: url(../images/content/table_icon_billing.png); }
 .body .debugger { background-image: url(../images/content/table_icon_debugger.png); }
 .body .diskusage { background-image: url(../images/content/table_icon_diskusage.png); }
 .body .doc { background-image: url(../images/content/table_icon_doc.png); }
@@ -335,7 +335,6 @@ h2 span, h3 span {
 .body .multilanguage { background-image: url(../images/content/table_icon_multilanguage.png); }
 .body .no { background-image: url(../images/content/table_icon_no.png); }
 .body .password { background-image: url(../images/content/table_icon_password.png); }
-.body .purchasing { background-image: url(../images/content/table_icon_purchasing.png); }
 .body .serverstatus { background-image: url(../images/content/table_icon_serverstatus.png); }
 .body .hosting_plans { background-image: url(../images/content/table_icon_hosting_plans.png); }
 .body .settings { background-image: url(../images/content/table_icon_settings.png); }
@@ -406,43 +405,31 @@ small {font-size:smaller;}
 
 /* Tables */
 table {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 1em 0;
-	text-align: left;
+    width: 100%;
+    margin: 1em 0;
+    text-align: left;
 }
-th, tfoot td {
-	vertical-align: middle;
-	padding: 0.5em;
-	white-space: nowrap;
-	text-align: left;
-	font-weight: bold;
+
+table th, table td {
+    padding: 0.5em;
+    vertical-align: middle;
 }
-th, tfoot td {
-	border-top: 1px solid;
-	border-bottom: 1px solid;
-}
-th:first-child, tfoot td:first-child {border-left: 1px solid;}
-th:last-child, tfoot td:last-child {border-right: 1px solid;}
-td:first-child {border-left: 1px solid;}
-td:last-child {border-right: 1px solid;}
-tr:last-child {border-bottom: 1px solid;}
+
+table td { border-top: 1px solid }
+
 .firstColFixed td:first-child {width:300px;}
-td {
-	padding: 0.5em;
-	vertical-align: middle;
-	border-top: 1px solid;
-	border-bottom: 1px solid;
-}
- legend {
-	font-size: 1.2em;
-	font-weight: bold;
-	text-align: left;
-	line-height: 24px;
-}
+
+table .icon {float: none;}
+
 /* Hack to fix firefox's bad legend positioning */
 @-moz-document url-prefix() {legend { top: -1.5em; }}
-table .icon {float: none;}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+    line-height: 24px;
+}
 
 /* Icons */
 .app_icon {
@@ -542,9 +529,9 @@ table .icon {float: none;}
 .i_appicon { background-image: url(../images/icons/appicon.png); }
 .i_open { background-image: url(../images/icons/open.png); }
 .i_close { background-image: url(../images/icons/close.png); }
-.i_purchase { background-image: url(../images/icons/purchase.png); }
 
 /* data tables */
+
 .dataTables_wrapper {
 	position: relative;
 	width:100%;
@@ -572,7 +559,9 @@ table .icon {float: none;}
 .dataTables_paginate {float: right;}
 .dataTables_info, .dataTables_paginate {margin-top: 0.5em;}
 
+
 /* Pagination */
+
 .paginate_disabled_previous,
 .paginate_enabled_previous,
 .paginate_disabled_next,
@@ -593,6 +582,7 @@ table .icon {float: none;}
 	cursor: pointer;
 	padding-right:18px;
 }
+
 
 /* Form elements */
 table input[type="text"], table input[type="password"] {min-width: 200px;}
@@ -700,6 +690,7 @@ textarea {
 /**
  * Footer
  */
+
 .footer {
 	text-align: center;
 	width: 197px;
@@ -902,9 +893,9 @@ textarea {
 .accordion .even, .accordion .odd { width:100%;}
 
 iframe {
-width: 100%;
-height: 100%;
-margin: 0px;
-padding: 0px;
-border: 0px;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
 }

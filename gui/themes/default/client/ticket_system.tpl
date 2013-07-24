@@ -19,6 +19,7 @@
 
             <!-- BDP: tickets_list -->
             <table>
+				<thead class="ui-widget-header">
                 <tr>
                     <th>{TR_TICKET_STATUS}</th>
                     <th>{TR_TICKET_FROM}</th>
@@ -27,6 +28,8 @@
                     <th>{TR_TICKET_LAST_ANSWER_DATE}</th>
                     <th>{TR_TICKET_ACTIONS}</th>
                 </tr>
+				</thead>
+				<tbody class="ui-widget-content">
                 <!-- BDP: tickets_item -->
                 <tr>
                     <td><strong>{TICKET_STATUS_VAL}</strong></td>
@@ -56,6 +59,7 @@
                         </div>
                     </td>
                 </tr>
+				</tbody>
             </table>
             <div class="paginator">
                 <!-- BDP: scroll_next_gray -->

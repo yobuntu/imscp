@@ -1,9 +1,12 @@
 
 			<form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_MESSAGE_TEMPLATE_INFO}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td>{TR_USER_LOGIN_NAME}</td>
 						<td>{USERNAME}</td>
@@ -28,11 +31,15 @@
 						<td>{TR_BASE_SERVER_VHOST_PREFIX}</td>
 						<td>{BASE_SERVER_VHOST_PREFIX}</td>
 					</tr>
+					</tbody>
 				</table>
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_MESSAGE_TEMPLATE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="auto_subject">{TR_SUBJECT}</label></td>
 						<td><input type="text" id="auto_subject" name="auto_subject" value="{SUBJECT_VALUE}" class="inputTitle"/></td>
@@ -49,6 +56,7 @@
 						<td>{TR_SENDER_NAME}</td>
 						<td>{SENDER_NAME_VALUE}</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="email_setup"/>

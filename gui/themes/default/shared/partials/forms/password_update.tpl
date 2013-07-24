@@ -42,9 +42,12 @@
     <div id="dialog_box"></div>
 	<form name="passwordUpdate" method="post" action="password_update.php">
             <table class="firstColFixed">
+				<thead class="ui-widget-header">
                 <tr>
                     <th colspan="3">{TR_PASSWORD_DATA}</th>
                 </tr>
+				</thead>
+				<tbody class="ui-widget-content">
                 <tr>
                     <td><label for="current_password">{TR_CURRENT_PASSWORD}</label></td>
                     <td colspan="2"><input id="current_password" name="current_password" type="password" value="" autocomplete="off"/></td>
@@ -62,6 +65,7 @@
                     <td><label for="password_confirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
                     <td colspan="2"><input name="password_confirmation" id="password_confirmation" type="password" value="" autocomplete="off"/></td>
                 </tr>
+				</tbody>
             </table>
             <div class="buttons">
                 <input type="submit" name="Submit" value="{TR_UPDATE}"/>

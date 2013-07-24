@@ -85,9 +85,12 @@
 	</script>
 	<form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}">
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th colspan="3">{TR_DOMAIN_OVERVIEW}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<tr>
 				<td>{TR_DOMAIN_NAME}</td>
 				<td colspan="2">{DOMAIN_NAME}</td>
@@ -115,14 +118,18 @@
 				<td>{TR_DOMAIN_IP}</td>
 				<td colspan="2">{DOMAIN_IP} {IP_DOMAIN}</td>
 			</tr>
+			</tbody>
 		</table>
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_DOMAIN_LIMITS}</th>
 				<th>{TR_LIMIT_VALUE}</th>
 				<th>{TR_CUSTOMER_CONSUMPTION}</th>
 				<th>{TR_RESELLER_CONSUMPTION}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: subdomain_limit_block -->
 			<tr>
 				<td><label for="domain_subd_limit">{TR_SUBDOMAINS_LIMIT}</label></td>
@@ -230,12 +237,16 @@
 					<span style="font-size: smaller;">{TR_RESELLER_DISKPACE_COMSUPTION}</span>
 				</td>
 			</tr>
+			</tbody>
 		</table>
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_FEATURE}</th>
 				<th>{TR_STATUS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: php_block -->
 			<tr>
 				<td><label for="domain_php">{TR_PHP}</label></td>
@@ -261,9 +272,12 @@
 						</div>
 						<table>
 							<!-- BDP: php_editor_permissions_block -->
+							<thead class="ui-widget-header">
 							<tr class="description">
 								<th colspan="2">{TR_PERMISSIONS}</th>
 							</tr>
+							</thead>
+							<tbody class="ui-widget-content">
 							<!-- BDP: php_editor_allow_url_fopen_block -->
 							<tr>
 							   <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -341,6 +355,7 @@
 							  </td>
 							</tr>
 							<!-- EDP: php_editor_default_values_block -->
+							</tbody>
 						</table>
 					</div>
 				</td>
@@ -421,6 +436,7 @@
 					</div>
 				</td>
 			</tr>
+			</tbody>
 		</table>
 		<div class="buttons">
 			<input name="submit" type="submit" value="{TR_UPDATE}"/>

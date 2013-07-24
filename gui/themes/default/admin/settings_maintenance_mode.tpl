@@ -1,9 +1,12 @@
 
 			<form action="settings_maintenance_mode.php" method="post" name="maintenancemode_frm" id="maintenancemode_frm">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_MAINTENANCE_MESSAGE}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="maintenancemode_message">{TR_MESSAGE}</label></td>
 						<td><textarea name="maintenancemode_message" id="maintenancemode_message">{MESSAGE_VALUE}</textarea></td>
@@ -17,6 +20,7 @@
 							</select>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="submit" type="submit" value="{TR_APPLY}"/>

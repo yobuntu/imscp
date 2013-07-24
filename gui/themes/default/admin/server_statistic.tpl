@@ -18,7 +18,7 @@
 
 			<!-- BDP: server_statistics_block -->
 			<table>
-				<thead>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_DAY}</th>
 					<th>{TR_WEB_IN}</th>
@@ -50,7 +50,7 @@
 					<td>{ALL_ALL}</td>
 				</tr>
 				</tfoot>
-				<tbody>
+				<tbody class="ui-widget-content">
 				<!-- BDP: day_server_statistics_block -->
 				<tr>
 					<td><a href="server_statistic_day.php?year={YEAR}&amp;month={MONTH}&amp;day={DAY}" class="link">{DAY}</a></td>

@@ -1,9 +1,12 @@
 
 			<form name="client_personal_change_frm" method="post" action="personal_change.php">
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_PERSONAL_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td style="width:300px;"><label for="fname">{TR_FIRST_NAME}</label></td>
 						<td><input id="fname" name="fname" type="text" value="{FIRST_NAME}"/></td>
@@ -39,7 +42,7 @@
 						<td><input type="text" name="city" id="city" value="{CITY}"/></td>
 					</tr>
 					<tr>
-						<td><label for="city">{TR_STATE}</label></td>
+						<td><label for="state">{TR_STATE}</label></td>
 						<td><input type="text" name="state" id="state" value="{STATE}"/></td>
 					</tr>
 					<tr>
@@ -58,6 +61,7 @@
 						<td><label for="fax">{TR_FAX}</label></td>
 						<td><input type="text" name="fax" id="fax" value="{FAX}"/></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="submit" name="Submit" value="{TR_UPDATE_DATA}" />

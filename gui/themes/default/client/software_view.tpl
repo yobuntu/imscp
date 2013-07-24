@@ -1,9 +1,12 @@
 
 			<!-- BDP: software_item -->
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_TITLE}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_NAME}</td>
 					<td>{SOFTWARE_NAME}</td>
@@ -74,5 +77,6 @@
 						</form>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<!-- EDP: software_item -->

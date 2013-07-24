@@ -79,9 +79,12 @@
 	</script>
 		<form name="client_mail_add" action="mail_add.php" method="post" id="client_mail_add">
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_MAIl_ACCOUNT_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><label for="username">{TR_USERNAME}</label></td>
 					<td><input type="text" name="username" id="username" value="{USERNAME}" /></td>
@@ -158,6 +161,7 @@
 					</td>
 					<td><textarea name="forward_list" id="forward_list">{FORWARD_LIST}</textarea></td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="add_user" />

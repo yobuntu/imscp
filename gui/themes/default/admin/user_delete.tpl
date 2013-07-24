@@ -1,10 +1,12 @@
 
 			<form name="admin_delete_customer_frm" method="post" action="user_delete.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2"><strong>{TR_ACCOUNT_SUMMARY}</strong></th>
 					</tr>
-
+					</thead>
+					<tbody class="ui-widget-content">
 					<!-- BDP: mail_list -->
 					<tr>
 						<td colspan="2"><strong><i>{TR_EMAILS}</i></strong>
@@ -88,6 +90,7 @@
 							<label for="delete">{TR_YES_DELETE_ACCOUNT}</label>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="submit" value="{TR_DELETE_ACCOUNT}" />

@@ -19,12 +19,15 @@
 
 		<!-- BDP: admin_list -->
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_ADMIN_USERNAME}</th>
 				<th>{TR_CREATED_ON}</th>
 				<th>{TR_ADMIN_CREATED_BY}</th>
 				<th>{TR_ADMIN_ACTIONS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: admin_item -->
 			<tr>
 				<td>{ADMIN_USERNAME}</td>
@@ -42,6 +45,7 @@
 				</td>
 			</tr>
 			<!-- EDP: admin_item -->
+			</tbody>
 		</table>
 		<!-- EDP: admin_list -->
 
@@ -53,12 +57,15 @@
 
 		<!-- BDP: rsl_list -->
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_RSL_USERNAME}</th>
 				<th>{TR_CREATED_ON}</th>
 				<th>{TR_RSL_CREATED_BY}</th>
 				<th>{TR_RSL_ACTIONS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: rsl_item -->
 			<tr>
 				<td>{RSL_USERNAME}</td>
@@ -71,6 +78,7 @@
 				</td>
 			</tr>
 			<!-- EDP: rsl_item -->
+			</tbody>
 		</table>
 		<!-- EDP: rsl_list -->
 
@@ -109,6 +117,7 @@
 
 		<!-- BDP: usr_list -->
 		<table>
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_USER_STATUS}</th>
 				<th>{TR_USR_USERNAME}</th>
@@ -116,6 +125,8 @@
 				<th>{TR_USR_CREATED_BY}</th>
 				<th>{TR_USR_ACTIONS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: usr_item -->
 			<tr>
 				<td>
@@ -159,6 +170,7 @@
 			</tr>
 			<!-- EDP: user_details -->
 			<!-- EDP: usr_item -->
+			</tbody>
 		</table>
 
 		<div class="paginator">

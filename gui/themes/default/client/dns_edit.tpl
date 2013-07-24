@@ -82,9 +82,12 @@
 	</script>
 		<form name="edit_dns_frm" method="post" action="{ACTION_MODE}">
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_CUSTOM_DNS_RECORD_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: add_record -->
 				<tr>
 					<td><label for="domain_id">{TR_DOMAIN}</label></td>
@@ -177,6 +180,7 @@
 					<td><label for="dns_txt_data">{TR_DNS_TXT_DATA}</label></td>
 					<td><input id="dns_txt_data" type="text" name="dns_txt_data" value="{DNS_TXT_DATA}" /></td>
 				</tr>
+				</tbody>
 			</table>
 
 			<div class="buttons">

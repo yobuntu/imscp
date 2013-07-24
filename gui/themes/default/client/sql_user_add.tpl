@@ -2,9 +2,12 @@
 			<form name="sql_add_user_frm" method="post" action="sql_user_add.php">
 				<!-- BDP: show_sqluser_list -->
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_ASSIGN_EXISTING_SQL_USER}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td style="width: 300px;"><label for="sqluser_id">{TR_SQL_USER_NAME}</label></td>
 						<td>
@@ -15,6 +18,7 @@
 							</select>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 
 				<div class="buttons">
@@ -25,9 +29,12 @@
 
 				<!-- BDP: create_sqluser -->
 				<table>
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_NEW_SQL_USER_DATA}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td style="width: 300px;"><label for="user_name">{TR_USER_NAME}</label></td>
 						<td>
@@ -69,6 +76,7 @@
 							<input id="pass_rep" type="password" name="pass_rep" value="" autocomplete="off" />
 						</td>
 					</tr>
+					</tbody>
 				</table>
 
 				<div class="buttons">

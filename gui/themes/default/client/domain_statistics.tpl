@@ -18,7 +18,7 @@
 
 			<!-- BDP: domain_statistics_block -->
 			<table width="100%" cellspacing="3">
-				<thead>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_DATE}</th>
 					<th>{TR_WEB_TRAFF}</th>
@@ -38,7 +38,7 @@
 					<td>{SUM_ALL}</td>
 				</tr>
 				</tfoot>
-				<tbody>
+				<tbody class="ui-widget-content">
 				<!-- BDP: traffic_table_item -->
 				<tr>
 					<td>{DATE}</td>

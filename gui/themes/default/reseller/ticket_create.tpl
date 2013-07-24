@@ -1,9 +1,12 @@
 
 			<form name="ticketFrm" method="post" action="ticket_create.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_NEW_TICKET}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="urgency"><strong>{TR_URGENCY}</strong></label></td>
 						<td>
@@ -23,6 +26,7 @@
 						<td><label for="user_message"><strong>{TR_YOUR_MESSAGE}</strong></label></td>
 						<td><textarea id="user_message" name="user_message">{USER_MESSAGE}</textarea></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input name="submit" type="submit" value="{TR_CREATE}"/>

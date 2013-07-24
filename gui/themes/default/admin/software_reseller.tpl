@@ -12,6 +12,7 @@
 		/*]]>*/
 		</script>
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
 					<th width="90" style="text-align: center">{TR_SOFTWARE_IMPORT}</th>
@@ -21,6 +22,8 @@
 					<th width="90" style="text-align: center">{TR_SOFTWARE_LANGUAGE}</th>
 					<th width="90" style="text-align: center">{TR_SOFTWARE_TYPE}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_softwaredepot_list -->
 				<tr>
 					<td colspan="7"><div class="warning">{NO_SOFTWAREDEPOT}</div></td>
@@ -46,10 +49,12 @@
 				<tr>
 					<th colspan="7">{TR_SOFTWAREDEPOT_COUNT}:&nbsp;{TR_SOFTWAREDEPOT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 			<br />
 			<h2 class="apps_installer"><span>{TR_ACTIVATED_SOFTWARE}</span></h2>
 			<table>
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_RESELLER_NAME}</th>
 					<th align="center" width="150">{TR_RESELLER_COUNT_SWDEPOT}</th>
@@ -57,6 +62,8 @@
 					<th align="center" width="150">{TR_RESELLER_COUNT_ACTIVATED}</th>
 					<th align="center" width="150">{TR_RESELLER_SOFTWARE_IN_USE}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<!-- BDP: no_reseller_list -->
 				<tr>
 					<td colspan="5"><div class="warning">{NO_RESELLER}</div></td>
@@ -74,5 +81,6 @@
 				<tr>
 					<th colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</th>
 				</tr>
+				</tbody>
 			</table>
 			<div class="paginator"></div>

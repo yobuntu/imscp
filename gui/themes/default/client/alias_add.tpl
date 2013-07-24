@@ -36,9 +36,12 @@
 		<!-- BDP: domain_alias_add_form -->
 		<form name="add_alias_frm" method="post" action="alias_add.php">
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="3">{TR_DOMAIN_ALIAS_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>
 						<label for="ndomain_name">{TR_DOMAIN_ALIAS_NAME}</label><span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
@@ -77,7 +80,7 @@
 						<input name="forward" type="text" class="textinput" id="forward" style="vertical-align:middle;" value="{FORWARD}"{READONLY_FORWARD} />
 					</td>
 				</tr>
-
+				</tbody>
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="add_alias" />

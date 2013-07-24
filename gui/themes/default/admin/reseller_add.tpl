@@ -108,9 +108,12 @@
 
 		<form name="createFrm" method="post" action="reseller_add.php">
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="3">{TR_ACCOUNT_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_RESELLER_NAME}</td>
 					<td colspan="2"><input type="text" name="admin_name" id="admin_name" value="{RESELLER_NAME}" /></td>
@@ -134,17 +137,18 @@
 					<td><label for="email">{TR_EMAIL}</label></td>
 					<td colspan="2"><input type="text" name="email" id="email" value="{EMAIL}"/></td>
 				</tr>
+				</tbody>
 			</table>
 			<!-- BDP: ips_block -->
 			<table id="reseller_ips_table" class="datatable">
-				<thead>
+				<thead class="ui-widget-header">
 					<tr>
 						<th>{TR_IP_ADDRESS}</th>
 						<th>{TR_IP_LABEL}</th>
 						<th>{TR_ASSIGN}</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody class="ui-widget-content">
 					<!-- BDP: ip_block -->
 					<tr>
 						<td>{IP_NUMBER}</td>
@@ -156,9 +160,12 @@
 			</table>
 			<!-- EDP: ips_block -->
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_ACCOUNT_LIMITS}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><label for="max_dmn_cnt">{TR_MAX_DMN_CNT}</label></td>
 					<td><input type="text" name="max_dmn_cnt" id="max_dmn_cnt" value="{MAX_DMN_CNT}"/></td>
@@ -195,11 +202,15 @@
 					<td><label for="max_disk_amnt">{TR_MAX_DISK_AMNT}</label></td>
 					<td><input type="text" name="max_disk_amnt" id="max_disk_amnt" value="{MAX_DISK_AMNT}"/></td>
 				</tr>
+				</tbody>
 			</table>
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_FEATURES}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><label>{TR_PHP_EDITOR}</label></td>
 					<td colspan="3" id="dialogContainer" style="height: 30px;">
@@ -215,9 +226,11 @@
 								<span id="msg_default">{TR_FIELDS_OK}</span>
 							</div>
 							<table>
+								<thead class="ui-widget-header">
 								<tr class="description">
 									<th colspan="2">{TR_PERMISSIONS}</th>
 								</tr>
+								</thead>
 								<tr>
 									<td>{TR_PHP_INI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
@@ -334,11 +347,15 @@
 						</div>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th colspan="2">{TR_PERSONAL_DATA}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td><label for="customer_id">{TR_CUSTOMER_ID}</label></td>
 					<td><input type="text" name="customer_id" id="customer_id" value="{CUSTOMER_ID}"/></td>
@@ -397,6 +414,7 @@
 					<td><label for="fax">{TR_FAX}</label></td>
 					<td><input type="text" name="fax" id="fax" value="{FAX}"/></td>
 				</tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<button name="submit" type="submit" class="frm-button">{TR_CREATE}</button>

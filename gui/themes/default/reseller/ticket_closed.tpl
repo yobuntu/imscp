@@ -18,7 +18,7 @@
         </script>
             <!-- BDP: tickets_list -->
             <table>
-                <thead>
+				<thead class="ui-widget-header">
                     <tr>
                         <th>{TR_TICKET_STATUS}</th>
                         <th>{TR_TICKET_FROM}</th>
@@ -28,7 +28,7 @@
                         <th>{TR_TICKET_ACTION}</th>
                     </tr>
                 </thead>
-                <tbody>
+				<tbody class="ui-widget-content">
                     <!-- BDP: tickets_item -->
                     <tr>
                         <td><strong>{TICKET_STATUS_VAL}</strong></td>

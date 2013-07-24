@@ -18,44 +18,12 @@
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-	<!--[if IE 6]>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.bgiframe-2.1.2.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-	<script type="text/javascript">
-		DD_belatedPNG.fix(
-			'.logo img, .custom_link, .database, .domains, .email, .ftp, .general, .hosting_plans, .manage_users,' +
-			'.purchasing, .settings, .statistics, .support, .webtools, .custom_link,' +
-			'.support, .profile, .webtools, .help, .logout, .backadmin, .adminlog, .billing, .debugger,.diskusage, .doc,' +
-			'.error, .flash, .hdd, .htaccess, .ip, .layout, .maintenancemode, .multilanguage, .no, .password,' +
-			'.serverstatus, .sql, .stats, .systeminfo, .tools, .traffic, .update,' +
-			'.user_blue, .user_green, .user_yellow, .user, .users, .users2, .apps_installer, .custom_link,' +
-			'.warning, .success2, .error, .info, .i_add_user, .i_awstatsicon, .i_backupicon, .i_bc_folder,' +
-			'.i_bc_locked, .i_bc_parent, .i_change_password, .i_close_interface, .i_database_small, .i_db_comit,' +
-			'.i_delete, .i_details, .i_disabled, .i_document, .i_domain_icon, .i_edit, .i_error, .i_error401,' +
-			'.i_error403, .i_error404, .i_error500, .i_error503, .i_errordocsicon, .i_filemanagericon,' +
-			'.i_ftp_account, .i_goto, .i_help, .i_hide_alias, .i_htaccessicon, .i_identity, .i_locale,' +
-			'.i_mail_icon, .i_next, .i_next_gray, .i_ok, .i_filemanager, .i_pma, .i_prev, .i_prev_gray,' +
-			'.i_reload, .i_show_alias, .i_stats, .i_user, .i_users, .i_webmailicon, .i_app_installer,' +
-			'i_app_installed, .i_app_download, .i_app_asc, .i_app_desc'
-		);
-	</script>
-	<![endif]-->
 	<!--[if IE]>
 	<script type="text/javascript">
 	/*<![CDATA[*/
-		// css adjustement for IE browsers
-		$(window).load(function(){
-			$('tr').each(function(index) {
-				if(index % 2) {
-					$(this).css('background-color', 'rgb(255, 255, 255)');
-				} else {
-					$(this).css('background-color', 'rgb(237, 237, 237)');
-				}
-			});
-
-			$("td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
-			$("th:last-child, tfoot td:last-child").css('border-right','1px solid rgb(0, 0, 0)');
-			$(".datatable tfoot td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
+		$(document).ready(function(){
+			// css adjustement for IE browsers
+			$("tbody tr:odd").css("background-color", "rgb(237, 237, 237)");
 		});
 	/*]]>*/
 	</script>
@@ -82,7 +50,7 @@
 			<!-- INCLUDE "../partials/navigation/main_menu.tpl" -->
 			<div class="logo"><img src="{ISP_LOGO}" alt="i-MSCP logo" /></div>
 		</div>
-		<div class="location">
+		<div class="ui-widget-header location">
 			<div class="location-area"><h1 class="{SECTION_TITLE_CLASS}">{TR_SECTION_TITLE}</h1></div>
 			<ul class="location-menu">
 				<!-- BDP: logged_from -->

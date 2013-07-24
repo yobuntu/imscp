@@ -1,9 +1,12 @@
 
 			<form name="admin_email_setup" method="post" action="circular.php">
 				<table class="firstColFixed">
+					<thead class="ui-widget-header">
 					<tr>
 						<th colspan="2">{TR_CIRCULAR}</th>
 					</tr>
+					</thead>
+					<tbody class="ui-widget-content">
 					<tr>
 						<td><label for="sender_email">{TR_SENDER_EMAIL}</label></td>
 						<td><input id="sender_email" type="text" name="sender_email" value="{SENDER_EMAIL}"/></td>
@@ -20,6 +23,7 @@
 						<td><label for="msg_text">{TR_MESSAGE_TEXT}</label></td>
 						<td><textarea id="msg_text" name="msg_text">{MESSAGE_TEXT}</textarea></td>
 					</tr>
+					</tbody>
 				</table>
 				<div class="buttons">
 					<input type="hidden" name="uaction" value="send_circular"/>

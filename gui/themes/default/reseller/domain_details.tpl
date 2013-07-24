@@ -57,11 +57,14 @@
 			</table>
 
 			<table class="firstColFixed">
+				<thead class="ui-widget-header">
 				<tr>
 					<th>{TR_FEATURE}</th>
 					<th>{TR_USED}</th>
 					<th>{TR_LIMIT}</th>
 				</tr>
+				</thead>
+				<tbody class="ui-widget-content">
 				<tr>
 					<td>{TR_SUBDOM_ACCOUNTS}</td>
 					<td>{VL_SUBDOM_ACCOUNTS_USED}</td>
@@ -92,6 +95,7 @@
 					<td>{VL_SQL_USER_ACCOUNTS_USED}</td>
 					<td>{VL_SQL_USER_ACCOUNTS_LIMIT}</td>
 				</tr>
+				</tbody>
 			</table>
 			<form name="buttons" method="post" action="?">
 				<div class="buttons">

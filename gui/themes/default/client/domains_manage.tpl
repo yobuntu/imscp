@@ -10,6 +10,7 @@
 
 		<!-- BDP: domain_list -->
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_NAME}</th>
 				<th>{TR_CREATE_DATE}</th>
@@ -17,6 +18,8 @@
 				<th>{TR_STATUS}</th>
 				<th>{TR_CERT}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: domain_item -->
 			<tr>
 				<!-- BDP: domain_status_reload_true -->
@@ -35,6 +38,7 @@
 				<td><a href="{CERT_SCRIPT}">{VIEW_CERT}</a></td>
 			</tr>
 			<!-- EDP: domain_item -->
+			</tbody>
 		</table>
 		<!-- EDP: domains_list -->
 
@@ -47,6 +51,7 @@
 
 		<!-- BDP: als_list -->
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_NAME}</th>
 				<th>{TR_MOUNT}</th>
@@ -55,6 +60,8 @@
 				<th>{TR_CERT}</th>
 				<th>{TR_ACTIONS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: als_item -->
 			<tr>
 				<!-- BDP: als_status_reload_true -->
@@ -77,6 +84,7 @@
 				</td>
 			</tr>
 			<!-- EDP: als_item -->
+			</tbody>
 		</table>
 		<!-- EDP: als_list -->
 
@@ -90,6 +98,7 @@
 
 		<!-- BDP: sub_list -->
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_NAME}</th>
 				<th>{TR_MOUNT}</th>
@@ -98,6 +107,8 @@
 				<th>{TR_CERT}</th>
 				<th>{TR_ACTIONS}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: sub_item -->
 			<tr>
 				<!-- BDP: sub_status_reload_true -->
@@ -120,6 +131,7 @@
 				</td>
 			</tr>
 			<!-- EDP: sub_item -->
+			</tbody>
 		</table>
 		<!-- EDP: sub_list -->
 
@@ -133,6 +145,7 @@
 
 		<!-- BDP: dns_list -->
 		<table class="firstColFixed">
+			<thead class="ui-widget-header">
 			<tr>
 				<th>{TR_DOMAIN_NAME}</th>
 				<th>{TR_DNS_NAME}</th>
@@ -141,6 +154,8 @@
 				<th>{TR_DNS_DATA}</th>
 				<th>{TR_DNS_ACTION}</th>
 			</tr>
+			</thead>
+			<tbody class="ui-widget-content">
 			<!-- BDP: dns_item -->
 			<tr>
 				<td><span class="icon i_domain_icon">{DNS_DOMAIN}</span></td>
@@ -158,6 +173,7 @@
 				</td>
 			</tr>
 			<!-- EDP: dns_item -->
+			</tbody>
 		</table>
 		<!-- EDP: dns_list -->
 		<!-- EDP: custom_dns_records_block -->
