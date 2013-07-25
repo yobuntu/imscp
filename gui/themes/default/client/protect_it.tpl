@@ -15,6 +15,7 @@
 	}
 	/* ]]> */
 </script>
+
 <form name="addProtectedAreaFrm" method="post" action="protected_areas_add.php">
 	<table class="firstColFixed">
 		<thead class="ui-widget-header">

@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-	$('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+		$('.datatable').dataTable({ "oLanguage": {DATATABLE_TRANSLATIONS}});
 	});
 	/*]]>*/
 </script>
@@ -46,21 +46,20 @@
 	<!-- BDP: domain_statistics_entry_block -->
 	<tr>
 		<td>
-			<a href="domain_statistics.php?month={MONTH}&amp;year={YEAR}&amp;domain_id={DOMAIN_ID}"
-			   class="icon i_domain_icon" title="{TR_DOMAIN_TOOLTIP}">{DOMAIN_NAME}</a>
+			<a href="domain_statistics.php?month={MONTH}&amp;year={YEAR}&amp;domain_id={DOMAIN_ID}" class="icon i_domain_icon" title="{TR_DOMAIN_TOOLTIP}">{DOMAIN_NAME}</a>
 		</td>
 		<td>
 			<div class="graph">
 				<span style="width: {TRAFF_PERCENT}%"></span><strong>{TRAFF_PERCENT} %</strong>
 			</div>
-		{TRAFF_MSG}
+			{TRAFF_MSG}
 		</td>
 		<td>
 			<div class="graph">
 				<span style="width: {DISK_PERCENT}%"></span>
 				<strong>{DISK_PERCENT} %</strong>
 			</div>
-		{DISK_MSG}
+			{DISK_MSG}
 		</td>
 		<td>{WEB}</td>
 		<td>{FTP}</td>

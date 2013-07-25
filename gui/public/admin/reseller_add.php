@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,8 +35,8 @@
  * @link        http://i-mscp.net
  */
 
-/*******************************************************************************
- * Script functions
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
@@ -81,15 +81,15 @@ function &admin_getData()
 				'fax' => '',
 				'street1' => '',
 				'street2' => '',
-				'max_dmn_cnt' => '',
-				'max_sub_cnt' => '',
-				'max_als_cnt' => '',
-				'max_mail_cnt' => '',
-				'max_ftp_cnt' => '',
-				'max_sql_db_cnt' => '',
-				'max_sql_user_cnt' => '',
-				'max_traff_amnt' => '',
-				'max_disk_amnt' => '',
+				'max_dmn_cnt' => '0',
+				'max_sub_cnt' => '0',
+				'max_als_cnt' => '0',
+				'max_mail_cnt' => '0',
+				'max_ftp_cnt' => '0',
+				'max_sql_db_cnt' => '0',
+				'max_sql_user_cnt' => '0',
+				'max_traff_amnt' => '0',
+				'max_disk_amnt' => '0',
 				'software_allowed' => 'no',
 				'softwaredepot_allowed' => 'no',
 				'websoftwaredepot_allowed' => 'no',
@@ -375,6 +375,7 @@ function admin_generateForm($tpl, &$data)
 /**
  * Check and create reseller account.
  *
+ * @throws iMSCP_Exception_Database
  * @return bool TRUE on success, FALSE otherwise
  */
 function admin_checkAndCreateResellerAccount()
@@ -637,7 +638,7 @@ function admin_checkAndCreateResellerAccount()
 	return false;
 }
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Main script
  */
 
