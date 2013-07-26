@@ -24,7 +24,7 @@ function getUri() {
     uri = 'unknown';
 
 	if (document.location.pathname !== undefined) {
-		uri = document.location.pathname.replace( /[<]/g, "&lt;").replace(/[>]/g, "&gt;");;
+		uri = document.location.pathname.replace( /[<]/g, "&lt;").replace(/[>]/g, "&gt;");
 
         if(document.location.search !== undefined) {
            uri = uri + document.location.search;

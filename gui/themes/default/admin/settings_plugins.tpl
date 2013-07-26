@@ -24,7 +24,7 @@
 			$('select[name="bulkActions"] option[value=' + $(this).val() + ']').attr("selected", "selected");
 		});
 
-		$("th :checkbox").change(
+		$("thead :checkbox, tfoot :checkbox").change(
 			function ($e) {
 				$("table :checkbox").prop('checked', $(this).is(':checked'));
 			}
@@ -74,10 +74,10 @@
 </div>
 
 <form name="pluginsFrm" action="settings_plugins.php" method="post">
-	<table class="datatables">
+	<table class="datatable">
 		<thead class="ui-widget-header">
 		<tr>
-			<th style="width: 21px;"><input type="checkbox"/></th>
+			<th style="width: 21px;"><label><input type="checkbox"/></label></th>
 			<th style="width: 150px">{TR_PLUGIN}</th>
 			<th>{TR_DESCRIPTION}</th>
 			<th>{TR_STATUS}</th>
@@ -86,17 +86,17 @@
 		</thead>
 		<tfoot class="ui-widget-header">
 		<tr>
-			<th><input type="checkbox"/></th>
-			<th>{TR_PLUGIN}</th>
-			<th>{TR_DESCRIPTION}</th>
-			<th>{TR_STATUS}</th>
-			<th>{TR_ACTIONS}</th>
+			<td><label><input type="checkbox"/></label></td>
+			<td>{TR_PLUGIN}</td>
+			<td>{TR_DESCRIPTION}</td>
+			<td>{TR_STATUS}</td>
+			<td>{TR_ACTIONS}</td>
 		</tr>
 		</tfoot>
 		<tbody class="ui-widget-content">
 		<!-- BDP: plugin_block -->
 		<tr>
-			<td><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"/></td>
+			<td><label><input type='checkbox' name='checked[]' value="{PLUGIN_NAME}"/></label></td>
 			<td><p><strong>{PLUGIN_NAME}</strong></p></td>
 			<td>
 				<p>{PLUGIN_DESCRIPTION}</p>

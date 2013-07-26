@@ -19,8 +19,8 @@
 				}
 			}
 		);
-		$('.trigger_add').click(
-			function () {
+		$(".trigger_add").click(
+			function() {
 				var str_mx = '<tr>';
 				str_mx += '	<td>';
 				str_mx += '		<label><input type="checkbox" name="to_delete[]" value="" disabled="disabled" /></label>';
@@ -48,7 +48,7 @@
 				i++;
 			}
 		);
-		$('.trigger_remove').click(function () {
+		$(".trigger_remove").click(function() {
 			if (i > 1) {
 				var item = $("tbody tr:last");
 
@@ -85,12 +85,12 @@
 		</thead>
 		<tfoot class="ui-widget-header">
 		<tr>
-			<th style="width:21px;">
+			<td style="width:21px;">
 				<a href="#" title="{TR_SELECT_ALL_ENTRIES_MESSAGE}"><label><input type="checkbox"/></label></a>
-			</th>
-			<th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></th>
-			<th>{TR_PRIORITY}</th>
-			<th>{TR_HOST}</th>
+			</td>
+			<td>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></td>
+			<td>{TR_PRIORITY}</td>
+			<td>{TR_HOST}</td>
 		</tr>
 		</tfoot>
 		<tbody class="ui-widget-content">

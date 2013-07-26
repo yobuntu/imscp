@@ -15,7 +15,9 @@
 	</thead>
 	<!-- BDP: ftps_total -->
 	<tfoot class="ui-widget-header">
-	<tr><td colspan="2">{TR_TOTAL_FTP_ACCOUNTS} {TOTAL_FTP_ACCOUNTS}</td></tr>
+	<tr>
+		<td colspan="2">{TR_TOTAL_FTP_ACCOUNTS} {TOTAL_FTP_ACCOUNTS}</td>
+	</tr>
 	</tfoot>
 	<!-- EDP: ftps_total -->
 	<tbody class="ui-widget-content">

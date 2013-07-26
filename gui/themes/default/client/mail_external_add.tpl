@@ -1,8 +1,8 @@
 <script type="text/javascript">
 	/* <![CDATA[ */
-	$(document).ready(function () {
+	$(document).ready(function() {
 		var i = $("tbody tr").length;
-		$('.trigger_add').click(
+		$(".trigger_add").click(
 			function () {
 				var str_mx = '<tr>';
 				str_mx += '	<td>';
@@ -28,7 +28,7 @@
 				i++;
 			}
 		);
-		$('.trigger_remove').click(function () {
+		$(".trigger_remove").click(function() {
 			if (i > 1) {
 				$("tbody tr:last").remove();
 				i--;
@@ -36,7 +36,7 @@
 				alert('{TR_TRIGGER_REMOVE_ALERT}');
 			}
 		});
-		$('.trigger_reset').click(function () {
+		$(.#trigger_reset").click(function() {
 			while (i > 1) {
 				$("tbody tr:last").remove();
 				i--;
@@ -60,9 +60,9 @@
 		</thead>
 		<tfoot class="ui-widget-header">
 		<tr>
-			<th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></th>
-			<th>{TR_PRIORITY}</th>
-			<th>{TR_HOST}</th>
+			<td>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></td>
+			<td>{TR_PRIORITY}</td>
+			<td>{TR_HOST}</td>
 		</tr>
 		</tfoot>
 		<tbody class="ui-widget-content">

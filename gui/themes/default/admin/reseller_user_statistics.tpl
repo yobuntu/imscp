@@ -27,19 +27,19 @@
 	</thead>
 	<tfoot class="ui-widget-header">
 	<tr>
-		<th>{TR_DOMAIN_NAME}</th>
-		<th>{TR_TRAFF}</th>
-		<th>{TR_DISK}</th>
-		<th>{TR_WEB}</th>
-		<th>{TR_FTP_TRAFF}</th>
-		<th>{TR_SMTP}</th>
-		<th>{TR_POP3}</th>
-		<th>{TR_SUBDOMAIN}</th>
-		<th>{TR_ALIAS}</th>
-		<th>{TR_MAIL}</th>
-		<th>{TR_FTP}</th>
-		<th>{TR_SQL_DB}</th>
-		<th>{TR_SQL_USER}</th>
+		<td>{TR_DOMAIN_NAME}</td>
+		<td>{TR_TRAFF}</td>
+		<td>{TR_DISK}</td>
+		<td>{TR_WEB}</td>
+		<td>{TR_FTP_TRAFF}</td>
+		<td>{TR_SMTP}</td>
+		<td>{TR_POP3}</td>
+		<td>{TR_SUBDOMAIN}</td>
+		<td>{TR_ALIAS}</td>
+		<td>{TR_MAIL}</td>
+		<td>{TR_FTP}</td>
+		<td>{TR_SQL_DB}</td>
+		<td>{TR_SQL_USER}</td>
 	</tr>
 	</tfoot>
 	<tbody class="ui-widget-content">

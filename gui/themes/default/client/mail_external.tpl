@@ -4,13 +4,13 @@
 		var i = $("tbody :checkbox:not(':disabled')").change(
 			function () {
 				if ($("tbody :checkbox:checked").length == i) {
-					$("th :checkbox").prop('checked', true);
+					$("thead :checkbox,tfoot :checkbox").prop('checked', true);
 				} else {
-					$("th :checkbox").prop('checked', false);
+					$("thead :checkbox,tfoot :checkbox").prop('checked', false);
 				}
 			}
 		).length;
-		$("th :checkbox").click(
+		$("thead :checkbox, tfoot :checkbox").click(
 			function (e) {
 				if ($("tbody :checkbox:not(':disabled')").length != 0) {
 					$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
@@ -39,10 +39,10 @@
 		</thead>
 		<tfoot class="ui-widget-header">
 		<tr>
-			<th style="width:21px;"><label><input type="checkbox"/></label></th>
-			<th>{TR_DOMAIN}</th>
-			<th>{TR_STATUS}</th>
-			<th>{TR_ACTION}</th>
+			<td style="width:21px;"><label><input type="checkbox"/></label></td>
+			<td>{TR_DOMAIN}</td>
+			<td>{TR_STATUS}</td>
+			<td>{TR_ACTION}</td>
 		</tr>
 		</tfoot>
 		<tbody class="ui-widget-content">
