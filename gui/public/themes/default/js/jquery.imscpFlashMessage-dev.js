@@ -29,7 +29,7 @@
             var settings = $.extend(
                     {},
                     {
-                        animationSpeed : 500,
+                        animationSpeed : 1000,
                         timeout : 5000
                     },
                     options

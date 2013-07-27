@@ -403,6 +403,8 @@ small {font-size:smaller;}
 	background-image: url(../images/messages/info.png);
 }
 
+#flashMessage { display: none; }
+
 /* Tables */
 table {
     width: 100%;

@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpFlashMessage.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpFlashMessage-min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
 	<!--[if IE]>
 	<script type="text/javascript">
@@ -71,7 +71,7 @@
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-		<div id='flashMessage' class="message" style="display: none"></div>
+		<div id="flashMessage" class="message"></div>
 		{LAYOUT_CONTENT}
 	</div>
 </div>
