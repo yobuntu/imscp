@@ -136,11 +136,6 @@ function check_login($userLevel = '', $preventExternalLogin = true)
     $auth = iMSCP_Authentication::getInstance();
 
     if (!$auth->hasIdentity()) {
-        if (is_xhr()) {
-            header('HTTP/1.0 403 Forbidden');
-            exit;
-        }
-
         redirectTo('/index.php');
     }
 

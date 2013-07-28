@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpFlashMessage-min.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpAjaxCall-dev.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
 	<!--[if IE]>
 	<script type="text/javascript">
