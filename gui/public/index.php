@@ -36,6 +36,22 @@
 
 // Include core library
 require 'imscp-lib.php';
+require 'BackPress/class.wp-dependencies.php';
+require 'BackPress/class.wp-scripts.php';
+
+echo '<pre>';
+$scripts = new WP_Scripts();
+
+$scripts->add('jquery', 'themes/default/js/jquery.js', array(), '1.10.1');
+$scripts->add('jquery-ui', 'themes/default/js/jquery.ui.js', array('jquery'), '1.10.3');
+
+//$scripts->enqueue('jquery-ui');
+
+$scripts->do_head_items();
+
+print_r($scripts);
+
+exit;
 
 // Purge expired sessions
 do_session_timeout();

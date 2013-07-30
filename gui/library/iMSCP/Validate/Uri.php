@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Validate
- * @copyright	2010-2013 by by i-MSCP team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Validate
+ * @copyright   2010-2013 by by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
  /** @see Zend_Validate_Abstract */
@@ -34,12 +33,12 @@ require_once 'Zend/Validate/Abstract.php';
 require_once 'Zend/Uri.php';
 
 /**
+ * iMSCP_Validate_Uri class
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Validate
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Validate
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  */
 class iMSCP_Validate_Uri extends Zend_Validate_Abstract
 {

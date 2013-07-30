@@ -969,9 +969,10 @@ function encode($string, $charset = 'UTF-8')
  */
 function redirectTo($location)
 {
-	// For Ajax request, we are using a custom header, which is know by our Ajax library
+	// For Ajax request, we must use a custom header since redirection are
+	// handle transparently
 	if(is_xhr()) {
-		header('X-Location ' . $location);
+		header('X-Location: ' . $location);
 	} else {
 		header('Location: ' . $location);
 	}

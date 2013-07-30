@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 	<title>{TR_PAGE_TITLE}</title>
 	<meta http-equiv='Content-Script-Type' content='text/javascript'/>
@@ -46,6 +46,12 @@
 			$(":radio, :checkbox").change(function () {
 				$(this).blur();
 			});
+
+			$("#ajax").click(
+				function() {
+					imscp.AjaxCall();
+				}
+			);
 		});
 		/*]]>*/
 	</script>
@@ -74,6 +80,7 @@
 		<!-- EDP: page_message -->
 		<div id="flashMessage" class="message"></div>
 		{LAYOUT_CONTENT}
+		<button id="ajax" />Test</button>
 	</div>
 </div>
 <div class="footer">

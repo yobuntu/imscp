@@ -1,20 +1,12 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$.ajaxSetup({
-			url: $(location).attr('pathname'),
-			type: 'GET',
-			datatype: 'text',
-			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r) {
-				$('#password, #password_confirmation').val(r);
-			},
-			error: iMSCPajxError
+		$('#generate_password').click(function () {
+			imscp.AjaxCall({ success: function(data) {  $('#password, #password_confirmation').val(data) } });
 		});
 
-		$('#generate_password').click(function () {
-			$.ajax();
-		});
+		$('#password, #password_confirmation').val();
+
 		$('#reset_password').click(function () {
 			$('#password, #password_confirmation').val('');
 		});

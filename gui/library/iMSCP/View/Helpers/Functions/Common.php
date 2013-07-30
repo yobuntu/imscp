@@ -52,7 +52,7 @@ function gen_domain_details($tpl, $domainId)
 		);
 
 		return;
-	} else if (isset($_SESSION['details']) && $_SESSION['details'] == 'show') {
+	} elseif (isset($_SESSION['details']) && $_SESSION['details'] == 'show') {
 		$tpl->assign(
 			array(
 				'TR_VIEW_DETAILS' => tr('Hide aliases'),
@@ -105,7 +105,9 @@ function generateLoggedFrom($tpl)
 				'YOU_ARE_LOGGED_AS' => tr(
 					'%1$s you are now logged as %2$s', $_SESSION['logged_from'], decode_idna($_SESSION['user_logged'])
 				),
-				'TR_GO_BACK' => tr('Go back')));
+				'TR_GO_BACK' => tr('Go back')
+			)
+		);
 
 		$tpl->parse('LOGGED_FROM', 'logged_from');
 	} else {
@@ -135,10 +137,10 @@ function gen_def_language($tpl, $userDefinedLanguage)
 		foreach ($availableLanguages as $language) {
 			$tpl->assign(
 				array(
-				'LANG_VALUE' => $language['locale'],
-				'LANG_SELECTED' => ($language['locale'] == $userDefinedLanguage)
-					? $htmlSelected : '',
-				'LANG_NAME' => tohtml($language['language'])
+					'LANG_VALUE' => $language['locale'],
+					'LANG_SELECTED' => ($language['locale'] == $userDefinedLanguage)
+						? $htmlSelected : '',
+					'LANG_NAME' => tohtml($language['language'])
 				)
 			);
 
@@ -236,7 +238,7 @@ function generateNavigation($tpl)
 	// Dynamic links (only at customer level)
 	if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
 
-		$domainProperties = get_domain_default_props($_SESSION['user_id']);
+		$dmnProps = get_domain_default_props($_SESSION['user_id']);
 
 		$tpl->assign(
 			array(
@@ -246,7 +248,7 @@ function generateNavigation($tpl)
 				'PMA_TARGET' => $cfg->PMA_TARGET,
 				'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
 				'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
-				'WEBSTATS_RPATH' => 'http://' . decode_idna($domainProperties['domain_name']) . '/' . $cfg->WEBSTATS_RPATH,
+				'WEBSTATS_RPATH' => 'http://' . decode_idna($dmnProps['domain_name']) . '/' . $cfg->WEBSTATS_RPATH,
 				'WEBSTATS_TARGET' => $cfg->WEBSTATS_TARGET
 			)
 		);
@@ -270,7 +272,7 @@ function generateNavigation($tpl)
 
 	if ($_SESSION['user_type'] != 'user') {
 		if ($cfg->HOSTING_PLANS_LEVEL != $_SESSION['user_type']) {
-			if ($_SESSION['user_type'] === 'admin') {
+			if ($_SESSION['user_type'] == 'admin') {
 				$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
 			} else {
 				$navigation->findOneBy('class', 'hosting_plan_add')->setVisible(false);
@@ -287,7 +289,9 @@ function generateNavigation($tpl)
 					'label' => tohtml($customMenu['menu_name']),
 					'uri' => get_menu_vars($customMenu['menu_link']),
 					'target' => (!empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self'),
-					'class' => 'custom_link'));
+					'class' => 'custom_link'
+				)
+			);
 		}
 	}
 
@@ -352,17 +356,16 @@ function generateNavigation($tpl)
 
 					/** @var $subpage Zend_Navigation_Page_Uri */
 					foreach ($iterator as $subpage) {
-
 						if (null !== ($callbacks = $subpage->get('privilege_callback'))) {
 							$callbacks = (isset($callbacks['name'])) ? array($callbacks) : $callbacks;
 
 							foreach ($callbacks AS $callback) {
 								if (is_callable($callback['name'])) {
 									if (
-										! call_user_func_array(
-											$callback['name'],
-											isset($callback['param']) ? (array) $callback['param'] : array()
-										)
+									!call_user_func_array(
+										$callback['name'],
+										isset($callback['param']) ? (array)$callback['param'] : array()
+									)
 									) {
 										continue 2;
 									}
@@ -391,7 +394,8 @@ function generateNavigation($tpl)
 						if ($subpage->isActive(true)) {
 							$tpl->assign(
 								array(
-									'TR_TITLE' => ($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
+									'TR_TITLE' => ($subpage->get('dynamic_title'))
+										? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
 									'TITLE_CLASS' => $subpage->get('title_class')
 								)
 							);

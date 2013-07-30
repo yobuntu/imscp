@@ -2,11 +2,6 @@
 <script type="text/javascript">
 	/* <![CDATA[ */
 	$(document).ready(function () {
-
-		$(document).ajaxError(function(event, jqxhr, settings, exception) {
-			window.location.href = '../errors/' + jqxhr.status + '.html';
-		});
-
 		var oTable = $('.datatable').dataTable(
 			{
 				"oLanguage": {DATATABLE_TRANSLATIONS},
@@ -45,7 +40,13 @@
 
 			if(items.length > 0) {
 				if(confirm(sprintf("{TR_MESSAGE_DELETE_SELECTED_ITEMS}"))) {
-					$.post("mail_delete.php", items).done(function() { window.location.href = 'mail_accounts.php'; })
+					imscp.AjaxCall(
+						{
+							type: "POST",
+							data: items,
+							success: function() { window.location.href = 'mail_accounts.php'; }
+						}
+					);
 				}
 			} else {
 				alert("{TR_MESSAGE_DELETE_SELECTED_ITEMS_ERR}");

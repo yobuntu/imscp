@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Uri
- * @copyright	2010-2013 by by i-MSCP team
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Uri
+ * @copyright   2010-2013 by by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /** @see Zend_Uri_Http */
@@ -33,22 +32,19 @@ require_once 'Zend/Uri/Http.php';
 /**
  * Redirect URI handler (Like supported in i-MSCP engine)
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Uri
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Uri
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  */
 class iMSCP_Uri_Redirect extends Zend_Uri_Http
 {
 	/**
 	 * Creates a Zend_Uri_Http from the given string
 	 *
-	 * @param  string $uri String to create URI from, must start with
-	 *					   'http://' or 'https://' or 'ftp://'
-	 * @throws InvalidArgumentException  When the given $uri is not a string or
-	 *								   does not start with http:// or https://
-	 * @throws iMSCP_Uri_Exception	   When the given $uri is invalid
+	 * @param  string $uri String to create URI from, must start with 'http://' or 'https://' or 'ftp://'
+	 * @throws iMSCP_Uri_Exception
+	 * @throws Zend_Uri_Exception
 	 * @return iMSCP_Uri_Redirect
 	 */
 	public static function fromString($uri)

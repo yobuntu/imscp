@@ -2,19 +2,10 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		errFieldsStack = {ERR_FIELDS_STACK};
-		$.each(errFieldsStack, function (){$('#' + this).css('border-color', '#ca1d11');});
-
-		$.ajaxSetup({
-			url: $(location).attr('pathname'),
-			type: 'GET',
-			datatype: 'text',
-			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r){$('#password, #password_confirmation').val(r);},
-			error: iMSCPajxError
-		});
+		$.each(errFieldsStack, function (){ $('#' + this).css('border-color', '#ca1d11');});
 
 		$('#generate_password').click(function () {
-			$.ajax();
+			imscp.AjaxCall({ success: function(data) { $('#password, #password_confirmation').val(data) } });
 		});
 
 		$('#reset_password').click(function () {
@@ -24,7 +15,7 @@
 		// Create dialog box for some messages (password and notices)
 		$('#dialog_box').dialog({
 			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
-			buttons: {Ok: function(){$(this).dialog('close');}}
+			buttons: { Ok: function(){ $(this).dialog('close'); } }
 		});
 
 		// Show generated password in specific dialog box
@@ -42,9 +33,9 @@
 		// PHP Editor settings dialog
 		$('#php_editor_dialog').dialog({
 			hide: 'blind', show: 'slide', focus: false, autoOpen: false, width: 'auto', modal: true, dialogClass: 'body',
-			buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-			create: function (){$('.ui-buttonset').buttonset();},
-			open: function (){$('input[type=radio]').blur()}
+			buttons:{ '{TR_CLOSE}': function(){ $(this).dialog('close'); } },
+			create: function (){ $('.ui-buttonset').buttonset(); },
+			open: function (){ $('input[type=radio]').blur() }
 		});
 
 		// Re-add the PHP Editor container to the form

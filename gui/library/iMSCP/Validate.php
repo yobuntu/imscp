@@ -261,7 +261,7 @@ class iMSCP_Validate
             $translator = new iMSCP_I18n_Adapter_Zend();
         } elseif (!$translator instanceof Zend_Translate_Adapter) {
             require_once 'iMSCP/Exception.php';
-            throw new iMSCP_Exception('$translator must be an instance of Zend_Translate_Adapter.');
+            throw new iMSCP_Exception('Translator must be an instance of Zend_Translate_Adapter.');
         }
 
         Zend_Validate_Abstract::setDefaultTranslator($translator);

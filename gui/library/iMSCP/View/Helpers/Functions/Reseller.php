@@ -32,10 +32,6 @@
  * @author      i-MSCP Team
  */
 
-/**********************************************************************************************************************
- * This file contains view helpers functions that are responsible to generate template parts for reseller interface.
- */
-
 /**
  * Returns Ip list.
  *
@@ -51,7 +47,6 @@ function generate_ip_list($tpl, $resellerId)
 	global $domainIp;
 
 	$query = "SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?";
-
 	$stmt = exec_query($query, $resellerId);
 
 	$data = $stmt->fetchRow();

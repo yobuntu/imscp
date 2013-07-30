@@ -86,9 +86,6 @@ table td { border-top-color: rgb(223, 223, 223); }
 
 /* dataTables */
 /*
-.datatable tfoot td:first-child {border-left-color: rgb(223, 223, 223);}
-.datatable tfoot td:last-child {border-right-color:rgb(223, 223, 223);}
-.datatable tfoot td {border-bottom-color:rgb(223, 223, 223);}
 .datatable .sorting_asc { background: url('../images/black/datatable/asc.png') repeat-y center left; }
 .datatable .sorting_desc { background: url('../images/black/datatable/desc.png') no-repeat center right; }
 .datatable .sorting { background: url('../images/black/datatable/bg.png') no-repeat center right; }
@@ -100,7 +97,10 @@ input[type="text"], input[type="password"], select, textarea {
 	background:rgb(255,255,255);
 	border-color: rgb(204, 204, 204);
 }
-input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {border-color: rgb(153, 153, 153);}
+input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+    -webkit-box-shadow: 0 0 5px #aaa;
+    box-shadow: 0 0 5px #aaa;
+}
 input[readonly="readonly"], input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, textarea:disabled{background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;}
 
 .buttons {background:transparent;}

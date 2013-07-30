@@ -2,19 +2,13 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		$("input[name=ndomain_name]").bind("blur", function () {
-			dmnName = $("#ndomain_name").val();
-			if (dmnName != "") {
-				$.ajaxSetup({
-					url: $(location).attr("pathname"),
+			imscp.AjaxCall(
+				{
 					type: "POST",
-					data: "domain=" + dmnName + "&uaction=toASCII",
-					datatype: 'text',
-					beforeSend: function (xhr){xhr.setRequestHeader("Accept","text/plain");},
-					success: function (r){$("#ndomain_mpoint").val(r);},
-					error: iMSCPajxError
-				});
-				$.ajax();
-			}
+					data: "domain=" + $("#ndomain_name").val() + "&uaction=toASCII",
+					success: function(data) { $("#ndomain_mpoint").val(data) }
+				}
+			);
 		});
 	});
 

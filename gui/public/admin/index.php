@@ -221,6 +221,14 @@ $cfg = iMSCP_Registry::get('config');
 
 check_login('admin', $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 
+
+if(is_xhr()) {
+	iMSCP_Authentication::getInstance()->unsetIdentity();
+	header('Status: 401 Authentication Required');
+	redirectTo('index.php');
+	exit;
+}
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(

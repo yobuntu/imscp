@@ -3,25 +3,13 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		$('input[name=subdomain_name]').blur(function () {
-			subdmnName = $('#subdomain_name').val();
-
-			$.ajaxSetup({
-				url: $(location).attr('pathname'),
-				type: 'POST',
-				data: 'subdomain=' + subdmnName + '&uaction=toASCII',
-				datatype: 'text',
-				beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-				success: function (r){$('#subdomain_mnt_pt').val(r);},
-				error: function (jqXHR, textStatus, errorThrown) {
-					if (jqXHR.status == 403) {
-						window.location = jqXHR.getResponseHeader('Location');
-					}
-
-					alert('HTTP ERROR ' + jqXHR.status + ' - ' + errorThrown)
+			imscp.AjaxCall(
+				{
+					type: "POST",
+					data: "subdomain=" + $('#subdomain_name').val() + "&uaction=toASCII",
+					success: function() { $('#subdomain_mnt_pt').val(r); }
 				}
-			});
-
-			$.ajax();
+			);
 		});
 	});
 

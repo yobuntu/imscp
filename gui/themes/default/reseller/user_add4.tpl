@@ -2,18 +2,13 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		$('input[name=ndomain_name]').blur(function () {
-			dmnName = $('#ndomain_name').val();
-			// Configure the request for encode_idna request
-			$.ajaxSetup({
-				url: $(location).attr('pathname'),
-				type: 'POST',
-				data: 'domain=' + dmnName + '&uaction=toASCII',
-				datatype: 'text',
-				beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-				success: function (r){ $('#ndomain_mpoint').val(r); },
-				error: iMSCPajxError
-			});
-			$.ajax();
+			imscp.AjaxCall(
+				{
+					type: "POST",
+					data: "domain=" + dmnName + "&uaction=toASCII",
+					success: function(data) { $("#ndomain_mpoint").val(data); }
+				}
+			);
 		});
 	});
 

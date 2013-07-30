@@ -29,9 +29,8 @@
 /**
  * Events Manager interface.
  *
- * The Events Manager interface is the central point of i-MSCP's event listener
- * system. The listeners are registered on the manager, and events are dispatched through
- * the manager.
+ * The Events Manager interface is the central point of i-MSCP's event listener system.
+ * The listeners are registered on the manager, and events are dispatched through the manager.
  *
  * A listener is an object or a callback function that listen on a particular event. The events are defined in many
  * places in the core code or components. When a event is dispatched, the listener methods of all the listeners that

@@ -23,7 +23,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 
-(function($) {
+(function($, undefined) {
     $.fn.imscpFlashMessage = function (message, messageLevel, options) {
         this.queue('imscpFlashMessage', function (next) {
             var settings = $.extend(

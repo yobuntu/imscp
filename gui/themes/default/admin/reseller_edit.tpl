@@ -2,30 +2,32 @@
 	/*<![CDATA[*/
 	$(document).ready(function () {
 		errFieldsStack = {ERR_FIELDS_STACK};
-		$.each(errFieldsStack, function (){$('#' + this).css('border-color', '#ca1d11');});
-		$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
-		$('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
-		$.ajaxSetup({
-			url: $(location).attr('pathname'),
-			type: 'GET',
-			data: 'edit_id={EDIT_ID}',
-			datatype: 'text',
-			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r){$('#password, #password_confirmation').val(r);},
-			error: iMSCPajxError
+		$.each(errFieldsStack, function () { $('#' + this).css('border-color', '#ca1d11'); });
+
+		//$('<img>').attr({ src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'})
+		//	.addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
+
+		$('.datatable').dataTable({ oLanguage: {DATATABLE_TRANSLATIONS}});
+
+		//$('#password ~ img, #password_confirmation ~ img').ajaxStart(function (){ $(this).show()});
+		//$('#password ~ img, #password_confirmation ~ img').ajaxStop(function (){ $(this).hide()});
+		$('#generate_password').click(function (){
+			imscp.AjaxCall({ success: function(data) { $('#password, #password_confirmation').val(data) } });
 		});
 
-		$('#password ~ img, #password_confirmation ~ img').ajaxStart(function (){$(this).show()});
-		$('#password ~ img, #password_confirmation ~ img').ajaxStop(function (){$(this).hide()});
-		$('#generate_password').click(function (){$.ajax();});
-		$('#reset_password').click(function (){$('#password, #password_confirmation').val('');});
+		$('#reset_password').click(function (){ $('#password, #password_confirmation').val(''); });
 		$('#reset_password').trigger('click');
 
 		// Create dialog box for some messages (password and notices)
-		$('#dialog_box').dialog({
-			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
-			buttons: {Ok: function(){$(this).dialog('close');}}
-		});
+		$('#dialog_box').dialog(
+			{
+				modal: true,
+				autoOpen: false,
+				hide: "blind",
+				show: "blind",
+				buttons: { Ok: function() { $(this).dialog('close'); } }
+			}
+		);
 
 		// Show generated password in specific dialog box
 		$('#show_password').click(function () {
@@ -60,13 +62,13 @@
 			{
 				bgiframe: true,
 				hide: 'blind', show: 'slide', focus: false, autoOpen: false, width: 700, modal: true, dialogClass: 'body',
-				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function (){$('.ui-buttonset').buttonset();},
-				open: function (){$('input[type=radio]').blur();}
+				buttons:{ '{TR_CLOSE}': function(){ $(this).dialog('close'); }},
+				create: function (){ $('.ui-buttonset').buttonset(); },
+				open: function (){ $('input[type=radio]').blur(); }
 			});
 
 		// Re-add the PHP Editor container to the form
-		$('form').submit(function (){$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));});
+		$('form').submit(function (){ $('#php_editor_dialog').parent().appendTo($('#dialogContainer')); });
 
 		// PHP Editor settings button
 		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
@@ -79,7 +81,7 @@
 			$('#php_editor_dialog_open').hide();
 		}
 
-		$('input[name="php_ini_system"]').change(function (){$('#php_editor_dialog_open').fadeToggle();});
+		$('input[name="php_ini_system"]').change(function (){ $('#php_editor_dialog_open').fadeToggle(); });
 
 		// PHP Editor error message
 		errorMessages = $('.php_editor_error');

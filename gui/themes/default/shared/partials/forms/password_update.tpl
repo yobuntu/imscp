@@ -1,26 +1,16 @@
 <script type="text/javascript">
 	/*<![CDATA[*/
 	$(document).ready(function () {
-		$.ajaxSetup({
-			url: $(location).attr('pathname'),
-			type: 'GET',
-			datatype: 'text',
-			beforeSend: function (xhr){xhr.setRequestHeader('Accept','text/plain');},
-			success: function (r) {
-				$('#password, #password_confirmation').val(r);
-			},
-			error: iMSCPajxError
+		$("#generate_password").click(function () {
+			imscp.AjaxCall({ success: function(data) { $("#password, #password_confirmation").val(data) } } );
 		});
 
-		$('#generate_password').click(function () {
-			$.ajax();
-		});
-		$('#reset_password').click(function () {
+		$("#reset_password").click(function () {
 			$('#password, #password_confirmation').val('');
 		});
 
 		// Create dialog box for some messages (password and notices)
-		$('#dialog_box').dialog({
+		$("#dialog_box").dialog({
 			modal: true, autoOpen: false, hide: 'blind', show: 'blind',
 			buttons: { Ok: function(){ $(this).dialog('close'); }}
 		});
@@ -28,11 +18,13 @@
 		// Show generated password in specific dialog box
 		$('#show_password').click(function () {
 			var password = $('#password').val();
+
 			if (password == '') {
 				password = '<br/>{TR_PASSWORD_GENERATION_NEEDED}';
 			} else {
-				password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + $('#password').val() + '</strong>';
+				password = '<br/>{TR_NEW_PASSWORD_IS}: <strong>' + password + '</strong>';
 			}
+
 			$('#dialog_box').dialog("option", "title", '{TR_PASSWORD}').html(password);
 			$('#dialog_box').dialog('open');
 		});
