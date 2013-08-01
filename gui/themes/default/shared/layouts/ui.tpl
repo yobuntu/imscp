@@ -80,7 +80,6 @@
 		<!-- EDP: page_message -->
 		<div id="flashMessage" class="message"></div>
 		{LAYOUT_CONTENT}
-		<button id="ajax" />Test</button>
 	</div>
 </div>
 <div class="footer">

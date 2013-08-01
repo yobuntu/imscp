@@ -353,8 +353,7 @@ function layout_setUserLayoutColor($userId, $color)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.4
- * @param bool $searchForCreator Tell whether or not search must be done for user's
- *							   creator in case no logo is found for user
+ * @param bool $searchForCreator Tell whether or not search must be done for user's creator in case no logo is found for user
  * @param bool $returnDefault	Tell whether or not default logo must be returned
  * @return string User logo path.
  * @todo cache issues
@@ -381,11 +380,11 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 	if ($searchForCreator && $userId != 1 && empty($stmt->fields['logo'])) {
 		$query = '
             SELECT
-                `b`.`logo`
+                `u`.`logo`
             FROM
-                `admin` `a`
+                `admin` AS `a`
             LEFT JOIN
-                `user_gui_props` `b` ON (`b`.`user_id` = `a`.`created_by`)
+                `user_gui_props` AS `u` ON (`u`.`user_id` = `a`.`created_by`)
             WHERE
                 `a`.`admin_id`= ?
         ';
@@ -398,10 +397,10 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 	) {
 		if (!$returnDefault) {
 			return '';
-		} elseif (file_exists($cfg->GUI_ROOT_DIR . '/public/themes/' .
-			$_SESSION['user_theme'] . '/images/imscp_logo.png')
+		} elseif (
+			file_exists($cfg->GUI_ROOT_DIR . '/public/themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png')
 		) {
-			return '../themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png';
+			return '/themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png';
 		} else {
 			// no logo available, we are using default
 			return $cfg->ISP_LOGO_PATH . '/' . 'isp_logo.gif';
