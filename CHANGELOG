@@ -4,6 +4,28 @@
 Git Master
 ------------------------------------------------------------------------------------------------------------------------
 
+SETUP:
+	- Removed php5-adodb package from distribution packages files
+	- The i-MSCP apache_php_fpm server impl. is now the default choice for distributions  supporting it officialy
+
+ENGINE:
+	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
+
+Tickets:
+	- Fixed #745: Defect - Disk detail in dovecot doesn't include aliases
+	- Fixed #779: Defect - When migrating from ispcp the reseller and admin logos are lost
+	- Fixed #834: Cosmetics - Ticket system menu names
+	- Fixed #835: Task - Migration script - ispCP - Remove old php5-fcgi-starter
+	- Fixed #852: Bug - Software installer - Unable to install any software
+	- Fixed #858: Task - Remove php5-adodb package
+
+------------------------------------------------------------------------------------------------------------------------
+1.1.0-rc3
+------------------------------------------------------------------------------------------------------------------------
+
+2013-07-23: Torsten Widmann
+	- RELEASE i-MSCP 1.1.0-rc3
+
 CONFIGS:
 	- Removed Amavis, ClamAV and SpamAssassin configuration (Such service must be provided as plugin)
 

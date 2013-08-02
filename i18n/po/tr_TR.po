@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:33+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/projects/p/i-MSCP/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -917,6 +917,9 @@ msgstr "Tümü"
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr ""
 
@@ -936,6 +939,9 @@ msgid "All in"
 msgstr "Tüm gelenler"
 
 msgid "All levels"
+msgstr ""
+
+msgid "All open Tickets were successfully deleted."
 msgstr ""
 
 msgid "All open tickets were deleted."
@@ -1038,6 +1044,9 @@ msgstr "%s servis portunu silmek istediğinize emin misiniz?"
 msgid "Are you sure you want to delete %s?"
 msgstr "%s silmek istediğinize emin misiniz?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
@@ -1061,6 +1070,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
 msgstr ""
 
 #, php-format
@@ -1260,6 +1273,9 @@ msgstr "Değiştir"
 
 msgid "Change SQL user password"
 msgstr "SQL kullanıcı şifresini değiştir"
+
+msgid "Change in progress..."
+msgstr ""
 
 msgid "Change password"
 msgstr "Şifre değiştir"
@@ -1492,14 +1508,17 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
+msgstr ""
+
+msgid "Closed Tickets"
 msgstr ""
 
 msgid "Closed tickets"
 msgstr "Kapalı talepler"
-
-msgid "Closes tickets"
-msgstr ""
 
 msgid "Company"
 msgstr "Şirket"
@@ -1665,9 +1684,11 @@ msgstr ""
 msgid "DOWN"
 msgstr "ÇÖKMÜŞ"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Daemon durum kodu olara %d sonucunu getirdi"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Günlük yedek"
@@ -1814,7 +1835,13 @@ msgstr "TümünüYakala Sil"
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1837,6 +1864,9 @@ msgstr "Bayi yazılımı sil"
 
 msgid "Delete software and send message"
 msgstr "Yazılımı sil ve mesaj gönder"
+
+msgid "Delete the Ticket"
+msgstr ""
 
 msgid "Delete the ticket"
 msgstr ""
@@ -2832,9 +2862,6 @@ msgstr ""
 msgid "Ip management"
 msgstr ""
 
-msgid "Ip usage"
-msgstr ""
-
 msgid "Kernel Version"
 msgstr "Kernel sürümü"
 
@@ -3270,6 +3297,9 @@ msgstr ""
 msgid "New Sql user data"
 msgstr ""
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3503,6 +3533,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3972,6 +4005,12 @@ msgstr ""
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr ""
 
@@ -4019,6 +4058,9 @@ msgid "Remove permissions"
 msgstr "yetkileri kaldırma"
 
 msgid "Reopen"
+msgstr ""
+
+msgid "Reopen the Ticket"
 msgstr ""
 
 msgid "Reopen the ticket"
@@ -4989,6 +5031,9 @@ msgstr "Bu kullanıcı adı kullanılmakta."
 msgid "TiB"
 msgstr ""
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr ""
 
@@ -5438,6 +5483,9 @@ msgstr ""
 msgid "View Support Ticket"
 msgstr ""
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Aliasları göster"
 
@@ -5848,10 +5896,10 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no tickets closed."
+msgid "You have no open tickets."
 msgstr ""
 
-msgid "You have no tickets open."
+msgid "You have no tickets closed."
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
@@ -6002,6 +6050,9 @@ msgstr ""
 
 msgid "back"
 msgstr "geri"
+
+msgid "change"
+msgstr ""
 
 msgid "day"
 msgstr ""

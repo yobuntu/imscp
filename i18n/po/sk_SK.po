@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2013-07-08 20:33+0200\n"
-"PO-Revision-Date: 2013-07-08 18:33+0000\n"
+"POT-Creation-Date: 2013-07-23 16:22+0200\n"
+"PO-Revision-Date: 2013-07-23 14:22+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/i-MSCP/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -915,6 +915,9 @@ msgstr "Všetko"
 msgid "All administrators"
 msgstr ""
 
+msgid "All closed Tickets were successfully deleted."
+msgstr ""
+
 msgid "All closed tickets were deleted."
 msgstr ""
 
@@ -934,6 +937,9 @@ msgid "All in"
 msgstr "Všetky prichádzajúce"
 
 msgid "All levels"
+msgstr ""
+
+msgid "All open Tickets were successfully deleted."
 msgstr ""
 
 msgid "All open tickets were deleted."
@@ -1036,6 +1042,9 @@ msgstr "Ste si istý, že chcete zmazať %s port služby ?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Ste si istý, že chcete zmazať %s?"
 
+msgid "Are you sure you want to delete all Tickets?"
+msgstr ""
+
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
@@ -1059,6 +1068,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' Ticket?"
 msgstr ""
 
 #, php-format
@@ -1258,6 +1271,9 @@ msgstr "Zmeniť"
 
 msgid "Change SQL user password"
 msgstr "Zmeniť heslo SQL konta"
+
+msgid "Change in progress..."
+msgstr ""
 
 msgid "Change password"
 msgstr "Zmeniť heslo"
@@ -1490,14 +1506,17 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "Close Ticket"
+msgstr ""
+
 msgid "Close the ticket"
+msgstr ""
+
+msgid "Closed Tickets"
 msgstr ""
 
 msgid "Closed tickets"
 msgstr "Zatvorené tikety"
-
-msgid "Closes tickets"
-msgstr ""
 
 msgid "Company"
 msgstr "Spoločnosť"
@@ -1663,9 +1682,11 @@ msgstr ""
 msgid "DOWN"
 msgstr "DOLE"
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Systémový mechanizmus vrátil %d ako stavový kód"
+msgid "Daemon request failed."
+msgstr ""
+
+msgid "Daemon request successfull."
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Denná záloha"
@@ -1812,7 +1833,13 @@ msgstr "Vymazať \"zachytiť všetko\""
 msgid "Delete Customer - {DOMAIN_NAME}"
 msgstr ""
 
+msgid "Delete Ticket"
+msgstr ""
+
 msgid "Delete account"
+msgstr ""
+
+msgid "Delete all Tickets"
 msgstr ""
 
 msgid "Delete all tickets"
@@ -1834,6 +1861,9 @@ msgid "Delete reseller software"
 msgstr ""
 
 msgid "Delete software and send message"
+msgstr ""
+
+msgid "Delete the Ticket"
 msgstr ""
 
 msgid "Delete the ticket"
@@ -2830,9 +2860,6 @@ msgstr ""
 msgid "Ip management"
 msgstr ""
 
-msgid "Ip usage"
-msgstr ""
-
 msgid "Kernel Version"
 msgstr "Verzia jadra"
 
@@ -3268,6 +3295,9 @@ msgstr ""
 msgid "New Sql user data"
 msgstr ""
 
+msgid "New Ticket"
+msgstr ""
+
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
@@ -3501,6 +3531,9 @@ msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Only tar.gz, tar.bz2 and zip archives are supported."
+msgstr ""
+
+msgid "Open Tickets"
 msgstr ""
 
 msgid "Open ticket"
@@ -3970,6 +4003,12 @@ msgstr ""
 msgid "RAM"
 msgstr "RAM"
 
+msgid "Read Ticket"
+msgstr ""
+
+msgid "Read the Ticket"
+msgstr ""
+
 msgid "Read the ticket"
 msgstr ""
 
@@ -4017,6 +4056,9 @@ msgid "Remove permissions"
 msgstr ""
 
 msgid "Reopen"
+msgstr ""
+
+msgid "Reopen the Ticket"
 msgstr ""
 
 msgid "Reopen the ticket"
@@ -4987,6 +5029,9 @@ msgstr ""
 msgid "TiB"
 msgstr ""
 
+msgid "Ticket Information"
+msgstr ""
+
 msgid "Ticket deleted."
 msgstr ""
 
@@ -5436,6 +5481,9 @@ msgstr ""
 msgid "View Support Ticket"
 msgstr ""
 
+msgid "View Ticket"
+msgstr ""
+
 msgid "View aliases"
 msgstr "Zobraziť aliasy"
 
@@ -5846,10 +5894,10 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no tickets closed."
+msgid "You have no open tickets."
 msgstr ""
 
-msgid "You have no tickets open."
+msgid "You have no tickets closed."
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
@@ -5999,6 +6047,9 @@ msgid "activation"
 msgstr ""
 
 msgid "back"
+msgstr ""
+
+msgid "change"
 msgstr ""
 
 msgid "day"
