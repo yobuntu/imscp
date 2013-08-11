@@ -783,7 +783,6 @@ if (customerHasMailOrExtMailFeatures()) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Mail / Overview'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 			'TR_MAIL' => tr('Mail'),

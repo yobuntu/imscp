@@ -183,7 +183,6 @@ if (isset($_GET['id'])) {
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
-			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_UPDATE' => tr('Update'),
 			'TR_CANCEL' => tr('Cancel')

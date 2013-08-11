@@ -2176,25 +2176,41 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add unique key to server_ips
+	 * Add unique key for server_ips columns
 	 *
 	 * @return string SQL statement to be e executed
 	 */
-	protected  function _databaseUpdate_146()
+	protected  function _databaseUpdate_148()
 	{
-		return "ALTER TABLE `server_ips` ADD UNIQUE `ip_number` (`ip_number`)";
+		return $this->_addIndex('server_ips', 'ip_number', 'UNIQUE', 'ip_number');
 	}
 
 	/**
-	 * Adds unique index for name of database and database user.
+	 * Adds unique index for sqld_name columns
 	 *
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_147()
+	protected function _databaseUpdate_149()
 	{
 		return array(
-			"ALTER TABLE `sql_database` ADD UNIQUE `sqld_name` (`sqld_name`)",
-			"ALTER TABLE `sql_user` ADD UNIQUE `sqlu_name` (`sqlu_name`)",
+			$this->_addIndex('sql_database', 'sqld_name', 'UNIQUE', 'sqld_name'),
+			// Remove index added in old db update, which has been removed because an user can be shared
+			$this->_dropIndex('sql_user', 'sqlu_name', 'sqlu_name')
 		);
+	}
+	
+	/**
+	 * Update domain_dns.domain_text column to 255 characters
+	 *
+	 * @return string SQL statement to be e executed
+	 */
+	protected  function _databaseUpdate_150()
+	{
+		return '
+			ALTER TABLE
+				`domain_dns`
+			CHANGE
+				`domain_text` `domain_text` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+		';
 	}
 }
