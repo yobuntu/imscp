@@ -96,7 +96,7 @@ function client_UpdateMailAccount($mailAccountData)
 				$quotaUpdate = 1;
 				$quotaValue = $_POST['quota'] * 1024 * 1024;
 			} else {
-				set_page_message(tr('Quota must be number'), 'error');
+				set_page_message(tr('Quota must be a number'), 'error');
 				return false;
 			}
 		}
@@ -182,7 +182,7 @@ if (isset($_GET['id'])) {
 
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE' => tr('Client / Mail / Overview /  Edit Mail Quota'),
+			'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Email Quota'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_UPDATE' => tr('Update'),
 			'TR_CANCEL' => tr('Cancel')
