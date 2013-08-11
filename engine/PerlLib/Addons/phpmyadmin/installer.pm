@@ -157,11 +157,11 @@ sub askPhpmyadmin
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = $main::preseed{'PHPMYADMIN_SQL_USER'} || $self::phpmyadminConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('PHPMYADMIN_SQL_USER', 'preseed') || $self::phpmyadminConfig{'DATABASE_USER'} ||
 		$self::phpmyadminOldConfig{'DATABASE_USER'} || 'pma';
 
-	my $dbPass = $main::preseed{'PHPMYADMIN_SQL_PASSWORD'} || $self::phpmyadminConfig{'DATABASE_PASSWORD'} ||
-		$self::phpmyadminOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('PHPMYADMIN_SQL_PASSWORD', 'preseed') ||
+		$self::phpmyadminConfig{'DATABASE_PASSWORD'} || $self::phpmyadminOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -175,7 +175,7 @@ sub askPhpmyadmin
 		# Ask for the PhpMyAdmin restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
+				"\nPlease enter a username for the restricted PhpMyAdmin SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
@@ -540,7 +540,7 @@ sub _setupDatabase
 		return 1;
 	}
 
-	# The PhpMyAdmin database doesn't exists, create it
+	# The PhpMyAdmin database doesn't exist, create it
 	unless(%$rs) {
 		my $qdbName = $database->quoteIdentifier($phpmyadminDbName);
 		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");

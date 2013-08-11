@@ -233,7 +233,6 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_PROPERTIES' => tr('Properties'),
@@ -245,7 +244,7 @@ $tpl->assign(
 		'TR_DOMAINS' => tr('Domains'),
 		'TR_SUBDOMAINS' => tr('Subdomains'),
 		'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
-		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_MAIL_ACCOUNTS' => tr('Email accounts'),
 		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 		'TR_SQL_DATABASES' => tr('SQL databases'),
 		'TR_SQL_USERS' => tr('SQL users'),

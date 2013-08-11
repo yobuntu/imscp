@@ -80,8 +80,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('Client / Webtools / Softwares'),
-		 'THEME_CHARSET' => tr('encoding'),
+		 'TR_PAGE_TITLE' => tr('Client / Webtools / Software'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SOFTWARE' => tr('Software'),
 		 'TR_VERSION' => tr('Version'),
@@ -90,7 +89,7 @@ $tpl->assign(
 		 'TR_NEED_DATABASE' => tr('Database'),
 		 'TR_STATUS' => tr('Status'),
 		 'TR_ACTION' => tr('Action'),
-		 'TR_SOFTWARE_AVAILABLE' => tr('Available softwares'),
+		 'TR_SOFTWARE_AVAILABLE' => tr('Available software'),
 		 'TR_SOFTWARE_ASC' => 'software.php?sortby=name&order=asc',
 		 'TR_SOFTWARE_DESC' => 'software.php?sortby=name&order=desc',
 		 'TR_TYPE_ASC' => 'software.php?sortby=type&order=asc',

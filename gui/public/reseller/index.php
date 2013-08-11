@@ -201,7 +201,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 			 'DOMAINS' => tr('Domain accounts'),
 			 'SUBDOMAINS' => tr('Subdomains'),
 			 'ALIASES' => tr('Aliases'),
-			 'MAIL_ACCOUNTS' => tr('Mail accounts'),
+			 'MAIL_ACCOUNTS' => tr('Email accounts'),
 			 'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
 			 'SQL_DATABASES' => tr('SQL databases'),
 			 'SQL_USERS' => tr('SQL users'),
@@ -274,7 +274,6 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'THEME_CHARSET' => tr('encoding'),
 		 'TR_PAGE_TITLE' => tr('Reseller / General / Overview'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SAVE' => tr('Save'),

@@ -160,11 +160,11 @@ sub askRoundcube($$)
 	my $dbHost = main::setupGetQuestion('DATABASE_HOST');
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 
-	my $dbUser = $main::preseed{'ROUNDCUBE_SQL_USER'} || $self::roundcubeConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('ROUNDCUBE_SQL_USER', 'preseed') || $self::roundcubeConfig{'DATABASE_USER'} ||
 		$self::roundcubeOldConfig{'DATABASE_USER'} || 'roundcube_user';
 
-	my $dbPass = $main::preseed{'ROUNDCUBE_SQL_PASSWORD'} || $self::roundcubeConfig{'DATABASE_PASSWORD'} ||
-		$self::roundcubeOldConfig{'DATABASE_PASSWORD'} || '';
+	my $dbPass = main::setupGetQuestion('ROUNDCUBE_SQL_PASSWORD', 'preseed') ||
+		$self::roundcubeConfig{'DATABASE_PASSWORD'} || $self::roundcubeOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
 
@@ -179,7 +179,7 @@ sub askRoundcube($$)
 		do{
 
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted roundcube SQL user:$msg", $dbUser
+				"\nPlease enter a username for the restricted Roundcube SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
@@ -396,7 +396,7 @@ sub _setupDatabase
 		return 1;
 	}
 
-	# The Roundcube database doesn't exists, create it
+	# The Roundcube database doesn't exist, create it
 	unless(%$rs) {
 		my $qdbName = $database->quoteIdentifier($roundcubeDbName);
 		$rs = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");

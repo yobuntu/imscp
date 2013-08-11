@@ -227,7 +227,7 @@ function check_sql_permissions($user_id) {
 	list($sqld_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
-		set_page_message(tr('SQL accounts limit reached.'), 'error');
+		set_page_message(tr('SQL account limit reached.'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }
@@ -235,7 +235,6 @@ function check_sql_permissions($user_id) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 check_sql_permissions($_SESSION['user_id']);

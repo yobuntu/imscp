@@ -53,7 +53,6 @@ $tpl->define_dynamic('page_message', 'layout');
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Profile / Personal Data'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
@@ -141,7 +140,7 @@ function update_user_personal_data($user_id) {
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $user_id));
 
 	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
-	set_page_message(tr('Personal data updated.'), 'success');
+	set_page_message(tr('Personal data successfully updated.'), 'success');
 }
 
 generateNavigation($tpl);

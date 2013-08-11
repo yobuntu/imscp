@@ -160,7 +160,7 @@ abstract class iMSCP_Plugin
 				'version' => '0.0.0',
 				'date' => '0000-00-00',
 				'name' => $parts[2],
-				'desc' => tr('No provided'),
+				'desc' => tr('Not provided'),
 				'url' => ''
 			),
 			$info
@@ -207,67 +207,10 @@ abstract class iMSCP_Plugin
 	/**
 	 * Return plugin default configuration parameters.
 	 *
+	 * @throws iMSCP_Plugin_Exception in case plugin configuration file is not readable
 	 * @return array
 	 */
-	final public function getDefaultConfig()
-	{
-		return $this->_loadDefaultConfig();
-	}
-
-	/**
-	 * Returns given configuration parameter.
-	 *
-	 * @param string $paramName Configuration parameter name
-	 * @return mixed Configuration parameter value or NULL if $paramName no found
-	 */
-	final public function getConfigParam($paramName = null)
-	{
-		if (!$this->_isLoadedConfig) {
-			$this->loadConfig();
-		}
-
-		if (isset($this->_config[$paramName])) {
-			return $this->_config[$paramName];
-		}
-
-		return null;
-	}
-
-	/**
-	 * Load plugin configuration parameters.
-	 *
-	 * @return void
-	 */
-	final protected function loadConfig()
-	{
-		$default = $this->_loadDefaultConfig();
-
-		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
-
-		if ($stmt->rowCount()) {
-			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
-
-			foreach ($default as $parameter => $value) {
-				if (isset($this->_config[$parameter])) {
-					continue;
-				}
-
-				$this->_config[$parameter] = $value;
-			}
-		} else {
-			$this->_config = $default;
-		}
-
-		$this->_isLoadedConfig = true;
-	}
-
-	/**
-	 * Load default plugin configuration parameters.
-	 *
-	 * @throws iMSCP_Plugin_Exception in case plugin configuration file cannot be read
-	 * @return array
-	 */
-	final protected function _loadDefaultConfig()
+	final public function getConfigFromFile()
 	{
 		$configFile = iMSCP_Registry::get('pluginManager')->getPluginDirectory() . '/' . $this->getName() . '/config.php';
 		$config = array();
@@ -283,5 +226,40 @@ abstract class iMSCP_Plugin
 		}
 
 		return $config;
+	}
+
+	/**
+	 * Returns given configuration parameter.
+	 *
+	 * @param string $paramName Configuration parameter name
+	 * @return mixed Configuration parameter value or NULL if $paramName not found
+	 */
+	final public function getConfigParam($paramName = null)
+	{
+		if (!$this->_isLoadedConfig) {
+			$this->loadConfig();
+		}
+
+		if (isset($this->_config[$paramName])) {
+			return $this->_config[$paramName];
+		}
+
+		return null;
+	}
+
+	/**
+	 * Load plugin configuration parameters from database.
+	 *
+	 * @return void
+	 */
+	final protected function loadConfig()
+	{
+		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $this->getName());
+
+		if($stmt->rowCount()) {
+			$this->_config = json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true);
+		} else {
+			$this->_config = array();
+		}
 	}
 }

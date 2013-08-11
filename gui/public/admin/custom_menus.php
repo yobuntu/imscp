@@ -115,7 +115,7 @@ function admin_generateForm($tpl)
 		$stmt = exec_query($query, (int)$_GET['edit_id']);
 
 		if (!$stmt->rowCount()) {
-			set_page_message(tr("The menu you trying to edit doesn't exist."), 'error');
+			set_page_message(tr("The menu you are trying to edit doesn't exist."), 'error');
 			redirectTo('custom_menus.php');
 		}
 
@@ -359,7 +359,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Admin / Settings / {TR_DYNAMIC_TITLE}'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CUSTOM_MENU_PROPERTIES' => tr('Custom menu properties'),
 		'TR_MENU_NAME' => tr('Name'),

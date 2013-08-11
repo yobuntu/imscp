@@ -91,7 +91,7 @@ function client_generateDomainsList($tpl, $userId)
 				'DOMAIN_NAME' => tohtml($domainName),
 				'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
 				'DOMAIN_EXPIRE_DATE' => ($stmt->fields['domain_expires'] != 0)
-					? tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])) : tr('No set'),
+					? tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])) : tr('Never'),
 				'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status']),
 				'CERT_SCRIPT' => tohtml('cert_view.php?id=' . $stmt->fields['domain_id'] . '&type=dmn'),
 				'VIEW_CERT' => tr('View certificates')
@@ -715,7 +715,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Domains'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 
 		'TR_DOMAINS' => tr('Domains'),
@@ -729,7 +728,7 @@ $tpl->assign(
 		'TR_MOUNT' => tr('Mount point'),
 		'TR_REDIRECT' => tr('Redirect'),
 		'TR_STATUS' => tr('Status'),
-		'TR_CERT' => tr('SSL Certificates'),
+		'TR_CERT' => tr('SSL certificates'),
 		'TR_ACTIONS' => tr('Actions'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 

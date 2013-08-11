@@ -134,7 +134,7 @@ class iMSCP_Plugin_Manager
 	/**
 	 * Sets plugins directory
 	 *
-	 * @throws iMSCP_Plugin_Exception When $pluginDirectory doesn't exists or is not readable.
+	 * @throws iMSCP_Plugin_Exception When $pluginDirectory doesn't exist or is not readable.
 	 * @param string $pluginDir Plugins directory path
 	 */
 	public function setDirectory($pluginDir)
@@ -143,10 +143,10 @@ class iMSCP_Plugin_Manager
 			$this->pluginsDirectory = $pluginDir;
 		} else {
 			write_log(
-				sprintf("Plugin manager: Directory %s doesn't exists or is not readable", $pluginDir), E_USER_ERROR
+				sprintf("Plugin manager: Directory %s doesn't exist or is not readable", $pluginDir), E_USER_ERROR
 			);
 
-			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exists or is not readable", $pluginDir));
+			throw new iMSCP_Plugin_Exception(sprintf("Directory %s doesn't exist or is not readable", $pluginDir));
 		}
 	}
 
@@ -583,7 +583,9 @@ class iMSCP_Plugin_Manager
 	public function delete($pluginName, $force = false)
 	{
 		if ($this->isKnown($pluginName)) {
-			if ($force || in_array($this->getStatus($pluginName), array('uninstalled', 'disabled'))) {
+			$pluginStatus = $this->getStatus($pluginName);
+
+			if ($force || in_array($pluginStatus, array('uninstalled', 'disabled'))) {
 				$pluginInstance = $this->load($pluginName, false, false);
 
 				$this->setError($pluginName, null);
@@ -601,7 +603,7 @@ class iMSCP_Plugin_Manager
 
 					$pluginInstance->{'uninstall'}($this);
 
-					if($this->hasBackend($pluginName)) {
+					if($this->hasBackend($pluginName) && $pluginStatus != 'uninstalled') {
 						$this->backendRequest = true;
 					} else {
 						$this->setStatus($pluginName, 'todelete');
@@ -749,21 +751,25 @@ class iMSCP_Plugin_Manager
 						$pluginInfo = $pluginInstance->getInfo();
 						$pluginVersion = $pluginInfo['version'];
 						$pluginBackend = file_exists($fileInfo->getPathname() . "/backend/$pluginName.pm") ? 'yes' : 'no';
+						$pluginConfig = $pluginInstance->getConfigFromFile();
 
 						// Is a plugin already known by plugin manager?
 						if(isset($knownPluginsData[$pluginName])) {
 							$pluginStatus = $knownPluginsData[$pluginName]['plugin_status'];
 							$knownPluginInfo = json_decode($knownPluginsData[$pluginName]['plugin_info'], true);
+							$knownPluginsConfig = json_decode($knownPluginsData[$pluginName]['plugin_config'], true);
 
 							// If the plugin has been already installed, schedule update if needed
 							if(
 								!in_array($pluginStatus, array('uninstalled', 'toinstall')) &&
-								version_compare($pluginVersion,  $knownPluginInfo['version'], '>')
+								(
+									version_compare($pluginVersion,  $knownPluginInfo['version'], '>') ||
+									$pluginConfig !== $knownPluginsConfig
+								)
 							) {
 								$toUpdatePlugins[] = $pluginName;
+								$returnInfo['updated']++;
 							}
-
-							$returnInfo['updated']++;
 						} else {
 							$pluginStatus = 'uninstalled';
 							$returnInfo['new']++;
@@ -774,10 +780,10 @@ class iMSCP_Plugin_Manager
 							'type' => $pluginInstance->getType(),
 							'info' => json_encode($pluginInfo),
 							// TODO review this when plugin settings interface will be ready
-							// For now, when we update plugin list, we override parameters with those
-							// found in default configuration file. This behavior will change when settings interface
+							// For now, when we update plugin list, we override parameters from database with those
+							// found in configuration file. This behavior will change when settings interface
 							// will be ready
-							'config' => json_encode($pluginInstance->getDefaultConfig()),
+							'config' => json_encode($pluginConfig),
 							'status' => $pluginStatus,
 							'backend' => $pluginBackend
 						);
@@ -799,9 +805,9 @@ class iMSCP_Plugin_Manager
 					}
 				} else {
 					set_page_message(
-						tr("Plugin file %s doesn't exists or is not readable.", "<strong>$pluginFile</strong>"), 'error'
+						tr("Plugin file %s doesn't exist or is not readable.", "<strong>$pluginFile</strong>"), 'error'
 					);
-					write_log(sprintf("Plugin file %s doesn't exists or is not readable.", $pluginFile), E_USER_ERROR);
+					write_log(sprintf("Plugin file %s doesn't exist or is not readable.", $pluginFile), E_USER_ERROR);
 				}
 			}
 		}

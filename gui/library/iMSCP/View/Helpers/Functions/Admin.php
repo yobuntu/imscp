@@ -37,6 +37,41 @@
  * template parts for admin interface.
  */
 
+ /**
+ * Returns Ip list.
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @return void
+ */
+function generate_ip_list($tpl)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	global $domainIp;
+
+	$query = "SELECT * FROM `server_ips`";
+
+	$stmt = execute_query($query);
+
+	while ($data = $stmt->fetchRow()) {
+		$ipId = $data['ip_id'];
+
+		$selected = ($domainIp === $ipId) ? $cfg->HTML_SELECTED : '';
+
+		$tpl->assign(
+			array(
+				'IP_NUM' => $data['ip_number'],
+				'IP_NAME' => tohtml($data['ip_domain']),
+				'IP_VALUE' => $ipId,
+				'IP_SELECTED' => $selected
+			)
+		);
+
+		$tpl->parse('IP_ENTRY', '.ip_entry');
+	}
+}
+ 
 /**
  * Helper function to generate admin list template part.
  *
@@ -214,7 +249,7 @@ function gen_reseller_list($tpl)
 }
 
 /**
- * Helper function to generate an user list.
+ * Helper function to generate a user list.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -279,7 +314,7 @@ function gen_user_list($tpl){
 	if ($rs->recordCount() == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(array(
-							'USR_MESSAGE' => tr('Not found records matching the search criteria.'),
+							'USR_MESSAGE' => tr('No records found matching the search criteria.'),
 							'USR_LIST' => '',
 							'SCROLL_PREV' => '',
 							'SCROLL_NEXT' => '',

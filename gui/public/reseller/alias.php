@@ -225,9 +225,9 @@ function reseller_generateAlsList($tpl, $resellerId)
 		}
 
 		if (isset($_SESSION['search_for'])) {
-			set_page_message(tr('Not found user records matching the search criteria.', 'info'));
+			set_page_message(tr('No records found matching the search criteria.', 'info'));
 		} else {
-			set_page_message(tr('You do not have order for domain aliases.'), 'info');
+			set_page_message(tr('You do not have any orders for domain aliases.'), 'info');
 		}
 		return;
 	} else {
@@ -382,7 +382,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_NAME' => tr('Name'),
 		'TR_MOUNT_POINT' => tr('Mount point'),

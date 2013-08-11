@@ -104,7 +104,7 @@ function client_databasesList($tpl, $domainId)
 	$stmt = exec_query($query, $domainId);
 
 	if ($stmt->rowCount() == 0) {
-		set_page_message(tr('You do not have database.'), 'info');
+		set_page_message(tr('You do not have databases.'), 'info');
 		$tpl->assign('SQL_DATABASES_USERS_LIST', '');
 	} else {
 		while (!$stmt->EOF) {
@@ -156,7 +156,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview'),
-		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MANAGE_SQL' => tr('Manage SQL'),
 		'TR_DELETE' => tr('Delete'),

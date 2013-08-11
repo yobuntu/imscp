@@ -73,7 +73,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 			$xml_file = @file_get_contents($webdepot_xml_url);
 
 			if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
-				set_page_message(tr("Unable to read xml file for web softwares."), 'error');
+				set_page_message(tr("Unable to read xml file for web software."), 'error');
 				$error = 1;
 			}
 
@@ -304,7 +304,6 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('Reseller / General / Software Upload'),
-		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 
 $sw_cnt = get_avail_software_reseller($tpl, $_SESSION['user_id']);

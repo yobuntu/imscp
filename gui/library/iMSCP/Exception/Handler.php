@@ -225,7 +225,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 			$this->_exception = $exception;
 		}
 
-		// Notify all ovservers
+		// Notify all observers
 		$this->notify();
 	}
 
@@ -251,7 +251,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 */
 	public function getProductionException()
 	{
-		$this->_productionException;
+		return $this->_productionException;
 	}
 
 	/**
@@ -286,6 +286,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * This method notify all these attached observers by calling their update() method. The {@link $_instance instance}
 	 * is passed to each writer as argument of their update() method.
 	 *
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	public function notify()
@@ -311,7 +312,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 						$cfg = iMSCP_Registry::get('config');
 
 						if (isset($cfg->DEBUG) && !$cfg->DEBUG) {
-							echo 'An error occured. Please contact your administrator or reseller.';
+							echo 'An error occurred. Please contact your administrator or reseller.';
 							exit;
 						}
 					}

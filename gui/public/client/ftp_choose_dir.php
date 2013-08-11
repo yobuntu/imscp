@@ -125,7 +125,7 @@ function client_generateDirectoriesList($tpl)
 			'ACTION_LINK' => '',
 			'ACTION' => '',
 			'ICON' => 'parent',
-			'DIR_NAME' => tr('Parent Directory'),
+			'DIR_NAME' => tr('Parent directory'),
 			'LINK' => "ftp_choose_dir.php?cur_dir=$parent"
 		)
 	);
@@ -188,9 +188,8 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Choose directory'),
+		'TR_PAGE_TITLE' => tr('Client / Choose Directory'),
 		'CONTEXT_CLASS' => 'box_message ftp_choose_dir',
-		'THEME_CHARSET' => tr('encoding'),
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010-2013 i-MSCP Team<br/>All Rights Reserved'),

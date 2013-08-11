@@ -66,10 +66,10 @@ sub askProftpd
 	my $dbPort = main::setupGetQuestion('DATABASE_PORT');
 	my $dbName = main::setupGetQuestion('DATABASE_NAME');
 
-	my $dbUser = $main::preseed{'FTPD_SQL_USER'} || $self::proftpdConfig{'DATABASE_USER'} ||
+	my $dbUser = main::setupGetQuestion('FTPD_SQL_USER', 'preseed') || $self::proftpdConfig{'DATABASE_USER'} ||
 		$self::proftpdOldConfig{'DATABASE_USER'} || 'vftp';
 
-	my $dbPass = $main::preseed{'FTPD_SQL_PASSWORD'} || $self::proftpdConfig{'DATABASE_PASSWORD'} ||
+	my $dbPass = main::setupGetQuestion('FTPD_SQL_PASSWORD', 'preseed') || $self::proftpdConfig{'DATABASE_PASSWORD'} ||
 		$self::proftpdOldConfig{'DATABASE_PASSWORD'} || '';
 
 	my ($rs, $msg) = (0, '');
@@ -84,7 +84,7 @@ sub askProftpd
 		# Ask for the proftpd restricted SQL username
 		do{
 			($rs, $dbUser) = iMSCP::Dialog->factory()->inputbox(
-				"\nPlease enter an username for the restricted proftpd SQL user:$msg", $dbUser
+				"\nPlease enter a username for the restricted proftpd SQL user:$msg", $dbUser
 			);
 
 			if($dbUser eq $main::imscpConfig{'DATABASE_USER'}) {
