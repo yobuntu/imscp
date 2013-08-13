@@ -16,6 +16,8 @@ SETUP:
 
 ENGINE:
 	- Added support for Apache 2.4.x branch
+	- Added database connection timeout
+	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
 
@@ -33,7 +35,9 @@ Tickets:
 	- Fixed #838: Bug - Installer skips PHP INI Level dialog for apache fcgi
 	- Fixed #852: Bug - Software installer - Unable to install any software
 	- Fixed #858: Task - Remove php5-adodb package
-	- Fixed #861: Bug -SQLSTATE[42000]: Syntax error or access violation
+	- Fixed #861: Bug - SQLSTATE[42000]: Syntax error or access violation
+	- Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
+	- Fixed #870: Bug - Error indicator for new tickets
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3
@@ -49,6 +53,7 @@ ENGINE:
 	- Added config_readonly option in bootstrap
 	- Added cron job for deactivation of entities belonging to an expired account
 	- Fixed: Allow to get raw db connection
+	- Fixed: Access to i-MSCP server/addon parameters must be standardized
 	- Fixed: unable to remove htgroup
 	- Fixed: TERM environment variable not set (IMSCP::Debug library)
 	- Removed 'dnschange' status
