@@ -58,7 +58,7 @@ sub _init
 
 sub factory
 {
-	Servers::cron->getInstance();
+	__PACKAGE__->getInstance();
 }
 
 sub addTask

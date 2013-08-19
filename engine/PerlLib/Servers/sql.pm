@@ -34,6 +34,10 @@ package Servers::sql;
 use strict;
 use warnings;
 
+use iMSCP::Debug;
+
+my $instance = undef;
+
 =head1 DESCRIPTION
 
  i-MSCP SQL server implementation.
@@ -42,36 +46,42 @@ use warnings;
 
 =over 4
 
-=item
+=item factory([$server = $main::imscpConfig{'SQL_SERVER'}])
 
  Factory
 
- Return Servers::sql
+ Return Servers::sql::mysql|Servers::sql::mariadb|Servers::noserver
 
 =cut
 
-sub factory
+sub factory($;$)
 {
-	my $self = shift;
-	my $server = shift || $main::imscpConfig{'SQL_SERVER'};
-	my ($file, $class);
+	if(! defined $instance) {
+		my $self = shift;
+		my $server = shift || $main::imscpConfig{'SQL_SERVER'};
+		my ($file, $class);
 
-	if(lc($server) eq 'no') {
-		$file = 'Servers/noserver.pm';
-		$class = 'Servers::noserver';
-	} else {
-		$server =~ s/^([a-z]+).*/$1/i;
-		$file = "Servers/sql/$server.pm";
-		$class = "Servers::sql::$server";
+		if(lc($server) eq 'no') {
+			$file = 'Servers/noserver.pm';
+			$class = 'Servers::noserver';
+		} else {
+			$server =~ s/^([a-z0-9]+).*/$1/i;
+			$file = "Servers/sql/$server.pm";
+			$class = "Servers::sql::$server";
+		}
+
+		eval { require $file };
+		fatal($@) if $@;
+
+		$instance = $class->getInstance();
 	}
 
-	require $file;
-	$class->getInstance();
+	$instance;
 }
 
 =back
 
-=head1 AUTHOR
+=head1 AUTHORS
 
  Laurent Declercq <l.declercq@nuxwin.com>
 

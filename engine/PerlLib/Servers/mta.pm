@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::mta - i-MSCP MTA Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -20,6 +26,7 @@
 # @category    i-MSCP
 # @copyright   2010-2013 by i-MSCP | http://i-mscp.net
 # @author      Daniel Andreca <sci2tech@gmail.com>
+# @author      Laurent Declercq <l.declercq@nuxwin.com>
 # @link        http://i-mscp.net i-MSCP Home Site
 # @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -28,22 +35,57 @@ package Servers::mta;
 use strict;
 use warnings;
 
-sub factory
-{
-	my $self = shift;
-	my $server = shift || $main::imscpConfig{'MTA_SERVER'};
-	my ($file, $class);
+use iMSCP::Debug;
 
-	if(lc($server) eq 'no') {
-		$file = 'Servers/noserver.pm';
-		$class = 'Servers::noserver';
-	} else {
-		$file = "Servers/mta/$server.pm";
-		$class = "Servers::mta::$server";
+my $instance = undef;
+
+=head1 DESCRIPTION
+
+ i-MSCP MTA server implementation.
+
+=head1 CLASS METHODS
+
+=over 4
+
+=item factory([$server = $main::imscpConfig{'MTA_SERVER'}]))
+
+ Factory
+
+ Return Servers::mta::postfix|Servers::noserver
+
+=cut
+
+sub factory($;$)
+{
+	if(! defined $instance) {
+		my $self = shift;
+		my $server = shift || $main::imscpConfig{'MTA_SERVER'};
+		my ($file, $class);
+
+		if(lc($server) eq 'no') {
+			$file = 'Servers/noserver.pm';
+			$class = 'Servers::noserver';
+		} else {
+			$file = "Servers/mta/$server.pm";
+			$class = "Servers::mta::$server";
+		}
+
+		eval { require $file };
+		fatal($@) if $@;
+
+		$instance = $class->getInstance();
 	}
 
-	require $file;
-	$class->getInstance();
+	$instance;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
 
 1;

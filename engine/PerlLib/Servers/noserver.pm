@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ Servers::noserver - i-MSCP dummy Server implementation
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2013 by internet Multi Server Control Panel
 #
@@ -31,14 +37,46 @@ use warnings;
 use vars qw/$AUTOLOAD/;
 use parent 'Common::SingletonClass';
 
+=head1 DESCRIPTION
+
+ i-MSCP dummy server implementation.
+
+=head1 CLASS METHODS
+
+=over 4
+
+=item factory()
+
+ Factory
+
+ Return Servers::noserver
+
+=cut
+
 sub factory
 {
 	__PACKAGE__->getInstance();
 }
 
+=item AUTOLOAD()
+
+ Provide default implementation for undefined methods
+
+ Return int 0
+
+=cut
+
 sub AUTOLOAD
 {
 	0;
 }
+
+=back
+
+=head1 AUTHORS
+
+ Daniel Andreca <sci2tech@gmail.com>
+
+=cut
 
 1;
