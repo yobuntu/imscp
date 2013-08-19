@@ -86,6 +86,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$maxDnamesLabels = clean_input($_POST['max_dnames_labels']);
 	$maxSubdnamesLabels = clean_input($_POST['max_subdnames_labels']);
 	$logLevel = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
+	$sqlUsersHostname = (isset($_POST['sql_users_hostname'])) ? clean_input($_POST['sql_users_hostname']) : 'localhost';
 	$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['phpini_allow_url_fopen']));
 	$phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
 	$phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
@@ -133,7 +134,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} elseif ($maxSubdnamesLabels < 1) {
 		$maxSubdnamesLabels = 1;
 	} elseif ($phpini->flagValueError) { // if a php value was out of range or simple wrong type
-		set_page_message(tr('Error in php.ini values.'), 'error');
+		set_page_message(tr('Wrong PHP setting'), 'error');
+	} elseif($sqlUsersHostname == '') { // No more check here - Admin must know what he do...
+		set_page_message(tr('SQL users hostname field cannot be empty'), 'error');
 	} else {
 		/** @var $dbCfg iMSCP_Config_Handler_Db */
 		$dbCfg = iMSCP_Registry::get('dbConfig');
@@ -168,6 +171,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$dbCfg->SLD_STRICT_VALIDATION = $sldStrictValidation;
 		$dbCfg->MAX_DNAMES_LABELS = $maxDnamesLabels;
 		$dbCfg->MAX_SUBDNAMES_LABELS = $maxSubdnamesLabels;
+
+		if($cfg->DATABASE_USER_HOST != $sqlUsersHostname) {
+			updateSqlUsersHostname($sqlUsersHostname);
+			$dbCfg->DATABASE_USER_HOST = $sqlUsersHostname;
+		}
+
 		$dbCfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
 		$dbCfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
 		$dbCfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
@@ -715,6 +724,10 @@ $tpl->assign(
 		 'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
 		 'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names (<small>Excluding SLD & TLD</small>)'),
 		 'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
+		 'TR_SQL_SETTINGS' => tr('SQL Settings'),
+		 'TR_SQL_USERS_HOSTNAME' => tr('SQL users hostname'),
+		 'TR_SQL_USERS_HOSTNAME_HELP' => tr('Hostname or IP from which SQL users are allowed to connect from'),
+		 'SQL_USERS_HOSTNAME' => $cfg->DATABASE_USER_HOST,
 		 'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
 		 'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<b>allow_url_fopen</b>'),
 		 'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<b>display_errors</b>'),

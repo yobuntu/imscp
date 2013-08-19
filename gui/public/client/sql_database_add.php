@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,54 +35,46 @@
  * @link        http://i-mscp.net
  */
 
-// Include core library
-require_once 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login('user');
-
-customerHasFeature('sql') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/sql_database_add.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('mysql_prefix_no', 'page');
-$tpl->define_dynamic('mysql_prefix_yes', 'page');
-$tpl->define_dynamic('mysql_prefix_infront', 'page');
-$tpl->define_dynamic('mysql_prefix_behind', 'page');
-$tpl->define_dynamic('mysql_prefix_all', 'page');
-
+/***********************************************************************************************************************
+ * Functions
+ */
 
 /**
+ * Generate page
+ *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function gen_page_post_data($tpl)
+function client_generatePage($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($cfg->MYSQL_PREFIX === 'yes') {
+	if ($cfg->MYSQL_PREFIX == 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
 
-		if ($cfg->MYSQL_PREFIX_TYPE === 'behind') {
+		if ($cfg->MYSQL_PREFIX_TYPE == 'behind') {
 			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 			$tpl->assign('MYSQL_PREFIX_ALL', '');
 		} else {
 			$tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
-			$tpl->assign('MYSQL_PREFIX_BEHIND', '');
-			$tpl->assign('MYSQL_PREFIX_ALL', '');
+			$tpl->assign(
+				array(
+					'MYSQL_PREFIX_BEHIND' => '',
+					'MYSQL_PREFIX_ALL' => ''
+				)
+			);
 		}
 	} else {
-		$tpl->assign('MYSQL_PREFIX_NO', '');
-		$tpl->assign('MYSQL_PREFIX_INFRONT', '');
-		$tpl->assign('MYSQL_PREFIX_BEHIND', '');
+		$tpl->assign(
+			array(
+				'MYSQL_PREFIX_NO' => '',
+				'MYSQL_PREFIX_INFRONT' => '',
+				'MYSQL_PREFIX_BEHIND' => ''
+			)
+		);
+
 		$tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
 	}
 
@@ -92,43 +84,47 @@ function gen_page_post_data($tpl)
 				'DB_NAME' => clean_input($_POST['db_name'], true),
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''));
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''
+			)
+		);
 	} else {
 		$tpl->assign(
 			array(
 				'DB_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => $cfg->HTML_CHECKED,
-				'END_ID_POS_CHECKED' => ''));
+				'END_ID_POS_CHECKED' => ''
+			)
+		);
 	}
 }
 
 /**
  * Check if a database with same name already exists
  *
- * @param  string $db_name database name to be checked
+ * @param string $dbName database name to be checked
  * @return boolean TRUE if database exists, false otherwise
  */
-function check_db_name($db_name) {
+function check_db_name($dbName)
+{
 
-	$rs = exec_query('SHOW DATABASES');
+	$stmt = exec_query('SHOW DATABASES');
 
-	while (!$rs->EOF) {
-		if ($db_name == $rs->fields['Database']) {
+	while ($db = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+		if ($dbName == $db['Database']) {
 			return true;
 		}
-
-		$rs->moveNext();
 	}
 
 	return false;
 }
 
 /**
- * @param $user_id
- * @return
+ * Add SQL database
+ *
+ * @param int $customerId
  */
-function add_sql_database($user_id)
+function clientAddSqlDb($customerId)
 {
 	if (!isset($_POST['uaction'])) return;
 
@@ -137,14 +133,12 @@ function add_sql_database($user_id)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	// let's generate database name.
-
 	if (empty($_POST['db_name'])) {
 		set_page_message(tr('Please type database name.'), 'error');
 		return;
 	}
 
-	$dmn_id = get_user_domain_id($user_id);
+	$dmn_id = get_user_domain_id($customerId);
 
 	if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') {
 
@@ -198,60 +192,90 @@ function add_sql_database($user_id)
 		write_log($_SESSION['user_logged'] . ": added new SQL database: " . tohtml($db_name), E_USER_NOTICE);
 
 	} catch (iMSCP_Exception_Database $e) {
-		if($dbCreated) { // Our transaction failed so we rollback and we remove the database previously created
+		if ($dbCreated) { // Our transaction failed so we rollback and we remove the database previously created
 			iMSCP_Database::getInstance()->rollBack();
 			execute_query('DROP DATABASE IF EXISTS ' . quoteIdentifier($db_name));
 		}
 
 		set_page_message(tr('System was unable to add the SQL database.'), 'error');
-		write_log(sprintf("System was unable to add the '%s' SQL database. Message was: %s", $db_name, $e->getMessage()), E_USER_ERROR);
+		write_log(
+			sprintf("System was unable to add the '%s' SQL database. Message was: %s", $db_name, $e->getMessage()),
+			E_USER_ERROR
+		);
 	}
 
 
 	redirectTo('sql_manage.php');
 }
 
-// common page data.
-
 /**
- * @param $user_id
+ * Check SQL permissions for the given user
+ * @param int $customerId Customer unique identifier
  * @return void
  */
-function check_sql_permissions($user_id) {
+function check_sqlPermissions($customerId)
+{
 
-    $domainProps = get_domain_default_props($user_id);
-    $dmn_id = $domainProps['domain_id'];
-    $dmn_sqld_limit = $domainProps['domain_sqld_limit'];
+	$domainProps = get_domain_default_props($customerId);
+	$dmnId = $domainProps['domain_id'];
+	$sqlDbLimit = $domainProps['domain_sqld_limit'];
 
+	list($nbSqlDb) = get_domain_running_sql_acc_cnt($dmnId);
 
-	list($sqld_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
-
-	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
+	if ($sqlDbLimit != 0 && $nbSqlDb >= $sqlDbLimit) {
 		set_page_message(tr('SQL account limit reached.'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }
 
+/***********************************************************************************************************************
+ * Main
+ */
+
+// Include core library
+require_once 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login('user');
+
+customerHasFeature('sql') or showBadRequestErrorPage();
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/sql_database_add.tpl',
+		'page_message' => 'layout',
+		'mysql_prefix_no' => 'page',
+		'mysql_prefix_yes' => 'page',
+		'mysql_prefix_infront' => 'page',
+		'mysql_prefix_behind' => 'page',
+		'mysql_prefix_all' => 'page'
+	)
+);
+
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-check_sql_permissions($_SESSION['user_id']);
-gen_page_post_data($tpl);
-add_sql_database($_SESSION['user_id']);
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_TITLE_ADD_DATABASE' => tr('Add SQL database'),
 		'TR_DATABASE' => tr('Database'),
 		'TR_DB_NAME' => tr('Database name'),
 		'TR_USE_DMN_ID' => tr('Database prefix/suffix'),
 		'TR_START_ID_POS' => tr("Numeric prefix"),
 		'TR_END_ID_POS' => tr("Numeric suffix"),
-		'TR_ADD' => tr('Add')));
+		'TR_ADD' => tr('Add')
+	)
+);
 
+check_sqlPermissions($_SESSION['user_id']);
+client_generatePage($tpl);
+clientAddSqlDb($_SESSION['user_id']);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

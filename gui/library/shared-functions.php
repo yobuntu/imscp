@@ -2144,6 +2144,46 @@ function quoteIdentifier($identifier)
 	return $quoteIdentifierSymbol . $identifier . $quoteIdentifierSymbol;
 }
 
+/**
+ * Sync all SQL users hostname with value from config table
+ *
+ * @throws iMSCP_Exception_Database
+ * @param string $sqlUsersHostname SQL users hostname
+ * @return void
+ */
+function updateSqlUsersHostname($sqlUsersHostname)
+{
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
+	/** @var iMSCP_Database $db */
+	$db = iMSCP_Registry::get('db');
+
+	try {
+		$db->beginTransaction();
+
+		$stmt = execute_query('SELECT `sqlu_name` FROM `sql_user`');
+
+		if(($nbSqlUsers = $stmt->rowCount())) {
+			$data = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+			$inCond = implode(',', array_fill(0, count($data), '?'));
+			array_unshift($data, $cfg->DATABASE_USER_HOST);
+
+			exec_query('UPDATE `mysql`.`user` SET `host` = ? WHERE `user` IN (' . $inCond . ')', $data);
+			exec_query('UPDATE `mysql`.`db` SET `host` = ? WHERE `user` IN (' . $inCond . ')', $data);
+		}
+
+		$db->commit();
+
+		execute_query('FLUSH PRIVILEGES'); // Done here due to implicit commit
+	} catch(iMSCP_Exception_Database $e) {
+		$db->rollBack();
+
+		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
+	}
+}
+
 /***********************************************************************************************************************
  * Unclassified functions
  */

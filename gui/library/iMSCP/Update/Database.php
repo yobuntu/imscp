@@ -2217,7 +2217,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_151()
+	protected function _v_151()
 	{
 		$sqlUpd = array();
 
@@ -2240,5 +2240,26 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd[] = "UPDATE `domain_dns` SET `owned_by` = 'ext_mail_feature' WHERE `domain_type` = 'MX' AND `owned_by` = 'yes'";
 
 		return $sqlUpd;
+	}
+
+	/**
+	 * Add status colum in both sql_user and sql_database tables
+	 *
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_152()
+	{
+		return array(
+			$this->_addColumn(
+				'sql_user',
+				'sqlu_status',
+				"VARCHAR(25 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT  'ok'"
+			),
+			$this->_addColumn(
+				'sql_database',
+				'sqld_status',
+				"VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT  'ok'"
+			)
+		);
 	}
 }

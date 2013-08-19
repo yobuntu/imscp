@@ -31,11 +31,6 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Servers;
-use iMSCP::Addons;
-use iMSCP::Execute;
-use iMSCP::Dir;
-use iMSCP::Database;
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Domain';
 
@@ -84,7 +79,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'alsId'}}->{$_} for keys %{$rdata->{$self->{'alsId'}}};
+	@{$self}{keys %{$rdata->{$self->{'alsId'}}}} = values %{$rdata->{$self->{'alsId'}}};
 
 	0;
 }
@@ -92,6 +87,7 @@ sub loadData
 sub process
 {
 	my $self = shift;
+
 	$self->{'alsId'} = shift;
 
 	my $rs = $self->loadData();
@@ -99,8 +95,9 @@ sub process
 
 	my @sql;
 
-	if($self->{'alias_status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'alias_status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -108,6 +105,7 @@ sub process
 		);
 	} elsif($self->{'alias_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
@@ -119,6 +117,7 @@ sub process
 		}
 	} elsif($self->{'alias_status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
@@ -126,6 +125,7 @@ sub process
 		);
 	} elsif($self->{'alias_status'} eq 'torestore') {
 		$rs = $self->restore();
+
 		@sql = (
 			"UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -134,7 +134,7 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}

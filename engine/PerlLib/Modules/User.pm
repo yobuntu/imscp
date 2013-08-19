@@ -82,7 +82,7 @@ sub loadData
 		return 1
 	}
 
-	$self->{$_} = $rdata->{$self->{'userId'}}->{$_} for keys %{$rdata->{$self->{'userId'}}};
+	@{$self}{keys %{$rdata->{$self->{'userId'}}}} = values %{$rdata->{$self->{'userId'}}};
 
 	0;
 }
@@ -99,18 +99,22 @@ sub process
 	my @sql;
 	my $rdata;
 
-	if($self->{'admin_status'} =~ /^(toadd|tochange)$/) {
+	if($self->{'admin_status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'userId'}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'userId'}
 		);
 	} elsif($self->{'admin_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?",
-				scalar getMessageByType('error'), $self->{'userId'}
+				scalar getMessageByType('error'),
+				$self->{'userId'}
 			)
 		} else {
 			@sql = ('DELETE FROM `admin` WHERE `admin_id` = ?', $self->{'userId'});
@@ -135,6 +139,7 @@ sub add
 	my $groupName =
 	my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
 		($main::imscpConfig{'SYSTEM_USER_MIN_UID'} + $self->{'admin_id'});
+
 	my $password = '';
 	my $comment = 'iMSCP virtual user';
 	# TODO change to  "$main::imscpConfig{'USER_HOME_DIR'}/$userName";

@@ -154,6 +154,31 @@ sub engine
 	$rs = _process('SubAlias', $sql, \$ipsMod);
 	return $rs if $rs;
 
+	# Process toadd|tochange|toenable|todisable|todelete Sql user tasks
+	$sql = "
+		SELECT
+			`sqlu_id` AS `id`, `sqlu_name` AS `name`, `sqlu_status` AS `status`
+		FROM
+			`sql_user`
+		WHERE
+			`sqlu_status` IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+	";
+	$rs = _process('SqlUser', $sql);
+	return $rs if $rs;
+
+	# Process toadd|tochange|toenable|todisable|todelete sql database tasks
+	$sql = "
+		SELECT
+			`sqld_id` AS `id`, `sqld_name` AS `name`, `sqld_status` AS `status`
+		FROM
+			`sql_database`
+		WHERE
+			`sqld_status` IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+	";
+	$rs = _process('SqlDatabase', $sql);
+	return $rs if $rs;
+
+
 	# Process toadd|tochange|toenable|todisable|todelete mail tasks
 	$sql = "
 		SELECT

@@ -665,7 +665,7 @@ Important: No check is made on the entered value. Please refer to the following 
 
 		setupSetQuestion('DATABASE_USER_HOST', $host) if $rs != 30;
 	} else {
-		setupSetQuestion('DATABASE_USER_HOST', 'localhost');
+		setupSetQuestion('DATABASE_USER_HOST', setupGetQuestion('DATABASE_HOST'));
 	}
 
 	$rs;
@@ -1587,6 +1587,22 @@ sub setupUpdateDatabase
 {
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupUpdateDatabase');
 	return $rs if $rs;
+
+	my ($database, $errStr) = setupGetSqlConnect(setupGetQuestion('DATABASE_NAME'));
+
+	if(! $database) {
+		error("Unable to connect to SQL server: $errStr");
+		return 1;
+	}
+
+	my $rdata = $database->doQuery(
+		'dummy', 'REPLACE INTO `config` (`name`, `value`) VALUES (?, ?)',
+		'DATABASE_USER_HOST', setupGetQuestion('DATABASE_USER_HOST')
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
 
 	my $file = iMSCP::File->new('filename' => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 

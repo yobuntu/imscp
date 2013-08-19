@@ -29,7 +29,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use iMSCP::Execute;
+use iMSCP::Database;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -66,7 +66,6 @@ sub process
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
@@ -125,7 +124,6 @@ sub process
 	";
 
 	$rdata = iMSCP::Database->factory()->doQuery('ip_number', $sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

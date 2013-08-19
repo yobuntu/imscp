@@ -3,7 +3,10 @@
 				<table>
 					<tr>
 						<td style="width: 300px;"><label for="user_name">{TR_USER_NAME}</label></td>
-						<td><input id="user_name" type="text" name="user_name" value="{USER_NAME}" readonly="readonly" /></td>
+						<td>
+							<input id="user_name" type="text" name="user_name" value="{USER_NAME}" readonly="readonly" />
+							@{SQL_USERS_HOSTNAME}
+						</td>
 					</tr>
 					<tr>
 						<td><label for="pass">{TR_PASS}</label></td>

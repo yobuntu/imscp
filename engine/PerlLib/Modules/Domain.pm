@@ -30,12 +30,10 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use Modules::User;
 use iMSCP::Execute;
 use iMSCP::Dir;
 use iMSCP::Database;
 use iMSCP::Rights;
-use iMSCP::Database;
 use iMSCP::OpenSSL;
 use iMSCP::Ext2Attributes qw(clearImmutable);
 use Net::LibIDN qw/idn_to_unicode/;
@@ -98,7 +96,7 @@ sub loadData
 		return 1
 	}
 
-	$self->{$_} = $rdata->{$self->{'dmnId'}}->{$_} for keys %{$rdata->{$self->{'dmnId'}}};
+	@{$self}{keys %{$rdata->{$self->{'dmnId'}}}} = values %{$rdata->{$self->{'dmnId'}}};
 
 	0;
 }
@@ -113,8 +111,9 @@ sub process
 
 	my @sql;
 
-	if($self->{'domain_status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'domain_status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -122,6 +121,7 @@ sub process
 		);
 	} elsif($self->{'domain_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
@@ -133,6 +133,7 @@ sub process
 		}
 	} elsif($self->{'domain_status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
@@ -140,6 +141,7 @@ sub process
 		);
 	} elsif($self->{'domain_status'} eq 'torestore') {
 		$rs = $self->restore();
+
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),

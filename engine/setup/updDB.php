@@ -52,6 +52,12 @@ try {
 		fwrite(STDERR, "[ERROR] Database update failed: " . $databaseUpdate->getError() . "\n");
 		exit(1);
 	}
+
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
+	// Update all SQL user hostname according DATABASE_USER_HOSTS value
+	updateSqlUsersHostname($cfg->DATABASE_USER_HOST);
 } catch(Exception $e) {
 	fwrite(STDERR, "[ERROR] " . $e->getMessage() . "\n\nStackTrace:\n" . $e->getTraceAsString() . "\n");
 	exit(1);

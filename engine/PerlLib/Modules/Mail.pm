@@ -29,6 +29,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Database;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -75,7 +76,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'mailId'}}->{$_} for keys %{$rdata->{$self->{'mailId'}}};
+	@{$self}{keys %{$rdata->{$self->{'mailId'}}}} = values %{$rdata->{$self->{'mailId'}}};
 
 	0;
 }
@@ -91,32 +92,38 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'mail_id'}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'mail_id'}
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs){
 			@sql = (
 				"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-				scalar getMessageByType('error'), $self->{'mail_id'}
+				scalar getMessageByType('error'),
+				$self->{'mail_id'}
 			);
 		} else {
-			@sql = ("DELETE FROM `mail_users` WHERE `mail_id` = ?", $self->{'mail_id'});
+			@sql = ("DELETE FROM `mail_users` WHERE `mail_id` = ?",
+			$self->{'mail_id'});
 		}
 	} elsif($self->{'status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'mail_id'}
+			($rs ? scalar getMessageByType('error') : 'disabled'),
+			$self->{'mail_id'}
 		);
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

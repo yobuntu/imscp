@@ -83,6 +83,7 @@ $config->ITEM_ORDERED_STATUS = 'ordered';
 $config->MAX_SQL_DATABASE_LENGTH = 64;
 $config->MAX_SQL_USER_LENGTH = 16;
 $config->MAX_SQL_PASS_LENGTH = 32;
+$config->DATABASE_USER_HOST = 'localhost';
 
 /**
  * The following settings can be overridden via the control panel - (admin/settings.php)

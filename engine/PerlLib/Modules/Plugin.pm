@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- Modules::Plugin - i-MSCP Plugin module
+ Modules::Plugin - i-MSCP module responsible to handle Plugins
 
 =cut
 
@@ -95,54 +95,9 @@ subdirectory of plugin package:
 
  When the 'uninstall' action is run, the backend part of the plugin is removed from the backend plugins repository.
 
-
-
 =head1 PUBLIC METHODS
 
 =over 4
-
-=item loadData()
-
- Load plugin data from database
-
- Return 0 on success, 1 on failure
-
-=cut
-
-sub loadData
-{
-	my $self = shift;
-	my $pluginId = shift;
-
-	my $rdata = iMSCP::Database->factory()->doQuery(
-		'plugin_id',
-		'
-			SELECT
-				`plugin_id`, `plugin_name`, `plugin_status`, `plugin_previous_status`
-			FROM
-				`plugin`
-			WHERE
-				`plugin_id` = ?
-		',
-		$pluginId
-	);
-	unless(ref $rdata eq 'HASH') {
-		error($rdata);
-		return 1;
-	}
-
-	unless(exists $rdata->{$pluginId}) {
-		error("No plugin has ID: $pluginId");
-		return 1
-	}
-
-	@{$self}{keys %{$rdata->{$pluginId}}} = values %{$rdata->{$pluginId}};
-
-	$toStatus{'toupdate'} = $self->{'plugin_previous_status'};
-	$toStatus{'tochange'} = $self->{'plugin_previous_status'};
-
-	0;
-}
 
 =item process($pluginId)
 
@@ -155,10 +110,9 @@ sub loadData
 
 sub process($$)
 {
-	my $self = shift;
-	my $pluginId = shift;
+	my ($self, $pluginId) = @_;
 
-	my $rs = $self->loadData($pluginId);
+	my $rs = $self->_loadData($pluginId);
 	return $rs if $rs;
 
 	my $status = $self->{'plugin_status'};
@@ -204,6 +158,48 @@ sub process($$)
 
 =over 4
 
+=item _loadData($pluginId)
+
+ Load plugin data from database
+
+ Return 0 on success, 1 on failure
+
+=cut
+
+sub _loadData
+{
+	my ($self, $pluginId) = @_;
+
+	my $rdata = iMSCP::Database->factory()->doQuery(
+		'plugin_id',
+		'
+			SELECT
+				`plugin_id`, `plugin_name`, `plugin_status`, `plugin_previous_status`
+			FROM
+				`plugin`
+			WHERE
+				`plugin_id` = ?
+		',
+		$pluginId
+	);
+	unless(ref $rdata eq 'HASH') {
+		error($rdata);
+		return 1;
+	}
+
+	unless(exists $rdata->{$pluginId}) {
+		error("No plugin has ID: $pluginId");
+		return 1
+	}
+
+	@{$self}{keys %{$rdata->{$pluginId}}} = values %{$rdata->{$pluginId}};
+
+	$toStatus{'toupdate'} = $self->{'plugin_previous_status'};
+	$toStatus{'tochange'} = $self->{'plugin_previous_status'};
+
+	0;
+}
+
 =item _executePlugin($action)
 
  Execute the given plugin action
@@ -215,8 +211,7 @@ sub process($$)
 
 sub _executePlugin($$)
 {
-	my $self = shift;
-	my $action = shift;
+	my ($self, $action) = @_;
 
 	my $pluginFile = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/Plugins/$self->{'plugin_name'}.pm";
 	my $rs = 0;

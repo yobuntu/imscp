@@ -29,6 +29,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Database;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -85,7 +86,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'htuserId'}}->{$_} for keys %{$rdata->{$self->{'htuserId'}}};
+	@{$self}{keys %{$rdata->{$self->{'htuserId'}}}} = values %{$rdata->{$self->{'htuserId'}}};
 
 	0;
 }
@@ -101,7 +102,7 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?",
@@ -122,7 +123,6 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-
 	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;

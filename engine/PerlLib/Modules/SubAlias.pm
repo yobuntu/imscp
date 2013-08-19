@@ -28,12 +28,9 @@ package Modules::SubAlias;
 
 use strict;
 use warnings;
+
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Servers;
-use iMSCP::Addons;
-use iMSCP::Execute;
-use iMSCP::Dir;
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Subdomain';
 
@@ -70,18 +67,18 @@ sub loadData
 			`sub`.`subdomain_alias_id` = ?
 	";
 
-	my $rdata = iMSCP::Database->factory()->doQuery('subdomain_alias_id', $sql, $self->{'subId'}, $self->{'subId'});
+	my $rdata = iMSCP::Database->factory()->doQuery('subdomain_alias_id', $sql, $self->{'alssubId'}, $self->{'alssubId'});
 	if(ref $rdata ne 'HASH') {
 		error($rdata);
 		return 1;
 	}
 
-	unless(exists $rdata->{$self->{'subId'}}) {
-		error("No alias subdomain has id = $self->{'subId'}");
+	unless(exists $rdata->{$self->{'alssubId'}}) {
+		error("No alias subdomain has id = $self->{'alssubId'}");
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'subId'}}->{$_} for keys %{$rdata->{$self->{'subId'}}};
+	@{$self}{keys %{$rdata->{$self->{'alssubId'}}}} = values %{$rdata->{$self->{'alssubId'}}};
 
 	0;
 }
@@ -89,15 +86,17 @@ sub loadData
 sub process
 {
 	my $self = shift;
-	$self->{'subId'} = shift;
+
+	$self->{'alssubId'} = shift;
 
 	my $rs = $self->loadData();
 	return $rs if $rs;
 
 	my @sql;
 
-	if($self->{'subdomain_alias_status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'subdomain_alias_status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -105,6 +104,7 @@ sub process
 		);
 	} elsif($self->{'subdomain_alias_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
@@ -116,6 +116,7 @@ sub process
 		}
 	} elsif($self->{'subdomain_alias_status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'disabled'),
@@ -123,6 +124,7 @@ sub process
 		);
 	} elsif($self->{'subdomain_alias_status'} eq 'torestore') {
 		$rs = $self->restore();
+
 		@sql = (
 			"UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -131,7 +133,7 @@ sub process
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}

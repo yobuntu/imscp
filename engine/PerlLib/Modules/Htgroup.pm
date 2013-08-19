@@ -29,6 +29,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use iMSCP::Database;
 use parent 'Modules::Abstract';
 
 sub _init
@@ -102,7 +103,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'htgroupId'}}->{$_} for keys %{$rdata->{$self->{'htgroupId'}}};
+	@{$self}{keys %{$rdata->{$self->{'htgroupId'}}}} = values %{$rdata->{$self->{'htgroupId'}}};
 
 	0;
 }
@@ -118,8 +119,9 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange$/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",
 			($rs ? scalar getMessageByType('error') : 'ok'),
@@ -127,6 +129,7 @@ sub process
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?",

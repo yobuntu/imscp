@@ -24,15 +24,128 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @link        http://i-mscp.net
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Update password of the given SQL user
+ *
+ * @throws iMSCP_Exception_Database
+ * @param int $sqlUserId SQL user unique identifier
+ * @param int $sqlUsername SQL username
+ * @return bool true on succes
+ */
+function updateSqlUserPassword($sqlUserId, $sqlUsername)
+{
+	if (!isset($_POST['uaction'])) {
+		return false;
+	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $sqlUserId));
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
+		set_page_message(tr('Please type user password.'), 'error');
+		return false;
+	}
+
+	if ($_POST['pass'] !== $_POST['pass_rep']) {
+		set_page_message(tr("Passwords do not match."), 'error');
+		return false;
+	}
+
+	if (strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH) {
+		set_page_message(tr('Too long user password.'), 'error');
+		return false;
+	}
+
+	if (isset($_POST['pass']) && !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
+		set_page_message(tr("Don't use special chars like '@, $, %...' in the password."), 'error');
+		return false;
+	}
+
+	if (!checkPasswordSyntax($_POST['pass'])) {
+		return false;
+	}
+
+	$password = $_POST['pass'];
+
+	try {
+		$query = "UPDATE `sql_user` SET `sql_password` = ?, `sqlu_status` = ? WHERE `sqlu_name` = ? AND `sqlu_status` = ?";
+		$stmt = exec_query($query, array($password, $cfg->ITEM_TOCHANGE_STATUS, $sqlUsername, $cfg->ITEM_OK_STATUS));
+
+		if(!$stmt->rowCount()) {
+			showBadRequestErrorPage();
+		}
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $sqlUserId));
+
+		set_page_message(tr('SQL user password successfully scheduled for update.'), 'success');
+
+		write_log(
+			sprintf("%s scheduled password update for the '%s' SQL user.", $_SESSION['user_logged'], tohtml($sqlUsername)),
+			E_USER_NOTICE
+		);
+	} catch (iMSCP_Exception_Database $e) {
+		set_page_message(tr('System was unable to schedule update of your SQL user.'), 'error');
+
+		write_log(
+			sprintf(
+				"System was unable to update password for the '%s' SQL user. Message was: %s",
+				tohtml($sqlUsername),
+				$e->getMessage()
+			),
+			E_USER_ERROR
+		);
+	}
+
+	return true;
+}
+
+/**
+ * Generate page data.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param int $sqlUserId Sql user unique identifier
+ * @return string SQL username
+ */
+function gen_page_data($tpl, $sqlUserId)
+{
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
+	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
+	$stmt = exec_query($query, $sqlUserId);
+
+	$sqlUsername = $stmt->fetchRow(PDO::FETCH_COLUMN);
+
+	$tpl->assign(
+		array(
+			'USER_NAME' => tohtml($sqlUsername),
+			'SQL_USERS_HOSTNAME' => tohtml($cfg->DATABASE_USER_HOST),
+			'ID' => $sqlUserId
+		)
+	);
+
+	return $sqlUsername;
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -42,167 +155,43 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login('user');
 
-customerHasFeature('sql') or showBadRequestErrorPage();
+if (isset($_GET['id'])) {
+	$sqlUserId = clean_input($_GET['id']);
+} else if (isset($_POST['id'])) {
+	$sqlUserId = clean_input($_POST['id']);
+} elseif(! customerHasFeature('sql') || ! check_user_sql_perms($sqlUserId)) {
+	showBadRequestErrorPage();
+}
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/sql_change_password.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-
-if (isset($_GET['id'])) {
-	$db_user_id = $_GET['id'];
-} else if (isset($_POST['id'])) {
-	$db_user_id = $_POST['id'];
-} else {
-	redirectTo('sql_manage.php');
-}
-
-/**
- * @param $db_user_id
- * @param $db_user_name
- * @return
- */
-function change_sql_user_pass($db_user_id, $db_user_name)
-{
-	if (!isset($_POST['uaction'])) {
-		return;
-	}
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $db_user_id));
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-
-	if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
-		set_page_message(tr('Please type user password.'), 'error');
-		return;
-	}
-
-	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr("Passwords do not match."), 'error');
-		return;
-	}
-
-	if (strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH) {
-		set_page_message(tr('Too long user password.'), 'error');
-		return;
-	}
-
-	if (isset($_POST['pass']) && !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
-		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password.'), 'error');
-		return;
-	}
-
-	if (!checkPasswordSyntax($_POST['pass'])) {
-		return;
-	}
-
-	$user_pass = $_POST['pass'];
-
-	try {
-		// Update SQL user password in the mysql system tables;
-
-		$passwordUpdated = false;
-
-		exec_query("SET PASSWORD FOR ?@'%' = PASSWORD(?)", array($db_user_name, $user_pass));
-		exec_query("SET PASSWORD FOR ?@'localhost' = PASSWORD(?)", array($db_user_name, $user_pass));
-
-		$passwordUpdated = true;
-
-		iMSCP_Database::getInstance()->beginTransaction();
-
-		$stmt = exec_query('SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ? LIMIT 1', $db_user_name);
-
-		if(!$stmt->rowCount()) {
-			throw new iMSCP_Exception('SQL user to update not found.');
-		}
-
-		$oldPassword = $stmt->fields['sqlu_pass'];
-
-		// Update user password in the i-MSCP sql_user table;
-
-		$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
-		exec_query($query, array($user_pass, $db_user_name));
-
-		iMSCP_Database::getInstance()->commit();
-
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $db_user_id));
-
-		set_page_message(tr('SQL user password successfully updated.'), 'success');
-		write_log(sprintf("%s updated password for the '%s' SQL user.", $_SESSION['user_logged'], tohtml($db_user_name)), E_USER_NOTICE);
-	} catch (iMSCP_Exception $e) {
-		if($passwordUpdated) {
-			iMSCP_Database::getInstance()->rollBack();
-
-			if(isset($oldPassword)) {
-				// Our transaction failed so we try to rollback by restoring old password
-				try { // We don't care about result here - An exception is throw in case the user do not exists
-					exec_query("SET PASSWORD FOR ?@'%' = PASSWORD(?)", array($db_user_name, $oldPassword));
-					exec_query("SET PASSWORD FOR ?@'localhost' = PASSWORD(?)", array($db_user_name, $oldPassword));
-				} catch(iMSCP_Exception_Database $e) {}
-			}
-		}
-
-		set_page_message(tr('System was unable to update the SQL user password.'), 'error');
-		write_log(sprintf("System was unable to update password for the '%s' SQL user. Message was: %s", tohtml($db_user_name), $e->getMessage()), E_USER_ERROR);
-	}
-
-	redirectTo('sql_manage.php');
-}
-
-/**
- * @param iMSCP_pTemplate $tpl
- * @param int $db_user_id
- * @return
- */
-function gen_page_data($tpl, $db_user_id)
-{
-	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
-	$rs = exec_query($query, $db_user_id);
-
-	$tpl->assign(
-		array(
-			'USER_NAME' => tohtml($rs->fields['sqlu_name']),
-			'ID' => $db_user_id));
-
-	return $rs->fields['sqlu_name'];
-}
-
-if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	redirectTo('index.php');
-}
-
-$tpl->assign(
+$tpl->define_dynamic(
 	array(
-		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
-		'ISP_LOGO' => layout_getUserLogo()));
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/sql_change_password.tpl',
+		'page_message' => 'layout'
+	)
+);
 
-$db_user_name = gen_page_data($tpl, $db_user_id);
-
-if(!check_user_sql_perms($db_user_id))
-{
-    set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
-    redirectTo('sql_manage.php');
+if(updateSqlUserPassword($sqlUserId, gen_page_data($tpl, $sqlUserId))) {
+	redirectTo('sql_manage.php');
 }
 
-check_user_sql_perms($db_user_id);
-change_sql_user_pass($db_user_id, $db_user_name);
 generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_CHANGE_SQL_USER_PASSWORD' => tr('Change SQL user password'),
+		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		 'TR_CHANGE_SQL_USER_PASSWORD' => tr('Update SQL user password'),
 		 'TR_USER_NAME' => tr('User name'),
 		 'TR_PASS' => tr('Password'),
-		 'TR_PASS_REP' => tr('Repeat password'),
-		 'TR_CHANGE' => tr('Change'),
-		 // The entries below are for Demo versions only
-		 'PASSWORD_DISABLED' => tr('Password change is deactivated!'),
-		 'DEMO_VERSION' => tr('Demo Version!')));
+		 'TR_PASS_REP' => tr('Confirm password'),
+		 'TR_CHANGE' => tr('Update')
+	)
+);
 
 generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');

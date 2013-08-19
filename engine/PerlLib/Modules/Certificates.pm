@@ -139,18 +139,22 @@ sub process
 
 	my @sql;
 
-	if($self->{'status'} =~ /^toadd|tochange/) {
+	if($self->{'status'} ~~ ['toadd', 'tochange']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'cert_id'}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'cert_id'}
 		);
 	} elsif($self->{'status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `ssl_certs` SET `status` = ? WHERE `cert_id` = ?",
-				scalar getMessageByType('error'), $self->{'cert_id'}
+				scalar getMessageByType('error'),
+				$self->{'cert_id'}
 			);
 		} else {
 			@sql = ("DELETE FROM `ssl_certs` WHERE `cert_id` = ?", $self->{'cert_id'});

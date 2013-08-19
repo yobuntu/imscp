@@ -1,5 +1,5 @@
 
-			<form name="sql_add_user_frm" method="post" action="sql_user_add.php">
+			<form name="sql_add_user_frm" method="post" action="sql_user_add.php" autocomplete="off">
 				<!-- BDP: show_sqluser_list -->
 				<table>
 					<tr>
@@ -13,6 +13,7 @@
 								<option value="{SQLUSER_ID}" {SQLUSER_SELECTED}>{SQLUSER_NAME}</option>
 								<!-- EDP: sqluser_list -->
 							</select>
+							@{SQL_USERS_HOSTNAME}
 						</td>
 					</tr>
 				</table>
@@ -32,6 +33,7 @@
 						<td style="width: 300px;"><label for="user_name">{TR_USER_NAME}</label></td>
 						<td>
 							<input type="text" id="user_name" name="user_name" value="{USER_NAME}" />
+							@{SQL_USERS_HOSTNAME}
 						</td>
 					</tr>
 					<tr>

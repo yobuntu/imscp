@@ -31,10 +31,6 @@ use warnings;
 
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Servers;
-use iMSCP::Addons;
-use iMSCP::Execute;
-use iMSCP::Dir;
 use iMSCP::OpenSSL;
 use Net::LibIDN qw/idn_to_unicode/;
 use parent 'Modules::Abstract';
@@ -94,7 +90,7 @@ sub loadData
 		return 1;
 	}
 
-	$self->{$_} = $rdata->{$self->{'subId'}}->{$_} for keys %{$rdata->{$self->{'subId'}}};
+	@{$self}{keys %{$rdata->{$self->{'subId'}}}} = values %{$rdata->{$self->{'subId'}}};
 
 	0;
 }
@@ -109,38 +105,46 @@ sub process
 
 	my @sql;
 
-	if($self->{'subdomain_status'} =~ /^toadd|tochange|toenable$/) {
+	if($self->{'subdomain_status'} ~~ ['toadd', 'tochange', 'toenable']) {
 		$rs = $self->add();
+
 		@sql = (
 			"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'subdomain_id'}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'subdomain_id'}
 		);
 	} elsif($self->{'subdomain_status'} eq 'todelete') {
 		$rs = $self->delete();
+
 		if($rs) {
 			@sql = (
 				"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
-				scalar getMessageByType('error'), $self->{'subdomain_id'}
+				scalar getMessageByType('error'),
+				$self->{'subdomain_id'}
 			);
 		} else {
 			@sql = ("DELETE FROM `subdomain` WHERE `subdomain_id` = ?", $self->{'subdomain_id'});
 		}
 	} elsif($self->{'subdomain_status'} eq 'todisable') {
 		$rs = $self->disable();
+
 		@sql = (
 			"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'disabled'), $self->{'subdomain_id'}
+			($rs ? scalar getMessageByType('error') : 'disabled'),
+			$self->{'subdomain_id'}
 		);
 	} elsif($self->{'subdomain_status'} eq 'torestore') {
 		$rs = $self->restore();
+
 		@sql = (
 			"UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?",
-			($rs ? scalar getMessageByType('error') : 'ok'), $self->{'subdomain_id'}
+			($rs ? scalar getMessageByType('error') : 'ok'),
+			$self->{'subdomain_id'}
 		);
 	}
 
 	my $rdata = iMSCP::Database->factory()->doQuery('dummy', @sql);
-	if(ref $rdata ne 'HASH') {
+	unless(ref $rdata eq 'HASH') {
 		error($rdata);
 		return 1;
 	}

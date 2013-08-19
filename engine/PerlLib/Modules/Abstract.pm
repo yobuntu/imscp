@@ -106,6 +106,7 @@ sub add
 	my $self = shift;
 
 	$self->{'action'} = 'add';
+
 	$self->runAllActions();
 }
 
@@ -124,6 +125,7 @@ sub delete
 	my $self = shift;
 
 	$self->{'action'} = 'delete';
+
 	$self->runAllActions();
 }
 
@@ -142,6 +144,7 @@ sub restore
 	my $self = shift;
 
 	$self->{'action'} = 'restore';
+
 	$self->runAllActions();
 }
 
@@ -160,6 +163,7 @@ sub disable
 	my $self = shift;
 
 	$self->{'action'} = 'disable';
+
 	$self->runAllActions();
 }
 
@@ -174,32 +178,33 @@ sub disable
 sub runAllActions
 {
 	my $self = shift;
-	my $rs = 0;
 
 	@{$self->{'Servers'}} = iMSCP::Servers->getInstance()->get();
 	@{$self->{'Addons'}} = iMSCP::Addons->getInstance()->get();
 
 	# Build service/addon data if provided by the module
-	for(@{$self->{'Servers'}}, 'Addon') {
+	for (@{$self->{'Servers'}}, 'Addon') {
 		next if $_ eq 'noserver.pm';
-		my $fname = 'build' . uc($_) . 'Data';
-		$fname =~ s/\.pm//i;
-		$rs = $self->$fname();
+
+		my $methodName = 'build' . uc($_) . 'Data';
+		$methodName =~ s/\.pm//i;
+
+		my $rs = $self->$methodName();
 		return $rs if $rs;
 	}
 
 	for('pre', '', 'post') {
-		$rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Servers');
+		my $rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Servers');
     	return $rs if $rs;
 
     	$rs = $self->runAction("$_$self->{'action'}$self->{'type'}", 'Addons');
         return $rs if $rs;
 	}
 
-	$rs;
+	0;
 }
 
-=item runAction()
+=item runAction($action, $type)
 
  Run the given action on each server/addon that implement it.
 
@@ -209,32 +214,28 @@ sub runAllActions
 
 sub runAction
 {
-	my $self = shift;
-	my $action = shift;
-	my $type = shift;
-	my $rs = 0;
-
-	my ($file, $class, $instance);
+	my ($self, $action, $type) = @_;
 
 	for (@{$self->{$type}}) {
-		s/\.pm//;
+		s/\.pm$//;
 		my $paramName = ($type eq 'Addons') ? 'AddonsData' : $_;
 
 		if(exists $self->{$paramName}) {
-			$file = "$type/$_.pm";
-			$class = "${type}::$_";
+			my $file = "$type/$_.pm";
+			my $class = "${type}::$_";
+
 			require $file;
-			$instance = $type ne 'Addons' ? $class->factory() : $class->getInstance();
+			my $instance = $type ne 'Addons' ? $class->factory() : $class->getInstance();
 
 			if ($instance->can($action)) {
 				debug("Calling action $action from ${type}::$_");
-				$rs = $instance->$action($self->{$paramName});
+				my $rs = $instance->$action($self->{$paramName});
 				return $rs if $rs;
 			}
 		}
 	}
 
-	$rs;
+	0;
 }
 
 =item buildHTTPDData()
@@ -316,6 +317,23 @@ sub buildFTPDData
 {
 	0;
 }
+
+=item buildSQLData()
+
+ Build SQL data.
+
+ This method should be implemented by any module that provides data for SQLD service.
+ Resulting data must be stored in an anonymous hash accessible through the 'sqld' attribute.
+
+ return int - 0 on success, other on failure
+
+=cut
+
+sub buildSQLData
+{
+	0;
+}
+
 
 =item buildCRONData()
 

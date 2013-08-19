@@ -297,6 +297,21 @@
                 </div>
                 <!-- EDP: php_editor_disable_functions_block -->
             </div>
+
+
+			<h1><strong>{TR_SQL_SETTINGS}</strong></h1>
+			<div style="padding: 0">
+				<div class="even">
+					<div class="left">
+						<label for="sql_users_hostname">{TR_SQL_USERS_HOSTNAME}</label>
+						<span style="" class="icon i_help" title="{TR_SQL_USERS_HOSTNAME_HELP}">{TR_HELP}</span>
+					</div>
+					<div class="right">
+						<input type="text" id="sql_users_hostname" name="sql_users_hostname" value="{SQL_USERS_HOSTNAME}"/>
+					</div>
+				</div>
+			</div>
+
             <h1><strong>{TR_OTHER_SETTINGS}</strong></h1>
 
             <div style="padding: 0">

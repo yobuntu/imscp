@@ -154,6 +154,8 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string WEBSTATS_TARGET Web statistics target window
  * @property string BACKUP_DOMAINS (yes|no)
  * @property string WEBSTATS_ADDON (No|<webstats_addon_name>)
+ * @property string DATABASE_USER_HOST Hostname from which SQL user as allowed to connect from
+ * @property string PMA_TARGET PhpMyAdmin target page
  *
  * @category    iMSCP
  * @package     iMSCP_Core

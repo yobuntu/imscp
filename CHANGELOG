@@ -21,6 +21,8 @@ ENGINE:
 	- Added support for Apache 2.4.x branch
 	- Added database connection timeout (3 seconds)
 	- Added MySQL transaction routines
+	- Added SQL server implementation (MySQL, MariaDB)
+	- Added SqlDatabase and SqlUser modules
 	- Fixed: MySQL server has gone away
 	- Fixed: Plugin module is broken: Unable to disable, uninstall... any plugin
 	- Fixed: Plugin update must be triggered when plugin configuration is updated
@@ -48,6 +50,7 @@ Tickets:
 	- Fixed #867: Security issue - SSL - When exporting a private key, the password must not be visible from system utilities
 	- Fixed #870: Bug - Error indicator for new tickets
 	- Fixed #876: Review - Installer - Wildcard should be allowed as part of SQL user hostname
+	- Fixed #879: Security Issue - SQL user hostname - Remove wildcard
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.0-rc3

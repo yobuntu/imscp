@@ -24,9 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2013 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Core
- * @subpackage	Client
+ * @category    i-MSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2013 by i-MSCP | http://i-mscp.net
@@ -35,40 +35,13 @@
  * @link        http://i-mscp.net
  */
 
-// Include core library
-require_once 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login('user');
-
-customerHasFeature('sql') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/sql_user_add.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('mysql_prefix_no', 'page');
-$tpl->define_dynamic('mysql_prefix_yes', 'page');
-$tpl->define_dynamic('mysql_prefix_infront', 'page');
-$tpl->define_dynamic('mysql_prefix_behind', 'page');
-$tpl->define_dynamic('mysql_prefix_all', 'page');
-$tpl->define_dynamic('sqluser_list', 'page');
-$tpl->define_dynamic('show_sqluser_list', 'page');
-$tpl->define_dynamic('create_sqluser', 'page');
-
-if (isset($_GET['id'])) {
-	$db_id = $_GET['id'];
-} else if (isset($_POST['id'])) {
-	$db_id = $_POST['id'];
-} else {
-	redirectTo('sql_manage.php');
-}
+/***********************************************************************************************************************
+ * Functions
+ */
 
 /**
+ * Check SQL permissions (limit)
  *
  * @param iMSCP_pTemplate $tpl
  * @param int $customerId Customer unique identifier
@@ -80,7 +53,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 	$domainProperties = get_domain_default_props($customerId);
 	$domainSqlUsersLimit = $domainProperties['domain_sqlu_limit'];
 
-	$limits =  get_domain_running_sql_acc_cnt($domainProperties['domain_id']);
+	$limits = get_domain_running_sql_acc_cnt($domainProperties['domain_id']);
 
 	if ($domainSqlUsersLimit != 0 && $limits[1] >= $domainSqlUsersLimit) {
 		if (!$sqlUserList) {
@@ -112,6 +85,7 @@ function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 }
 
 /**
+ * Generate list of SQL user assigned to the database
  *
  * @param int $databaseId Database unique identifier
  * @return array
@@ -124,21 +98,23 @@ function get_sqluser_list_of_current_db($databaseId)
 	$userlist = array();
 
 	while (!$stmt->EOF) {
-			$userlist[] = $stmt->fields['sqlu_name'];
-			$stmt->moveNext();
+		$userlist[] = $stmt->fields['sqlu_name'];
+		$stmt->moveNext();
 	}
 
 	return $userlist;
 }
 
 /**
+ * Generate list of available SQL users
  *
  * @param iMSCP_pTemplate $tpl
- * @param $sqlUserId
- * @param $databaseId
+ * @param int $sqlUserId Sql user unique identifier
+ * @param int $databaseId Database unique identifier
  * @return bool
  */
-function gen_sql_user_list($tpl, $sqlUserId, $databaseId) {
+function gen_sql_user_list($tpl, $sqlUserId, $databaseId)
+{
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -174,6 +150,7 @@ function gen_sql_user_list($tpl, $sqlUserId, $databaseId) {
 		} else {
 			$select = '';
 		}
+
 		// 1. Compares the sqluser name with the record before (Is set as '' at the first time, see above)
 		// 2. Compares the sqluser name with the userlist of the current database
 		if ($oldrsName != $stmt->fields['sqlu_name'] && !in_array($stmt->fields['sqlu_name'], $userlist)) {
@@ -204,14 +181,14 @@ function gen_sql_user_list($tpl, $sqlUserId, $databaseId) {
 }
 
 /**
- *
- * @param $db_user
+ * Check for existence of the given SQL user
+ * @param string $sqlUsername SQL username
  * @return mixed
  */
-function check_db_user($db_user)
+function check_db_user($sqlUsername)
 {
 	$query = "SELECT COUNT(`User`) `cnt` FROM `mysql`.`user` WHERE `User` = ?";
-	$stmt = exec_query($query, $db_user);
+	$stmt = exec_query($query, $sqlUsername);
 
 	return $stmt->fields['cnt'];
 }
@@ -219,7 +196,7 @@ function check_db_user($db_user)
 /**
  * Assign an SQL user to the given database
  *
- * It can be an existing user or a new user as filled out in input data
+ * This can be an existing user or a new user as filled out in input data
  *
  * @param int $customerId Customer unique identifier
  * @param int $databaseId Database unique identifier
@@ -227,7 +204,7 @@ function check_db_user($db_user)
  */
 function add_sql_user($customerId, $databaseId)
 {
-	if(!empty($_POST)) {
+	if (!empty($_POST)) {
 		if (!isset($_POST['uaction'])) {
 			showBadRequestErrorPage();
 		}
@@ -239,7 +216,7 @@ function add_sql_user($customerId, $databaseId)
 
 		$domainId = get_user_domain_id($customerId);
 
-		if(! isset($_POST['Add_Exist'])) { // Add new SQL user as specified in input data
+		if (!isset($_POST['Add_Exist'])) { // Add new SQL user as specified in input data
 			if (empty($_POST['user_name'])) {
 				set_page_message(tr('Please enter a username.'), 'error');
 				return;
@@ -250,7 +227,7 @@ function add_sql_user($customerId, $databaseId)
 				return;
 			}
 
-			if (! isset($_POST['pass_rep']) || $_POST['pass'] !== $_POST['pass_rep']) {
+			if (!isset($_POST['pass_rep']) || $_POST['pass'] !== $_POST['pass_rep']) {
 				set_page_message(tr("Passwords do not match."), 'error');
 				return;
 			}
@@ -260,7 +237,7 @@ function add_sql_user($customerId, $databaseId)
 				return;
 			}
 
-			if (! checkPasswordSyntax($_POST['pass'])) {
+			if (!checkPasswordSyntax($_POST['pass'])) {
 				return;
 			}
 
@@ -272,7 +249,8 @@ function add_sql_user($customerId, $databaseId)
 				&& $_POST['id_pos'] == 'start'
 			) {
 				$sqlUser = $domainId . '_' . clean_input($_POST['user_name']);
-			} elseif (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] == 'on' && isset($_POST['id_pos'])
+			} elseif (
+				isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] == 'on' && isset($_POST['id_pos'])
 				&& $_POST['id_pos'] == 'end'
 			) {
 				$sqlUser = clean_input($_POST['user_name']) . '_' . $domainId;
@@ -309,58 +287,44 @@ function add_sql_user($customerId, $databaseId)
 			return;
 		}
 
-		# Retrive database to which SQL user should be assigned
+		# Retrieve database to which SQL user should be assigned
 		$stmt = exec_query(
 			"SELECT `sqld_name` FROM `sql_database` WHERE `sqld_id` = ? AND `domain_id` = ?",
 			array($databaseId, $domainId)
 		);
 
-		if(!$stmt->rowCount()) {
+		if (!$stmt->rowCount()) {
 			showBadRequestErrorPage();
 		} else {
-			$dbName = $stmt->fields['sqld_name'];
-			$dbName = preg_replace('/([_%\?\*])/', '\\\$1', $dbName);
-
-			// Here we cannot use transaction because the GRANT statement cause an implicit commit
-			// We execute the GRANT statements first to let the i-MSCP database in clean state if one of them fails.
 			try {
-				$sqlUserCreated = false;
-
-				$query = 'GRANT ALL PRIVILEGES ON ' . quoteIdentifier($dbName) . '.* TO ?@? IDENTIFIED BY ?';
-
-				// Todo prepare the statement only once here
-				exec_query($query, array($sqlUser, 'localhost', $sqlUserPassword));
-				exec_query($query, array($sqlUser, '%', $sqlUserPassword)); // # TODO review this
-
-				$sqlUserCreated = true;
-
-				iMSCP_Database::getInstance()->beginTransaction();
-
-				$query = "INSERT INTO `sql_user` (`sqld_id`, `sqlu_name`, `sqlu_pass`) VALUES (?, ?, ?)";
-				exec_query($query, array($databaseId, $sqlUser, $sqlUserPassword));
-
-				iMSCP_Database::getInstance()->commit();
+				$query = "INSERT INTO `sql_user` (`sqld_id`, `sqlu_name`, `sqlu_pass`, `sqlu_status`) VALUES (?, ?, ?, ?)";
+				exec_query(
+					$query,
+					array(
+						$databaseId,
+						$sqlUser,
+						$sqlUserPassword,
+						(!isset($_POST['Add_Exist'])) ? $cfg->ITEM_TOADD_STATUS : $cfg->ITEM_OK_STATUS
+					)
+				);
 
 				iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
-				set_page_message(tr('SQL user successfully added.'), 'success');
-				write_log(sprintf("%s added new SQL user: %s", $_SESSION['user_logged'], tohtml($sqlUser)), E_USER_NOTICE);
-			} catch (iMSCP_Exception_Database $e) {
-				if($sqlUserCreated) {
-					// Our transaction failed so we rollback and we remove the user and all its privileges from
-					// the mysql tables
-					iMSCP_Database::getInstance()->rollBack();
+				set_page_message(tr('SQL user successfully scheduled for addition.'), 'success');
 
-					try { // We don't care about result here - An exception is throw in case the user do not exists
-						exec_query("DROP USER ?@'localhost'", $sqlUser);
-						exec_query("DROP USER ?@'%'", $sqlUser);
-					} catch(iMSCP_Debug_Bar_Exception $e) {}
-				}
-
-				set_page_message(tr('System was unable to add the SQL user.'), 'error');
 				write_log(
-					sprintf("System was unable to add the '%s' SQL user. Message was: %s",
-					$sqlUser, $e->getMessage()), E_USER_ERROR
+					sprintf("%s scheduled addition of SQL user: %s", $_SESSION['user_logged'], tohtml($sqlUser)),
+					E_USER_NOTICE
+				);
+			} catch (iMSCP_Exception_Database $e) {
+				set_page_message(tr('System was unable to schedule addition of new SQL user.'), 'error');
+				write_log(
+					sprintf(
+						"System was unable to schedule addition of the '%s' SQL user. Message was: %s",
+						$sqlUser,
+						$e->getMessage()
+					),
+					E_USER_ERROR
 				);
 			}
 		}
@@ -370,30 +334,40 @@ function add_sql_user($customerId, $databaseId)
 }
 
 /**
+ * Generate page post data
+ *
  * @param iMSCP_pTemplate $tpl
- * @param $db_id
+ * @param int $databaseId Dtabase unique identifier
  * @return void
  */
-function gen_page_post_data($tpl, $db_id) {
-
+function gen_page_post_data($tpl, $databaseId)
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if ($cfg->MYSQL_PREFIX === 'yes') {
+	if ($cfg->MYSQL_PREFIX == 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
-		if ($cfg->MYSQL_PREFIX_TYPE === 'behind') {
+		if ($cfg->MYSQL_PREFIX_TYPE == 'behind') {
 			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 			$tpl->assign('MYSQL_PREFIX_ALL', '');
 		} else {
 			$tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
-			$tpl->assign('MYSQL_PREFIX_BEHIND', '');
-			$tpl->assign('MYSQL_PREFIX_ALL', '');
+			$tpl->assign(
+				array(
+					'MYSQL_PREFIX_BEHIND' => '',
+					'MYSQL_PREFIX_ALL' => ''
+				)
+			);
 		}
 	} else {
-		$tpl->assign('MYSQL_PREFIX_NO', '');
-		$tpl->assign('MYSQL_PREFIX_INFRONT', '');
-		$tpl->assign('MYSQL_PREFIX_BEHIND', '');
+		$tpl->assign(
+			array(
+				'MYSQL_PREFIX_NO' => '',
+				'MYSQL_PREFIX_INFRONT' => '',
+				'MYSQL_PREFIX_BEHIND' => ''
+			)
+		);
 		$tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
 	}
 
@@ -413,23 +387,52 @@ function gen_page_post_data($tpl, $db_id) {
 				'END_ID_POS_CHECKED' => $cfg->HTML_CHECKED));
 	}
 
-	$tpl->assign('ID', $db_id);
+	$tpl->assign('ID', $databaseId);
 }
+
+/***********************************************************************************************************************
+ * Main
+ */
+
+// Include core library
+require_once 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login('user');
+
+if (isset($_GET['id'])) {
+	$databaseId = $_GET['id'];
+} else if (isset($_POST['id'])) {
+	$databaseId = $_POST['id'];
+} elseif (!customerHasFeature('sql')) {
+	showBadRequestErrorPage();
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/sql_user_add.tpl',
+		'page_message' => 'layout',
+		'mysql_prefix_no' => 'page',
+		'mysql_prefix_yes' => 'page',
+		'mysql_prefix_infront' => 'page',
+		'mysql_prefix_behind' => 'page',
+		'mysql_prefix_all' => 'page',
+		'sqluser_list' => 'page',
+		'show_sqluser_list' => 'page',
+		'create_sqluser' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Add SQL User'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-
-$sqluser_available = gen_sql_user_list($tpl, $_SESSION['user_id'], $db_id);
-check_sql_permissions($tpl, $_SESSION['user_id'], $db_id, $sqluser_available);
-gen_page_post_data($tpl, $db_id);
-add_sql_user($_SESSION['user_id'], $db_id);
-generateNavigation($tpl);
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_SQL_USER' => tr('Add SQL user'),
 		'TR_USER_NAME' => tr('SQL user name'),
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
@@ -442,8 +445,16 @@ $tpl->assign(
 		'TR_PASS_REP' => tr('Repeat password'),
 		'TR_SQL_USER_NAME' => tr('SQL users'),
 		'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
-		'TR_NEW_SQL_USER_DATA' => tr('New SQL user data')));
+		'TR_NEW_SQL_USER_DATA' => tr('New SQL user data'),
+		'SQL_USERS_HOSTNAME' => $cfg->DATABASE_USER_HOST
+	)
+);
 
+$sqlUserList = gen_sql_user_list($tpl, $_SESSION['user_id'], $databaseId);
+check_sql_permissions($tpl, $_SESSION['user_id'], $databaseId, $sqlUserList);
+gen_page_post_data($tpl, $databaseId);
+add_sql_user($_SESSION['user_id'], $databaseId);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
