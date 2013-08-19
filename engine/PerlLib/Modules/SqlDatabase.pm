@@ -58,7 +58,7 @@ sub process($$)
 {
 	my ($self, $sqlDatabaseId) = @_;
 
-	my $rs = $self->loadData($sqlDatabaseId);
+	my $rs = $self->_loadData($sqlDatabaseId);
 	return $rs if $rs;
 
 	if($self->{'status'} ~~ ['toadd', 'tochange']) {
@@ -152,7 +152,7 @@ sub _loadData($$)
 	}
 
 	unless(exists $rdata->{$sqlDatabaseId}) {
-		error("No SQL user in table sql_database has ID = $sqlDatabaseId");
+		error("No SQL database in table sql_database has ID = $sqlDatabaseId");
 		return 1;
 	}
 
