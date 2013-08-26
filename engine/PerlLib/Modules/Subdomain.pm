@@ -30,7 +30,6 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
-use File::Temp;
 use iMSCP::Database;
 use iMSCP::Servers;
 use iMSCP::Addons;
@@ -300,10 +299,12 @@ sub buildNAMEDData
 			AND
 				`domain_dns`.`domain_type` = ?
 			AND
-				`domain_dns`.`protected` = ?
+				`domain_dns`.`owned_by` = ?
 		";
 
-		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{'domain_id'}, 0, 'MX', 'yes');
+		my $rdata = iMSCP::Database->factory()->doQuery(
+			'domain_dns_id', $sql, $self->{'domain_id'}, 0, 'MX', 'ext_mail_feature'
+		);
 		if(ref $rdata ne 'HASH') {
 			error($rdata);
 			return 1;

@@ -353,6 +353,10 @@ function change_domain_status($customerId, $action)
 		throw new iMSCP_Exception("Unable to found domain for user with ID $customerId");
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+	);
+
 	$domainId = $stmt->fields['domain_id'];
 	$domainName = decode_idna($stmt->fields['domain_name']);
 
@@ -426,6 +430,10 @@ function change_domain_status($customerId, $action)
 		$db->rollBack();
 		throw new iMSCP_Exception_Database($e->getMessage(), $e->getQuery(), $e->getCode(), $e);
 	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onAfterChangeDomainStatus, array('customerId' => $customerId, 'action' => $action)
+);
 
 	// Send request to i-MSCP daemon
 	send_request();
@@ -1021,35 +1029,29 @@ function array_encode_idna($array, $asPath = false)
 }
 
 /**
- * Convert domain name to IDNA ASCII form.
+ * Convert the given string to IDNA ASCII form.
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
- * @param  string $domain Domain to convert.
+ * @param  string String to convert
  * @return string Domain name encoded in ASCII-compatible form
  */
 function encode_idna($domain)
 {
-	if (extension_loaded('intl')) {
-		return idn_to_ascii($domain);
-	} else {
-		throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
-	}
+	$idn = new idna_convert();
+	return $idn->encode($domain);
 }
 
 /**
- * Convert domain name from IDNA ASCII to Unicode.
+ * Convert the given string from IDNA ASCII to Unicode.
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
- * @param  string $domain Domain to convert in IDNA ASCII-compatible format.
+ * @param  string String to convert
  * @return string Domain name in Unicode.
  */
 function decode_idna($domain)
 {
-	if (extension_loaded('intl')) {
-		return idn_to_utf8($domain, IDNA_USE_STD3_RULES);
-	} else {
-		throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
-	}
+	$idn = new idna_convert();
+	return $idn->decode($domain);
 }
 
 /**
@@ -2446,4 +2448,19 @@ function showNotFoundErrorPage()
 	}
 
 	exit;
+}
+
+/**
+ * Whether or not the file system on which Web folders are hosted is supporting the immutable flag
+ *
+ * @return bool TRUE if the immutable flag is supported, FALSE otherwise
+ */
+function isImmutableFlagAvailable()
+{
+	/** @var iMSCP_Config_Handler_File $cfg */
+	$cfg = iMSCP_Registry::get('config');
+
+	$filePartitionInfo = iMSCP_SystemInfo::getFilePartitionInfo($cfg->USER_WEB_DIR);
+
+	return (bool) preg_match('/^(?:ext[2-4]|reiserfs)$/', $filePartitionInfo['fstype']);
 }

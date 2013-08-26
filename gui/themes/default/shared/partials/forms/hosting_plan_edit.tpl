@@ -22,7 +22,7 @@
 			});
 
 		// Re-add the PHP Editor to the form
-		$("#hostingPlanEditFrm").submit(
+		$('#hostingPlanEditFrm').submit(
 			function () {
 				$('#php_editor_dialog').parent().appendTo($(this));
 			}
@@ -39,19 +39,19 @@
 			}
 		);
 
-		$("#php_editor_dialog_open").button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
+		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});
 
 		// Do not show PHP Editor settings button if disabled
-		if ($("#phpiniSystemNo").is(':checked')) {
-			$("#php_editor_dialog_open").hide();
+		if ($('#phpiniSystemNo').is(':checked')) {
+			$('#php_editor_dialog_open').hide();
 		}
 
 		$('#phpiniSystemYes,#phpiniSystemNo').change(
 			function () {
-				$("#php_editor_dialog_open").fadeToggle();
+				$('#php_editor_dialog_open').fadeToggle();
 			}
 		);
 
@@ -82,7 +82,7 @@
 		// Adds an event on each PHP Editor settings input fields to display an
 		// error message when a value is wrong
 		$.each(phpDirectivesMaxValues, function (k, v) {
-			$("#" + k).keyup(function () {
+			$('#' + k).keyup(function () {
 				var r = /^(0|[1-9]\d*)$/; // Regexp to check value syntax
 				var nv = $(this).val(); // Get new value to be checked
 
@@ -93,21 +93,18 @@
 					$(this).removeClass('ui-state-error');
 					_updateErrorMesssages(k);
 				}
-			});
-			$("#" + k).trigger('keyup');
+			}).trigger('keyup');
 		});
 	});
 	/*]]>*/
 </script>
 <!-- EDP: php_editor_js -->
+
 <form id="hostingPlanEditFrm" name="hostingPlanEditFrm" method="post" action="hosting_plan_edit.php?id={ID}">
 <table class="firstColFixed">
-<thead class="ui-widget-header">
 <tr>
-	<th colspan="2">{TR_PROPERTIES}</th>
+	<th colspan="2">{TR_HOSTING_PLAN}</th>
 </tr>
-</thead>
-<tbody class="ui-widget-content">
 <tr>
 	<td><label for="hp_name">{TR_NAME}</label></td>
 	<td><input id="hp_name" type="text" name="hp_name" value="{NAME}" class="inputTitle"{READONLY}/></td>
@@ -115,6 +112,12 @@
 <tr>
 	<td><label for="hp_description">{TR_DESCRIPTON}</label></td>
 	<td><textarea id="hp_description" name="hp_description"{READONLY}>{DESCRIPTION}</textarea></td>
+</tr>
+</table>
+
+<table>
+<tr>
+	<th colspan="2">{TR_HOSTING_PLAN_LIMITS}</th>
 </tr>
 <!-- BDP: nb_subdomains -->
 <tr>
@@ -161,6 +164,12 @@
 	<td><label for="hp_disk">{TR_MAX_DISKSPACE}</label></td>
 	<td><input id="hp_disk" type="text" name="hp_disk" value="{MAX_DISKSPACE}"{READONLY}/></td>
 </tr>
+</table>
+
+<table>
+<tr>
+	<th colspan="2">{TR_HOSTING_PLAN_FEATURES}</th>
+</tr>
 <!-- BDP: php_feature -->
 <tr>
 	<td>{TR_PHP}</td>
@@ -191,12 +200,9 @@
 			</div>
 			<table>
 				<!-- BDP: php_editor_permissions_block -->
-				<thead class="ui-widget-header">
 				<tr class="description">
 					<th colspan="2">{TR_PERMISSIONS}</th>
 				</tr>
-				</thead>
-				<tbody class="ui-widget-content">
 				<!-- BDP: php_editor_allow_url_fopen_block -->
 				<tr>
 					<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -253,22 +259,19 @@
 				<tr>
 					<td><label for="upload_max_filesize">{PHP_UPLOAD_MAX_FILESIZE_DIRECTIVE}</label></td>
 					<td>
-						<input name="upload_max_filesize" id="upload_max_filesize" type="text" value="{UPLOAD_MAX_FILESIZE}"{READONLY}/>
-						<span>{TR_MIB}</span>
+						<input name="upload_max_filesize" id="upload_max_filesize" type="text" value="{UPLOAD_MAX_FILESIZE}"{READONLY}/> <span>{TR_MIB}</span>
 					</td>
 				</tr>
 				<tr>
 					<td><label for="max_execution_time">{TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE}</label></td>
 					<td>
-						<input name="max_execution_time" id="max_execution_time" type="text" value="{MAX_EXECUTION_TIME}"{READONLY}/>
-						<span>{TR_SEC}</span>
+						<input name="max_execution_time" id="max_execution_time" type="text" value="{MAX_EXECUTION_TIME}"{READONLY}/> <span>{TR_SEC}</span>
 					</td>
 				</tr>
 				<tr>
 					<td><label for="max_input_time">{TR_PHP_MAX_INPUT_TIME_DIRECTIVE}</label></td>
 					<td>
-						<input name="max_input_time" id="max_input_time" type="text" value="{MAX_INPUT_TIME}"{READONLY}/>
-						<span>{TR_SEC}</span>
+						<input name="max_input_time" id="max_input_time" type="text" value="{MAX_INPUT_TIME}"{READONLY}/> <span>{TR_SEC}</span>
 					</td>
 				</tr>
 				<tr>
@@ -279,7 +282,6 @@
 					</td>
 				</tr>
 				<!-- EDP: php_editor_default_values_block -->
-				</tbody>
 			</table>
 		</div>
 	</td>
@@ -336,20 +338,6 @@
 		</div>
 	</td>
 </tr>
-<tr>
-	<td>
-		<label>{TR_PROTECT_WEB_FOLDERS}</label>
-		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
-	</td>
-	<td>
-		<div class="radio">
-			<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{PROTECT_WEB_FOLDERS_YES}{DISABLED}/>
-			<label for="hp_protected_webfolders_yes">{TR_YES}</label>
-			<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{PROTECT_WEB_FOLDERS_NO}{DISABLED}/>
-			<label for="hp_protected_webfolders_no">{TR_NO}</label>
-		</div>
-	</td>
-</tr>
 <!-- EDP: ext_mail_feature -->
 <!-- BDP: backup_feature -->
 <tr>
@@ -368,15 +356,29 @@
 	</td>
 </tr>
 <!-- EDP: backup_feature -->
-</tbody>
+<!-- BDP: web_folder_protection_feature -->
+<tr>
+	<td>
+		<label>{TR_WEB_FOLDER_PROTECTION}</label>
+		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help"
+			  title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+	</td>
+	<td>
+		<div class="radio">
+			<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{PROTECT_WEB_FOLDERS_YES}{DISABLED}/>
+			<label for="hp_protected_webfolders_yes">{TR_YES}</label>
+			<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{PROTECT_WEB_FOLDERS_NO}{DISABLED}/>
+			<label for="hp_protected_webfolders_no">{TR_NO}</label>
+		</div>
+	</td>
+</tr>
+<!-- EDP: web_folder_protection_feature -->
 </table>
+
 <table class="firstColFixed">
-	<thead class="ui-widget-header">
 	<tr>
 		<th colspan="2">{TR_AVAILABILITY}</th>
 	</tr>
-	</thead>
-	<tbody class="ui-widget-content">
 	<tr>
 		<td>{TR_STATUS}</td>
 		<td>
@@ -388,7 +390,6 @@
 			</div>
 		</td>
 	</tr>
-	</tbody>
 </table>
 <!-- BDP: submit_button -->
 <div class="buttons">

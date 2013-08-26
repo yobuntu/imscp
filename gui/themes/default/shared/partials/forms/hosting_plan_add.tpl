@@ -39,7 +39,7 @@
 			}
 		);
 
-		$("#php_editor_dialog_open").button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
+		$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function (e) {
 			$('#php_editor_dialog').dialog('open');
 			return false;
 		});
@@ -93,21 +93,18 @@
 					$(this).removeClass('ui-state-error');
 					_updateErrorMesssages(k);
 				}
-			});
-			$('#' + k).trigger('keyup');
+			}).trigger('keyup');
 		});
 	});
 	/*]]>*/
 </script>
 <!-- EDP: php_editor_js -->
+
 <form id="hostingPlanAddFrm" name="hostingPlanAddFrm" method="post" action="hosting_plan_add.php">
 <table class="firstColFixed">
-<thead class="ui-widget-header">
 <tr>
-	<th colspan="2">{TR_HOSTING_PLAN_PROPS}</th>
+	<th colspan="2">{TR_HOSTING_PLAN}</th>
 </tr>
-</thead>
-<tbody class="ui-widget-content">
 <tr>
 	<td><label for="hp_name">{TR_NAME}</label></td>
 	<td><input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" class="inputTitle"/></td>
@@ -115,6 +112,12 @@
 <tr>
 	<td><label for="hp_description">{TR_DESCRIPTON}</label></td>
 	<td><textarea id="hp_description" name="hp_description">{HP_DESCRIPTION_VALUE}</textarea></td>
+</tr>
+</table>
+
+<table>
+<tr>
+	<th colspan="2">{TR_HOSTING_PLAN_LIMITS}</th>
 </tr>
 <!-- BDP: nb_subdomains -->
 <tr>
@@ -162,6 +165,12 @@
 	<td><input class="spinner ui-autocomplete-input" id="hp_disk" type="text" name="hp_disk" value="{HP_DISK_VALUE}"/>
 	</td>
 </tr>
+</table>
+
+<table>
+<tr>
+	<th colspan="2">{TR_HOSTING_PLAN_FEATURES}</th>
+</tr>
 <!-- BDP: php_feature -->
 <tr>
 	<td>{TR_PHP}</td>
@@ -192,12 +201,9 @@
 			</div>
 			<table>
 				<!-- BDP: php_editor_permissions_block -->
-				<thead class="ui-widget-header">
 				<tr class="description">
 					<th colspan="2">{TR_PERMISSIONS}</th>
 				</tr>
-				</thead>
-				<tbody class="ui-widget-content">
 				<!-- BDP: php_editor_allow_url_fopen_block -->
 				<tr>
 					<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
@@ -254,7 +260,8 @@
 				<tr>
 					<td><label for="upload_max_filesize">{PHP_UPLOAD_MAX_FILESIZE_DIRECTIVE}</label></td>
 					<td>
-						<input name="upload_max_filesize" id="upload_max_filesize" type="text" value="{UPLOAD_MAX_FILESIZE}"/> <span>{TR_MIB}</span>
+						<input name="upload_max_filesize" id="upload_max_filesize" type="text"
+							   value="{UPLOAD_MAX_FILESIZE}"/> <span>{TR_MIB}</span>
 					</td>
 				</tr>
 				<tr>
@@ -279,7 +286,6 @@
 					</td>
 				</tr>
 				<!-- EDP: php_editor_default_values_block -->
-				</tbody>
 			</table>
 		</div>
 	</td>
@@ -316,9 +322,11 @@
 	<td>{TR_SOFTWARE_SUPP}</td>
 	<td>
 		<div class="radio">
-			<input type="radio" name="hp_softwares_installer" value="_yes_" id="hp_softwares_installer_yes"{TR_SOFTWARE_YES}/>
+			<input type="radio" name="hp_softwares_installer" value="_yes_"
+				   id="hp_softwares_installer_yes"{TR_SOFTWARE_YES}/>
 			<label for="hp_softwares_installer_yes">{TR_YES}</label>
-			<input type="radio" name="hp_softwares_installer" value="_no_" id="hp_softwares_installer_no"{TR_SOFTWARE_NO}/>
+			<input type="radio" name="hp_softwares_installer" value="_no_"
+				   id="hp_softwares_installer_no"{TR_SOFTWARE_NO}/>
 			<label for="hp_softwares_installer_no">{TR_NO}</label>
 		</div>
 	</td>
@@ -337,20 +345,6 @@
 	</td>
 </tr>
 <!-- EDP: ext_mail_feature -->
-<tr>
-	<td>
-		<label>{TR_PROTECT_WEB_FOLDERS}</label>
-		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help" title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
-	</td>
-	<td>
-		<div class="radio">
-			<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}/>
-			<label for="hp_protected_webfolders_yes">{TR_YES}</label>
-			<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}/>
-			<label for="hp_protected_webfolders_no">{TR_NO}</label>
-		</div>
-	</td>
-</tr>
 <!-- BDP: backup_feature -->
 <tr>
 	<td>{TR_BACKUP}</td>
@@ -368,15 +362,28 @@
 	</td>
 </tr>
 <!-- EDP: backup_feature -->
-</tbody>
+<!-- BDP: web_folder_protection_feature -->
+<tr>
+	<td>
+		<label>{TR_WEB_FOLDER_PROTECTION}</label>
+		<span style="vertical-align:middle" class="icon i_help" id="web_folder_protection_help"
+			  title="{TR_WEB_FOLDER_PROTECTION_HELP}">{TR_HELP}</span>
+	</td>
+	<td>
+		<div class="radio">
+			<input type="radio" name="hp_protected_webfolders" value="_yes_" id="hp_protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}/>
+			<label for="hp_protected_webfolders_yes">{TR_YES}</label>
+			<input type="radio" name="hp_protected_webfolders" value="_no_" id="hp_protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}/>
+			<label for="hp_protected_webfolders_no">{TR_NO}</label>
+		</div>
+	</td>
+</tr>
+<!-- EDP: web_folder_protection_feature -->
 </table>
 <table class="firstColFixed">
-	<thead class="ui-widget-header">
 	<tr>
 		<th colspan="2">{TR_HP_AVAILABILITY}</th>
 	</tr>
-	</thead>
-	<tbody class="ui-widget-content">
 	<tr>
 		<td>{TR_STATUS}</td>
 		<td>
@@ -388,7 +395,6 @@
 			</div>
 		</td>
 	</tr>
-	</tbody>
 </table>
 <!-- BDP: form -->
 <div class="buttons">

@@ -1,38 +1,21 @@
-<!-- BDP: php_editor_first_block_js -->
-<script type="text/javascript">
-	/*<![CDATA[*/
-	$(document).ready(function () {
-		// Fix for http://bugs.jqueryui.com/ticket/7856
-		$('[type=checkbox]').change(function () {
-			if (!$(this).is(':checked')) {
-				$(this).blur();
-			}
-		});
-	});
-	/*]]>*/
-</script>
-<!-- EDP: php_editor_first_block_js -->
-
 <p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PAGE_TEXT}</p>
 
 <form name="editFrm" method="post" action="phpini.php">
 	<!-- BDP: php_editor_first_block -->
 	<table class="firstColFixed">
-		<thead class="ui-widget-header">
 		<tr>
-			<th>{TR_DIRECTIVE_NAME}</th>
-			<th>{TR_DIRECTIVE_VALUE}</th>
+			<th colspan="2">{TR_PHP_SETTINGS}</th>
 		</tr>
-		</thead>
-		<tbody class="ui-widget-content">
 		<!-- BDP: allow_url_fopen_block -->
 		<tr>
 			<td><label for="allow_url_fopen">{TR_ALLOW_URL_FOPEN}</label></td>
 			<td>
-				<select name="allow_url_fopen" id="allow_url_fopen">
-					<option value="off"{ALLOW_URL_FOPEN_OFF}>{TR_VALUE_OFF}</option>
-					<option value="on"{ALLOW_URL_FOPEN_ON}>{TR_VALUE_ON}</option>
-				</select>
+				<div class="radio">
+					<input type="radio" name="allow_url_fopen" id="allow_url_fopen_on" value="on"{ALLOW_URL_FOPEN_ON}>
+					<label for="allow_url_fopen_on">{TR_YES}</label>
+					<input type="radio" name="allow_url_fopen" id="allow_url_fopen_off" value="off"{ALLOW_URL_FOPEN_OFF}>
+					<label for="allow_url_fopen_off">{TR_NO}</label>
+				</div>
 			</td>
 		</tr>
 		<!-- EDP: allow_url_fopen_block -->
@@ -40,26 +23,15 @@
 		<tr>
 			<td><label for="display_errors">{TR_DISPLAY_ERRORS}</label></td>
 			<td>
-				<select name="display_errors" id="display_errors">
-					<option value="off"{DISPLAY_ERRORS_OFF}>{TR_VALUE_OFF}</option>
-					<option value="on"{DISPLAY_ERRORS_ON}>{TR_VALUE_ON}</option>
-				</select>
+				<div class="radio">
+					<input type="radio" name="display_errors" id="display_errors_on" value="on"{DISPLAY_ERRORS_ON}>
+					<label for="display_errors_on">{TR_YES}</label>
+					<input type="radio" name="display_errors" id="display_errors_off" value="off"{DISPLAY_ERRORS_OFF}>
+					<label for="display_errors_off">{TR_NO}</label>
+				</div>
 			</td>
 		</tr>
 		<!-- EDP: display_errors_block -->
-		<!-- BDP: error_reporting_block -->
-		<tr>
-			<td><label for="error_reporting">{TR_ERROR_REPORTING}</label></td>
-			<td>
-				<select name="error_reporting" id="error_reporting">
-					<option value="E_ALL &amp; ~E_NOTICE"{ERROR_REPORTING_0}>{TR_ERROR_REPORTING_DEFAULT}</option>
-					<option value="E_ALL | E_STRICT"{ERROR_REPORTING_1}>{TR_ERROR_REPORTING_DEVELOPEMENT}</option>
-					<option value="E_ALL &amp; ~E_DEPRECATED"{ERROR_REPORTING_2}>{TR_ERROR_REPORTING_PRODUCTION}</option>
-					<option value="0"{ERROR_REPORTING_3}>{TR_ERROR_REPORTING_NONE}</option>
-				</select>
-			</td>
-		</tr>
-		<!-- EDP: error_reporting_block -->
 		<!-- BDP: disable_functions_block -->
 		<tr>
 			<td><label>{TR_DISABLE_FUNCTIONS}</label></td>
@@ -85,37 +57,39 @@
 			</td>
 		</tr>
 		<!-- EDP: disable_functions_block -->
-		</tbody>
-	</table>
-	<!-- EDP: php_editor_first_block -->
-	<!-- BDP: php_editor_second_block -->
-	<table class="firstColFixed">
-		<thead class="ui-widget-header">
-		<tr>
-			<th>{TR_PARAMETER}</th>
-			<th>{TR_STATUS}</th>
-		</tr>
-		</thead>
-		<tbody class="ui-widget-content">
+		<!-- BDP: php_editor_second_block -->
 		<tr>
 			<td>
 				<label>{TR_DISABLE_FUNCTIONS_EXEC}</label>
-				<span style="vertical-align: middle;" class="icon i_help" id="exec_help" title="{TR_EXEC_HELP}">{TR_HELP}</span>
+				<span style="vertical-align: middle;" class="icon i_help" id="exec_help" title="{TR_EXEC_HELP}"></span>
 			</td>
 			<td>
-				<div class="ui-buttonset">
-					<input type="radio" name="exec" id="exec_allowed" value="allows" {EXEC_ALLOWED}/>
-					<label for="exec_allowed">{TR_ALLOWED}</label>
-					<input type="radio" name="exec" value="disallows" id="exec_disallowed" {EXEC_DISALLOWED}/>
-					<label for="exec_disallowed">{TR_DISALLOWED}</label>
+				<div class="radio">
+					<input type="radio" name="exec" id="exec_yes" value="allows"{EXEC_ALLOWED}/>
+					<label for="exec_yes">{TR_YES}</label>
+					<input type="radio" name="exec" value="disallows" id="exec_no"{EXEC_DISALLOWED}/>
+					<label for="exec_no">{TR_NO}</label>
 				</div>
 			</td>
 		</tr>
-		</tbody>
+		<!-- EDP: php_editor_second_block -->
+		<!-- BDP: error_reporting_block -->
+		<tr>
+			<td><label for="error_reporting">{TR_ERROR_REPORTING}</label></td>
+			<td>
+				<select name="error_reporting" id="error_reporting">
+					<option value="E_ALL &amp; ~E_NOTICE"{ERROR_REPORTING_0}>{TR_ERROR_REPORTING_DEFAULT}</option>
+					<option value="E_ALL | E_STRICT"{ERROR_REPORTING_1}>{TR_ERROR_REPORTING_DEVELOPEMENT}</option>
+					<option value="E_ALL &amp; ~E_DEPRECATED"{ERROR_REPORTING_2}>{TR_ERROR_REPORTING_PRODUCTION}</option>
+					<option value="0"{ERROR_REPORTING_3}>{TR_ERROR_REPORTING_NONE}</option>
+				</select>
+			</td>
+		</tr>
+		<!-- EDP: error_reporting_block -->
 	</table>
-	<!-- EDP: php_editor_second_block -->
+	<!-- EDP: php_editor_first_block -->
 	<div class="buttons">
 		<input name="Submit" type="submit" value="{TR_UPDATE_DATA}"/>
-		<input name="Submit" type="submit" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
+		<a href="domains_manage.php"><button type="button">{TR_CANCEL}</button></a>
 	</div>
 </form>

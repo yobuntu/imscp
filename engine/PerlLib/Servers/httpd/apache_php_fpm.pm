@@ -927,7 +927,7 @@ sub addHtaccess
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
 		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -988,7 +988,7 @@ sub deleteHtaccess($$)
 	# Note: It's temporary fix for 1.1.0-rc2 (See #749)
 	if(-d $data->{'AUTH_PATH'}) {
 		my $fileUser = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_USERS_FILE_NAME'}";
-		my $fileGroup = "$data->'{HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
+		my $fileGroup = "$data->{'HOME_PATH'}/$self->{'config'}->{'HTACCESS_GROUPS_FILE_NAME'}";
 		my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
 		my $file = iMSCP::File->new('filename' => $filePath);
@@ -2166,7 +2166,7 @@ sub _addFiles($$)
 
 	my $webDir = $data->{'WEB_DIR'};
 
-	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - BEGIN
+	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - BEGIN
 
 	my $skelDir;
 
@@ -2224,7 +2224,7 @@ sub _addFiles($$)
 		}
 	}
 
-	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/etc/skel) - END
+	# Build domain/subdomain Web directory tree using skeleton from (eg /etc/imscp/apache/skel) - END
 
 	my $protectedParentDir = dirname($webDir);
 	$protectedParentDir = dirname($protectedParentDir) while(! -d $protectedParentDir);
