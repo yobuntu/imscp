@@ -1966,15 +1966,21 @@ sub _addFiles($$)
 		return $rs if $rs;
 	}
 
-	if(
-		$data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors" &&
-		! iMSCP::Dir->new('dirname' => "$webDir/errors")->isEmpty()
-	) {
+	if($data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$webDir/errors") {
 		if(-d "$tmpDir/errors") {
-			$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove() if -d "$tmpDir/errors";
-			return $rs if $rs;
+			for(iMSCP::Dir->new('dirname' => "$tmpDir/errors")->getFiles()) {
+				if(-f "$webDir/errors/file") {
+					unlink "$tmpDir/errors/$_";
+				}
+			}
+
+			if(iMSCP::Dir->new('dirname' => "$tmpDir/errors")->isEmpty()) {
+				$rs = iMSCP::Dir->new('dirname' => "$tmpDir/errors")->remove();
+				return $rs if $rs;
+			}
 		} else {
-			warning("Web folder skeleton $skelDir should provide the 'errors' directory.");
+			error("Web folder skeleton $skelDir should provide the 'errors' directory.");
+			return 1;
 		}
 	}
 

@@ -136,13 +136,19 @@
     # SECTION itk END.
     # SECTION php_disabled END.
 
-    # SECTION addons BEGIN.
-    # SECTION addons END.
-
     SSLEngine On
     SSLCertificateFile {CERT}
     SSLCertificateChainFile {CERT}
 
+   <Location />
+       RewriteEngine On
+       RewriteCond %{REQUEST_URI} !^/errors/
+       RewriteRule (.*) - [R=501,L]
+	</Location>
+
     Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DOMAIN_NAME}.conf
+
+	# SECTION custom BEGIN.
+	# SECTION custom END.
 
 </VirtualHost>

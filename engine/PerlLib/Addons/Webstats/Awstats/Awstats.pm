@@ -406,8 +406,8 @@ sub _addAwstatsSection($$$)
 		require Servers::httpd;
 		my $httpd = Servers::httpd->factory();
 
-		my $beginTag = "# SECTION addons BEGIN.\n";
-		my $endTag = "# SECTION addons END.\n";
+		my $beginTag = "# SECTION custom BEGIN.\n";
+		my $endTag = "# SECTION custom END.\n";
 
 		# Getting addons configuration section from Apache template file
 		my $addonsConfSection = getBloc($beginTag, $endTag, $$content);

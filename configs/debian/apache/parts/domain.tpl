@@ -32,7 +32,6 @@
 
     <Directory {WEB_DIR}/cgi-bin>
         AllowOverride AuthConfig
-        #Options +ExecCGI
         {AUTHZ_ALLOW_ALL}
     </Directory>
     # SECTION cgi_support END.
@@ -136,9 +135,9 @@
     # SECTION itk END.
     # SECTION php_disabled END.
 
-    # SECTION addons BEGIN.
-    # SECTION addons END.
-
     Include {APACHE_CUSTOM_SITES_CONFIG_DIR}/{DOMAIN_NAME}.conf
+
+	# SECTION custom BEGIN.
+	# SECTION custom END.
 
 </VirtualHost>

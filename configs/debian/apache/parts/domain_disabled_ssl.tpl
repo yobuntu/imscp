@@ -22,4 +22,10 @@
     SSLCertificateFile {CERT}
     SSLCertificateChainFile {CERT}
 
+	<Location />
+	    RewriteEngine On
+	    RewriteCond %{REQUEST_URI} !^/errors/
+	    RewriteRule (.*) - [R=501,L]
+	</Location>
+
 </VirtualHost>
