@@ -145,7 +145,7 @@ sub setupDialog
 
 	# Implements a simple state machine (backup capability)
 	# Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
-	my ($state, $nbDialog, $rs) = (0, scalar @$dialogStack, 0);
+	my ($state, $nbDialog) = (0, scalar @$dialogStack);
 
 	while($state != $nbDialog) {
 		$rs = $$dialogStack[$state]->($dialog);
@@ -1617,7 +1617,7 @@ sub setupUpdateDatabase
 # Basically, this method do same job as the mysql_secure_installation script
 # - Remove anonymous users
 # - Remove users without password set
-# - Remove remote sql root user
+# - Remove remote sql root user (only for local server)
 # - Remove test database if any
 # - Reload privileges tables
 sub setupSecureSqlInstallation
@@ -1632,33 +1632,35 @@ sub setupSecureSqlInstallation
 	}
 
 	# Remove anonymous users
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = '';");
-	if(ref $errStr ne 'HASH') {
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`user` WHERE `User` = ''");
+	unless(ref $errStr eq 'HASH') {
 		error("Unable to delete anonymous users: $errStr");
 		return 1;
 	}
 
 	# Remove user without password set
-	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = '';");
+	my $rdata = $database->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
 
 	for (keys %{$rdata}) {
 		$errStr = $database->doQuery('dummy', "DROP USER ?@?", $_, $rdata->{$_}->{'Host'});
-		if(ref $errStr ne 'HASH') {
+		unless(ref $errStr eq 'HASH') {
 			error("Unable to remove SQL user $_\\@$rdata->{$_}->{'Host'}: $errStr");
 			return 1;
 		}
 	}
 
 	# Remove test database if any
-	$errStr = $database->doQuery('dummy', 'DROP DATABASE `test`;');
-	if(ref $errStr ne 'HASH'){
-		debug("Unable to remove database test (not critical): $errStr"); # Not critical, keep moving...
+	$errStr = $database->doQuery('dummy', 'DROP DATABASE IF EXISTS `test`');
+	unless(ref $errStr eq 'HASH'){
+		error("Unable to remove database test : $errStr"); # Not critical, keep moving...
+		return 1;
 	}
 
 	# Remove privileges on test database
-	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%';");
-	if(ref $errStr ne 'HASH'){
-		debug("Unable to remove privilege on test database (not critical): $errStr"); # Not critical, keep moving...
+	$errStr = $database->doQuery('dummy', "DELETE FROM `mysql`.`db` WHERE `Db` = 'test' OR `Db` = 'test\\_%'");
+	unless(ref $errStr eq 'HASH') {
+		error("Unable to remove privileges on test database: $errStr");
+		return 1;
 	}
 
 	# Disallow remote root login
@@ -1667,15 +1669,15 @@ sub setupSecureSqlInstallation
 			'dummy',
 			"DELETE FROM `mysql`.`user` WHERE `User` = 'root' AND `Host` NOT IN ('localhost', '127.0.0.1', '::1');"
 		);
-		if(ref $errStr ne 'HASH'){
-			error("Unable to remove remote root user: $errStr");
+		unless(ref $errStr eq 'HASH'){
+			error("Unable to remove remote root users: $errStr");
 			return 1;
 		}
 	}
 
 	# Reload privilege tables
-	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES;');
-	if(ref $errStr ne 'HASH') {
+	$errStr = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	unless(ref $errStr eq 'HASH') {
 		debug("Unable to reload privileges tables: $errStr");
 		return 1;
 	}
@@ -1918,9 +1920,6 @@ sub setupSetPermissions
 	my $rs = iMSCP::HooksManager->getInstance()->trigger('beforeSetupSetPermissions');
 	return $rs if $rs;
 
-	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
-	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
-
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
@@ -1948,7 +1947,6 @@ sub setupSetPermissions
 		return $rs if $rs;
 	}
 
-	$main::imscpConfig{'BACKTRACE'} = $backtrace;
 	$main::imscpConfig{'DEBUG'} = $debug;
 
 	iMSCP::HooksManager->getInstance()->trigger('afterSetupSetPermissions');
@@ -2023,9 +2021,6 @@ sub setupRebuildCustomerFiles
 
 	iMSCP::Boot->getInstance()->unlock();
 
-	my $backtrace = $main::imscpConfig{'BACKTRACE'} || 0;
-	$main::imscpConfig{'BACKTRACE'} = (iMSCP::Getopt->backtrace) ? 1 : 0;
-
 	my $debug = $main::imscpConfig{'DEBUG'} || 0;
 	$main::imscpConfig{'DEBUG'} = (iMSCP::Getopt->debug) ? 1 : 0;
 
@@ -2055,7 +2050,7 @@ sub setupRebuildCustomerFiles
 	iMSCP::Boot->getInstance()->lock();
 
 	$main::imscpConfig{'DEBUG'} = $debug;
-	$main::imscpConfig{'BACKTRACE'} = $backtrace;
+
 	error("\n$stderr") if $stderr && $rs;
 	error("Error while rebuilding customers files") if $rs && ! $stderr;
 	return $rs if $rs;
@@ -2080,7 +2075,7 @@ sub setupPreInstallServers
 		my $file = "Servers/$_.pm";
 		my $class = "Servers::$_";
 		require $file;
-		my $server	= $class->factory();
+		my $server = $class->factory();
 
 		if($server->can('preinstall')) {
 			$rs = step(

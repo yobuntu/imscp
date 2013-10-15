@@ -227,7 +227,10 @@ sub uninstall
 {
 	my $self = shift;
 
-	my @addons = split ',',$main::imscpConfig{'ANTI_ROOTKITS_ADDONS'};
+	my @addons = split ',', $main::imscpConfig{'ANTI_ROOTKITS_ADDONS'};
+
+	my $packages = [];
+	my $rs = 0;
 
 	for(@addons) {
 		if($_ ~~ @{$self->{'ADDONS'}}) {
@@ -236,8 +239,10 @@ sub uninstall
 
 			if(! $@) {
 				$addon = $addon->getInstance();
-				my $rs = $addon->uninstall(); # Mandatory method;
+				$rs = $addon->uninstall(); # Mandatory method;
 				return $rs if $rs;
+
+				@{$packages} = (@{$packages}, @{$addon->getPackages()}) if $addon->can('getPackages');
 			} else {
 				error($@);
 				return 1;
@@ -245,7 +250,9 @@ sub uninstall
 		}
 	}
 
-	0;
+	$rs = $self->_removePackages($packages) if @${packages};
+
+	$rs;
 }
 
 =item setEnginePermissions()

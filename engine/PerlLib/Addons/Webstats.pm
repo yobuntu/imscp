@@ -230,15 +230,20 @@ sub uninstall
 
 	my @addons = split ',', $main::imscpConfig{'WEBSTATS_ADDONS'};
 
+	my $packages = [];
+	my $rs = 0;
+
 	for(@addons) {
 		if($_ ~~ @{$self->{'ADDONS'}}) {
-			my $addon = "Addons::AntiRootkits::${_}::${_}";
+			my $addon = "Addons::Webstats::${_}::${_}";
 			eval "require $addon";
 
 			if(! $@) {
 				$addon = $addon->getInstance();
-				my $rs = $addon->uninstall(); # Mandatory method;
+				$rs = $addon->uninstall(); # Mandatory method;
 				return $rs if $rs;
+
+				@{$packages} = (@{$packages}, @{$addon->getPackages()}) if $addon->can('getPackages');
 			} else {
 				error($@);
 				return 1;
@@ -246,7 +251,9 @@ sub uninstall
 		}
 	}
 
-	0;
+	$rs = $self->_removePackages($packages) if @${packages};
+
+	$rs;
 }
 
 =item setEnginePermissions()
