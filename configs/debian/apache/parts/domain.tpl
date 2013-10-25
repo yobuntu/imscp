@@ -1,8 +1,13 @@
 <VirtualHost {DOMAIN_IP}:80>
+    ServerName {DOMAIN_NAME}
+    RewriteEngine on
+    RewriteRule ^/(.*) http://www.{DOMAIN_NAME}/$1 [L,R=301]
+</VirtualHost>
+<VirtualHost {DOMAIN_IP}:80>
 
     ServerAdmin webmaster@{DOMAIN_NAME}
-    ServerName {DOMAIN_NAME}
-    ServerAlias www.{DOMAIN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
+    ServerName www.{DOMAIN_NAME}
+    ServerAlias {ALIAS}.{BASE_SERVER_VHOST}
 
     DocumentRoot {WEB_DIR}/htdocs
 
